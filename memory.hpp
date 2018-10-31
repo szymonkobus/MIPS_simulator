@@ -15,9 +15,11 @@ public:
   memory();
   memory(std::string binary);
   ~memory();
-  void write(int address);
-  word read(int address);
+  void write(word adr, word new_data);
+  word read(word address);
   word read_inst(int address);
+
+  void print_mem() const;
 };
 
 #endif
