@@ -1,15 +1,13 @@
-#include <vector>
 #include <iostream>
-#include <fstream>
+#include <string>
+#include "memory.hpp"
+#include "cpu.hpp"
 
-char address_map(int& add);
 
 int main(int argc, char const *argv[]) {
-  int a = 0x10;
-  std::cout << a << '\n';
-  return 0;
-}
+  //cpu c();
+  std::string bin = argv[1];
+  //memory m(bin);
 
-char address_map(int& add){
   return 0;
 }
