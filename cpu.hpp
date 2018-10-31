@@ -1,3 +1,9 @@
+#ifndef CPU_HPP
+#define CPU_HPP
+
+#include <cstdint>
+#include "memory.hpp"
+
 using word = uint32_t;
 
 class cpu{
@@ -6,8 +12,10 @@ private:
   word reg[31];
   word pc;
 public:
-  cpu(int w);
+  cpu();
   void run(memory& m);
 private:
   //instructions
 };
+
+#endif
