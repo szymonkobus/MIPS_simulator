@@ -51,7 +51,7 @@ R_type_instruction create_R_type_instruction(word_type word){
     instruction.src_reg2 = reg_type((word & 0x1F0000)>>16);
     instruction.dest_reg = reg_type((word & 0xF800)>>11);
     instruction.shift = shift_type((word & 0x7C0)>>6);
-    instruction.funct = funct_type(word & 0x3F)
+    instruction.funct = funct_type(word & 0x3F);
     return instruction;
 }
 
