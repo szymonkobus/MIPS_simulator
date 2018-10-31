@@ -7,15 +7,12 @@ using word_type = uint32;
 
 class instruction{
 public:
-  int op_code;
-  int src1, src2, dest;
-  // R-type
+  int opcod;
+  int src_1, src_2, destn;
   int shift;
   int funct;
-  // I-type
-  int imm;
-  // J-type
-  int j_address;
+  int i_imm;
+  int j_add;
 
   instruction();
   instruction(word inst);
