@@ -46,4 +46,4 @@ void cpu::execute_r(instruction inst){
 
 
 void cpu::execute_i(instruction inst){};
-void cpu::  execute_j(instruction inst){};
+void cpu::execute_j(instruction inst){};
