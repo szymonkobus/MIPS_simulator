@@ -3,6 +3,7 @@
 #include "instruction.hpp"
 
 using word = uint32_t;
+using signed_word = int32_t;
 
 cpu::cpu(){
   pc = 0x10000000;
@@ -47,12 +48,12 @@ void cpu::execute_j(const instruction& inst){};
 
 // INSTRUCTIONS
 void cpu::SLL(const instruction& inst){
-  word data = r.get(inst.src_t) >> inst.shamt;
+  signed_word data = r.get(inst.src_t) >> inst.shamt;
   r.set(inst.destn, data );
 }
 
 void cpu::SRL(const instruction& inst){
-  word data = r.get(inst.src_t) << inst.shamt;
+  signed_word data = r.get(inst.src_t) << inst.shamt;
   r.set(inst.destn, data);
 }
 
