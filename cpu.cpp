@@ -35,9 +35,15 @@ void cpu::execute(const instruction& inst){
 void cpu::execute_r(const instruction& inst){
   switch (inst.funct){
     case 0x00: SLL(inst); break; //SLL
+<<<<<<< HEAD
     //case 0x02: reg[inst.destn] = reg[inst.src_2] >> inst.shamt; break; //SRL
     //case 0x21: reg[inst.destn] = reg[inst.src_1] + reg[inst.src_2]; break; //ADDU
     default: ;
+=======
+    case 0x02: SRL(inst); break; //SRL
+    case 0x21: ADDU(inst); break; //ADDU
+    //....
+>>>>>>> e42139e2347dfa70351be96a937023a4a98d6d2c
   }
 }
 
@@ -45,9 +51,23 @@ void cpu::execute_r(const instruction& inst){
 void cpu::execute_i(const instruction& inst){};
 void cpu::execute_j(const instruction& inst){};
 
+<<<<<<< HEAD
 // INSTRUCTIONS
 void cpu::SLL(const instruction& inst){
   r.set(inst.destn, (r.get(inst.src_t) >> inst.shamt) );
 }
 
 //void cpu::SRL
+=======
+void cpu::SLL(const instruction& inst){
+  reg[inst.destn] = reg[inst.src_2] << inst.shamt;
+}
+
+void cpu::SRL(const instruction& inst){
+  reg[inst.destn] = reg[inst.src_2] >> inst.shamt;
+}
+
+void cpu::ADDU(const instruction& inst){
+  reg[inst.destn] = reg[inst.src_1] + reg[inst.src_2];
+}
+>>>>>>> e42139e2347dfa70351be96a937023a4a98d6d2c

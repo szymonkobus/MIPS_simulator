@@ -25,7 +25,9 @@ private:
   void execute_i(const instruction& inst);
   void execute_j(const instruction& inst);
 
-  void SLL(const instruction& inst);
+  void cpu::SLL(const instruction& inst);
+  void cpu::SRL(const instruction& inst);
+  void cpu::ADDU(const instruction& inst);
 };
 
 #endif
