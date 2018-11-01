@@ -5,12 +5,18 @@ using word = uint32_t;
 
 cpu::cpu(){
   pc = 0x10000000;
-  for(int i = 0; i < 32; i++){
-    reg[i] = 0;
-  }
+  //for(int i = 0; i < 32; i++){
+    //reg[i] = 0;
 }
 
-void cpu::run(memory& m){
+cpu::cpu(std::string binary){
+  pc = 0x10000000;
+  //for(int i = 0; i < 32; i++)
+    //reg[i] = 0;
+  m = memory(std::string binary);
+}
+
+void cpu::run(){
   while (true) {
     word next_instruction = m.read_inst(pc);
     instruction c_inst(next_instruction);
@@ -51,6 +57,3 @@ void cpu::execute_r(instruction inst, memory& m){
 
 void execute_i(instruction inst, memory& m){};
 void execute_j(instruction inst, memory& m){}; */
-=======
-*/
->>>>>>> 0e7961dec23625531a73b81de8438a3d631bdbc4

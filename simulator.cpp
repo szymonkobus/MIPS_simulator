@@ -5,14 +5,14 @@
 
 
 int main(int argc, char const *argv[]) {
-  //cpu c();
+  cpu c("bin_tst1.bin");
   //std::string bin = argv[1];
-  memory m;
+  //memory m;
 
   std::cout << m.inst->size() << '\n';
   std::cout << m.data->size() << '\n';
 
-  memory m2("bin_tst1.bin");
+  //memory m2("bin_tst1.bin");
 
   std::cout << "m" << '\n';
   m.print_mem();

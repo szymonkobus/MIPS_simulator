@@ -1,6 +1,5 @@
 *.o
 *.out
 notes.txt
-bin/
 sim
 tst/
