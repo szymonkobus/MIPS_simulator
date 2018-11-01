@@ -1,5 +1,6 @@
 #include <cstdint> //using
 #include <stdexcept> //std::exit
+#include "instruction.hpp"
 
 using word = uint32_t;
 
@@ -10,7 +11,7 @@ instruction::instruction(){
   destn = 0;
   shamt = 0;
   funct = 0;
-  i_imi = 0;
+  i_imm = 0;
   j_add = 0;
   is_r = 0;
   is_i = 0;
@@ -31,7 +32,7 @@ instruction::instruction(word inst){
   }else if(is_I_type(opcode)){
     src_1 = (inst >> 21) & 0x1F;
     destn = (inst >> 16) & 0x1F;
-    i_imi =  inst & 0xFFFF;
+    i_imm =  inst & 0xFFFF;
     is_r = 0;
     is_i = 1;
     is_j = 0;
