@@ -11,7 +11,7 @@ instruction::instruction(){
   destn = 0;
   shamt = 0;
   funct = 0;
-  i_imi = 0;
+  i_imm = 0;
   j_add = 0;
 }
 
