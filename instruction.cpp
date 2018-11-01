@@ -1,5 +1,6 @@
 #include <cstdint> //using
 #include <stdexcept> //std::exit
+#include "instruction.hpp"
 
 using word = uint32_t;
 
@@ -12,9 +13,6 @@ instruction::instruction(){
   funct = 0;
   i_imi = 0;
   j_add = 0;
-  is_r = 0;
-  is_i = 0;
-  is_j = 0;
 }
 
 instruction::instruction(word inst){
@@ -25,21 +23,15 @@ instruction::instruction(word inst){
     destn = (inst >> 11) & 0x1F; //$rd
     shamt = (inst >> 6 ) & 0x1F;
     funct =  inst & 0x3F;
-    is_r = 1;
-    is_i = 0;
-    is_j = 0;
+    type = 'r';
   }else if(is_I_type(opcode)){
     src_1 = (inst >> 21) & 0x1F;
     destn = (inst >> 16) & 0x1F;
     i_imi =  inst & 0xFFFF;
-    is_r = 0;
-    is_i = 1;
-    is_j = 0;
+    type = 'i';
   }else if(is_J_type(opcode)){
     j_add =  inst & 0x3FFFFFF;
-    is_r = 0;
-    is_i = 0;
-    is_j = 1;
+    type = 'j';
   }else{
     std::exit(-12); // opcodee not found, exit with error
   }

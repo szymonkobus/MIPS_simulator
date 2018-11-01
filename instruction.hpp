@@ -11,11 +11,9 @@ public:
   int src_1, src_2, destn;
   int shamt;
   int funct;
-  int i_imm;
+  int i_imi;
   int j_add;
-  bool is_r;
-  bool is_i;
-  bool is_j;
+  char type;
 
   instruction();
   instruction(word inst);
