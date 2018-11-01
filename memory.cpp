@@ -26,6 +26,9 @@ memory::memory(std::string binary){
       word instruction = (buffer[0]<<24|buffer[1]<<16|buffer[2]<<8|buffer[3]);
       (*inst)[i] = instruction;
       i++;
+
+      std::cout << "Number of instructions: " << i << '\n';
+
       if(i > (0x1000000 / 4)){
         //TODO: ERROR
       }

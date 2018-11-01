@@ -8,9 +8,9 @@
 using word = uint32_t;
 
 class cpu{
-private:
+public: // change to private
   //reg[0] == 0
-  word reg[32] {0};
+  word reg[32];
   word pc;
   memory m;
 public:
@@ -19,10 +19,10 @@ public:
   void run();
 private:
   //instructions
-  //void execute(instruction inst);
-  //void execute_r(instruction inst);
-  //void execute_i(instruction inst);
-  //void execute_j(instruction inst);
+  void execute(instruction inst);
+  void execute_r(instruction inst);
+  void execute_i(instruction inst);
+  void execute_j(instruction inst);
 };
 
 #endif
