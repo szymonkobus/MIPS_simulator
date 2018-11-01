@@ -1,4 +1,5 @@
 #include "cpu.hpp"
+#include "instruction.hpp"
 
 using word = uint32_t;
 
@@ -13,7 +14,7 @@ void cpu::run(memory& m){
   while (true) {
     word next_instruction = m.read_inst(pc);
     instruction c_inst(next_instruction);
-    this.execute(c_inst, m);
+    this->execute(c_inst, m);
     pc += 4;
   }
 }

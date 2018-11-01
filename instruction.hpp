@@ -3,11 +3,11 @@
 
 #include <cstdint>    //using
 
-using word_type = uint32;
+using word = uint32_t;
 
 class instruction{
 public:
-  int opcod;
+  int opcode;
   int src_1, src_2, destn;
   int shift;
   int funct;
@@ -17,9 +17,9 @@ public:
   instruction();
   instruction(word inst);
 private:
-  bool is_R_type(int opcod);
-  bool is_I_type(int opcod);
-  bool is_J_type(int opcod);
+  bool is_R_type(int opcode);
+  bool is_I_type(int opcode);
+  bool is_J_type(int opcode);
 };
 
 #endif

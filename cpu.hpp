@@ -16,6 +16,7 @@ public:
   void run(memory& m);
 private:
   //instructions
+  
 };
 
 #endif
