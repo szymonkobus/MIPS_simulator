@@ -1,4 +1,4 @@
-all: simulator.o cpu.o memory.o
+all: simulator.o cpu.o memory.o instruction.o
 	g++ -std=c++11 $^ -o sim
 
 #implicit rule
