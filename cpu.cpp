@@ -26,7 +26,7 @@ void cpu::run(){
 }
 
 
-void cpu::execute(instruction inst){
+void cpu::execute(const instruction& inst){
   switch(inst.type){
     case 'r': execute_r(inst); break;
     case 'i': execute_i(inst); break;
@@ -36,17 +36,18 @@ void cpu::execute(instruction inst){
 }
 
 
-void cpu::execute_r(instruction inst){
+void cpu::execute_r(const instruction& inst){
   switch (inst.funct){
     case 0x00: SLL(inst); break; //SLL
     case 0x02: SRL(inst); break; //SRL
     case 0x21: ADDU(inst); break; //ADDU
+    //....
   }
 }
 
 
-void cpu::execute_i(instruction inst){};
-void cpu::execute_j(instruction inst){};
+void cpu::execute_i(const instruction& inst){};
+void cpu::execute_j(const instruction& inst){};
 
 void cpu::SLL(const instruction& inst){
   reg[inst.destn] = reg[inst.src_2] << inst.shamt;
