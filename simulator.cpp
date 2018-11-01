@@ -3,7 +3,6 @@
 #include "memory.hpp"
 #include "cpu.hpp"
 
-
 int main(int argc, char const *argv[]) {
 
   memory m2("bin_tst2.bin");

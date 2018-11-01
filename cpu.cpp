@@ -6,14 +6,10 @@ using word = uint32_t;
 
 cpu::cpu(){
   pc = 0x10000000;
-  for(int i = 0; i < 32; i++)
-    reg[i] = 0;
 }
 
-cpu::cpu(std::string binary): m(binary) {
+cpu::cpu(std::string binary): m(binary), r() {
   pc = 0x10000000;
-  for(int i = 0; i < 32; i++)
-    reg[i] = 0;
 }
 
 void cpu::run(){
@@ -38,12 +34,20 @@ void cpu::execute(const instruction& inst){
 
 void cpu::execute_r(const instruction& inst){
   switch (inst.funct){
-    case 0x00: reg[inst.destn] = reg[inst.src_2] << inst.shamt; break; //SLL
-    case 0x02: reg[inst.destn] = reg[inst.src_2] >> inst.shamt; break; //SRL
-    case 0x21: reg[inst.destn] = reg[inst.src_1] + reg[inst.src_2]; break; //ADDU
+    case 0x00: SLL(inst); break; //SLL
+    //case 0x02: reg[inst.destn] = reg[inst.src_2] >> inst.shamt; break; //SRL
+    //case 0x21: reg[inst.destn] = reg[inst.src_1] + reg[inst.src_2]; break; //ADDU
+    default: ;
   }
 }
 
 
 void cpu::execute_i(const instruction& inst){};
 void cpu::execute_j(const instruction& inst){};
+
+// INSTRUCTIONS
+void cpu::SLL(const instruction& inst){
+  r.set(inst.destn, (r.get(inst.src_t) >> inst.shamt) );
+}
+
+//void cpu::SRL

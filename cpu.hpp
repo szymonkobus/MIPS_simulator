@@ -4,15 +4,16 @@
 #include <cstdint>
 #include "memory.hpp"
 #include "instruction.hpp"
+#include "registers.hpp"
 
 using word = uint32_t;
 
 class cpu{
 public: // change to private
-  //reg[0] == 0
-  word reg[32];
-  word pc;
   memory m;
+  registers r;
+  word pc;
+
 public:
   cpu();
   cpu(std::string binary);

@@ -6,8 +6,8 @@ using word = uint32_t;
 
 instruction::instruction(){
   opcode = 0;
-  src_1 = 0;
-  src_2 = 0;
+  src_s = 0;
+  src_t = 0;
   destn = 0;
   shamt = 0;
   funct = 0;
@@ -18,20 +18,20 @@ instruction::instruction(){
 instruction::instruction(word inst){
   opcode = inst >> 26;
   if(is_R_type(opcode)){
-    src_1 = (inst >> 21) & 0x1F; //$rs
-    src_2 = (inst >> 16) & 0x1F; //$rt
+    type = 'r';
+    src_s = (inst >> 21) & 0x1F; //$rs
+    src_t = (inst >> 16) & 0x1F; //$rt
     destn = (inst >> 11) & 0x1F; //$rd
     shamt = (inst >> 6 ) & 0x1F;
     funct =  inst & 0x3F;
-    type = 'r';
   }else if(is_I_type(opcode)){
-    src_1 = (inst >> 21) & 0x1F;
+    type = 'i';
+    src_s = (inst >> 21) & 0x1F;
     destn = (inst >> 16) & 0x1F;
     i_imi =  inst & 0xFFFF;
-    type = 'i';
   }else if(is_J_type(opcode)){
-    j_add =  inst & 0x3FFFFFF;
     type = 'j';
+    j_add =  inst & 0x3FFFFFF;
   }else{
     std::exit(-12); // opcodee not found, exit with error
   }

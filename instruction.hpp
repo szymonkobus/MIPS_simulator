@@ -8,7 +8,7 @@ using word = uint32_t;
 class instruction{
 public:
   int opcode;
-  int src_1, src_2, destn;
+  int src_s, src_t, destn;
   int shamt;
   int funct;
   int i_imi;
