@@ -10,11 +10,10 @@ cpu::cpu(){
     reg[i] = 0;
 }
 
-cpu::cpu(std::string binary){
+cpu::cpu(std::string binary): m(binary) {
   pc = 0x10000000;
   for(int i = 0; i < 32; i++)
     reg[i] = 0;
-  m = memory(binary);
 }
 
 void cpu::run(){
