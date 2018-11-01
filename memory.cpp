@@ -18,6 +18,10 @@ memory::memory(std::string binary){
   std::ifstream infile;
   infile.open(binary, std::ios::binary);
   char buffer[4];
+<<<<<<< HEAD
+  //infile.read(buffer, 4);
+=======
+>>>>>>> 647ab8e3d97c593d373cdafeb5f563ab64a09770
   int i = 0;
   //infile.peek();
   while(!infile.eof()){
