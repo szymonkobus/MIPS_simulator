@@ -18,7 +18,7 @@ memory::memory(std::string binary){
   std::ifstream infile;
   infile.open(binary, std::ios::binary);
   char buffer[4];
-  infile.read(buffer, 4);
+  //infile.read(buffer, 4);
   int i = 0;
   while(!infile.eof()){
       infile.read(buffer, 4);
