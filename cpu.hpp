@@ -19,12 +19,14 @@ public:
   void run();
 private:
   //instructions
-  void execute(instruction inst);
-  void execute_r(instruction inst);
-  void execute_i(instruction inst);
-  void execute_j(instruction inst);
+  void execute(const instruction& inst);
+  void execute_r(const instruction& inst);
+  void execute_i(const instruction& inst);
+  void execute_j(const instruction& inst);
 
-  void SLL(instruction inst)
+  void cpu::SLL(const instruction& inst);
+  void cpu::SRL(const instruction& inst);
+  void cpu::ADDU(const instruction& inst);
 };
 
 #endif
