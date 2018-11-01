@@ -47,25 +47,13 @@ void cpu::execute_i(const instruction& inst){};
 void cpu::execute_j(const instruction& inst){};
 
 // INSTRUCTIONS
-void cpu::SLL(const instruction& inst){
-  signed_word data = r.get(inst.src_t) >> inst.shamt;
-  r.set(inst.destn, data );
-}
-
-void cpu::SRL(const instruction& inst){
-  signed_word data = r.get(inst.src_t) << inst.shamt;
-  r.set(inst.destn, data);
-}
-
-void cpu::ADDU(const instruction& inst){
-  word data = r.get(inst.src_s) + r.get(inst.src_t);
-  r.set(inst.destn, data);
-}
-
 void cpu::ADD(const instruction& inst){}
 void cpu::ADDI(const instruction& inst){ }
 void cpu::ADDIU(const instruction& inst){ }
-void cpu::ADDU(const instruction& inst){ }
+void cpu::ADDU(const instruction& inst){ 
+  word data = r.get(inst.src_s) + r.get(inst.src_t);
+  r.set(inst.destn, data); 
+  }
 void cpu::AND(const instruction& inst){ }
 void cpu::ANDI(const instruction& inst){ }
 void cpu::BEQ(const instruction& inst){ }
@@ -81,13 +69,18 @@ void cpu::DIVU(const instruction& inst){ }
 void cpu::J(const instruction& inst){ }
 void cpu::JALR(const instruction& inst){ }
 void cpu::JAL(const instruction& inst){ }
-void cpu::JR(const instruction& inst){ }
+void cpu::JR(const instruction& inst){
+  word data = r.get(inst.src_s);
+  pc = data /*- 4*/;
+ }
 void cpu::LB(const instruction& inst){ }
 void cpu::LBU(const instruction& inst){ }
 void cpu::LH(const instruction& inst){ }
 void cpu::LHU(const instruction& inst){ }
 void cpu::LUI(const instruction& inst){ }
-void cpu::LW(const instruction& inst){ }
+void cpu::LW(const instruction& inst){ 
+  
+ }
 void cpu::LWL(const instruction& inst){ }
 void cpu::LWR(const instruction& inst){ }
 void cpu::MFHI(const instruction& inst){ }
@@ -100,15 +93,24 @@ void cpu::OR(const instruction& inst){ }
 void cpu::ORI(const instruction& inst){ }
 void cpu::SB(const instruction& inst){ }
 void cpu::SH(const instruction& inst){ }
-void cpu::SLL(const instruction& inst){ }
+void cpu::SLL(const instruction& inst){ 
+  signed_word data = r.get(inst.src_t) >> inst.shamt;
+  r.set(inst.destn, data ); 
+  }
 void cpu::SLLV(const instruction& inst){ }
 void cpu::SLT(const instruction& inst){ }
 void cpu::SLTI(const instruction& inst){ }
 void cpu::SLTIU(const instruction& inst){ }
 void cpu::SLTU(const instruction& inst){ }
-void cpu::SRA(const instruction& inst){ }
+void cpu::SRA(const instruction& inst){   
+  word data = r.get(inst.src_t) << inst.shamt;
+  r.set(inst.destn, data); 
+ }
 void cpu::SRAV(const instruction& inst){ }
-void cpu::SRL(const instruction& inst){ }
+void cpu::SRL(const instruction& inst){
+  signed_word data = r.get(inst.src_t) << inst.shamt;
+  r.set(inst.destn, data); 
+ }
 void cpu::SRLV(const instruction& inst){ }
 void cpu::SUB(const instruction& inst){ }
 void cpu::SUBU(const instruction& inst){ }

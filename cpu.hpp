@@ -13,18 +13,27 @@ public: // change to private
   memory m;
   registers r;
   word pc;
+  //we also need next_pc to make sure that when we branch the instruction after the branch still gets executed, while branch only occurs after the additional instructions
+  //and we should have function like pc_append(word offset){ 
+  //                                    pc = npc;
+  //                                    npc = npc + offset;
+  //                                    }  
+  //we set pc initially to 0x1000000 and npc to 0x10000004
+  word LO;
+  word HI;
 
 public:
   cpu();
   cpu(std::string binary);
   void run();
 private:
-  //instructions
   void execute(const instruction& inst);
   void execute_r(const instruction& inst);
   void execute_i(const instruction& inst);
   void execute_j(const instruction& inst);
 
+
+  //INSTRUCTIONS
   void ADD(const instruction& inst);
   void ADDI(const instruction& inst);
   void ADDIU(const instruction& inst);
