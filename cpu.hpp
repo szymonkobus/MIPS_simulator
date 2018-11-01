@@ -23,6 +23,8 @@ private:
   void execute_r(instruction inst);
   void execute_i(instruction inst);
   void execute_j(instruction inst);
+
+  void SLL(instruction inst)
 };
 
 #endif
