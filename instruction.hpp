@@ -9,7 +9,7 @@ class instruction{
 public:
   int opcode;
   int src_1, src_2, destn;
-  int shift;
+  int shamt;
   int funct;
   int i_imm;
   int j_add;

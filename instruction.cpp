@@ -8,7 +8,7 @@ instruction::instruction(){
   src_1 = 0;
   src_2 = 0;
   destn = 0;
-  shift = 0;
+  shamt = 0;
   funct = 0;
   i_imi = 0;
   j_add = 0;
@@ -20,10 +20,10 @@ instruction::instruction(){
 instruction::instruction(word inst){
   opcode = inst >> 26;
   if(is_R_type(opcode)){
-    src_1 = (inst >> 21) & 0x1F;
-    src_2 = (inst >> 16) & 0x1F;
-    destn = (inst >> 11) & 0x1F;
-    shift = (inst >> 6 ) & 0x1F;
+    src_1 = (inst >> 21) & 0x1F; //$rs
+    src_2 = (inst >> 16) & 0x1F; //$rt
+    destn = (inst >> 11) & 0x1F; //$rd
+    shamt = (inst >> 6 ) & 0x1F;
     funct =  inst & 0x3F;
     is_r = 1;
     is_i = 0;
