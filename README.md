@@ -4,5 +4,5 @@
 * [Szymon Kobus](https://github.com/szymonkobus)
 * [Andrzej Kowalewski](https://github.com/akowal3)
 
-test
-gg
+
+* [Cheat sheet for instructions](https://inst.eecs.berkeley.edu/~cs61c/resources/MIPS_help.html)
