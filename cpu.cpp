@@ -47,6 +47,10 @@ void cpu::execute_r(instruction inst, memory& m){
     //...
   }
 }
+<<<<<<< HEAD
 
 void execute_i(instruction inst, memory& m){};
 void execute_j(instruction inst, memory& m){}; */
+=======
+*/
+>>>>>>> 0e7961dec23625531a73b81de8438a3d631bdbc4
