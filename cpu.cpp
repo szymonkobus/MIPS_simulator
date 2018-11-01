@@ -34,10 +34,9 @@ void cpu::execute(const instruction& inst){
 
 void cpu::execute_r(const instruction& inst){
   switch (inst.funct){
-    case 0x00: SLL(inst); break; //SLL
-    case 0x02: SRL(inst); break; //SRL
+    case 0x00: SLL(inst); break;  //SLL
+    case 0x02: SRL(inst); break;  //SRL
     case 0x21: ADDU(inst); break; //ADDU
-    //....
     default: ;
   }
 }
@@ -48,7 +47,16 @@ void cpu::execute_j(const instruction& inst){};
 
 // INSTRUCTIONS
 void cpu::SLL(const instruction& inst){
-  r.set(inst.destn, (r.get(inst.src_t) >> inst.shamt) );
+  word data = r.get(inst.src_t) >> inst.shamt;
+  r.set(inst.destn, data );
 }
 
-//void cpu::SRL
+void cpu::SRL(const instruction& inst){
+  word data = r.get(inst.src_t) << inst.shamt;
+  r.set(inst.destn, data);
+}
+
+void cpu::ADDU(const instruction& inst){
+  word data = r.get(inst.src_s) + r.get(inst.src_t);
+  r.set(inst.destn, data);
+}
