@@ -7,32 +7,30 @@
 using word = uint32_t;
 
 memory::memory(){
-  data = new std::vector<word>(0,0);
+  data = new std::vector<word>(0,1);
   inst = new std::vector<word>(0x1000000,0);
 }
 
 memory::memory(std::string binary){
-  data = new std::vector<word>(0,0);
+  data = new std::vector<word>(0,1);
   inst = new std::vector<word>(0x1000000,0);
 
   std::ifstream infile;
   infile.open(binary, std::ios::binary);
   char buffer[4];
-  infile.read(buffer, 4);
   int i = 0;
+  //infile.peek();
   while(!infile.eof()){
       infile.read(buffer, 4);
       infile.peek();
       word instruction = (buffer[0]<<24|buffer[1]<<16|buffer[2]<<8|buffer[3]);
       (*inst)[i] = instruction;
       i++;
-
-      std::cout << "Number of instructions: " << i << '\n';
-
       if(i > (0x1000000 / 4)){
         //TODO: ERROR
       }
   }
+  std::cout << "Number of instructions: " << i << '\n';
   infile.close();
 }
 
