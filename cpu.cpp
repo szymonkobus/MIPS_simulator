@@ -21,6 +21,7 @@ cpu::cpu(std::string binary): m(binary), r() {
 void cpu::run(){
   while(true) {
     word next_instruction = m.read_inst(pc);
+<<<<<<< HEAD
 
     std::cout<<"instruction: "<<next_instruction<<std::endl; //debug
     instruction c_inst(next_instruction);
@@ -34,6 +35,16 @@ void cpu::run(){
 
     if(pc == 0){//dont know if correct...
       std::cout << "finshed execution!" << std::endl;
+=======
+    std::cout<<next_instruction<<std::endl; //debug
+    instruction c_inst(next_instruction);
+
+    execute(c_inst);
+    reg_print();
+
+    if(pc == 0){
+      std::cout<<"finshed execution!"<<std::endl;
+>>>>>>> b0549c9d6212a7e68357487992df6514adf60e6b
       exit(r.get(2));
     }
   }
@@ -86,6 +97,8 @@ void cpu::execute_r(const instruction& inst){
 void cpu::execute_i(const instruction& inst){
   switch (inst.opcode){
     case 0x20: ADDI(inst); break;
+    case 0x23: LW(inst); break;
+    case 0x2B: SW(inst); break;
   }
 };
 void cpu::execute_j(const instruction& inst){};
@@ -131,7 +144,7 @@ void cpu::ADDIU(const instruction& inst){
   word r1 = r.get(inst.src_s);
   word imi = sign_extend_imi(inst);
   s_word res = r1 + imi;
-  r.set(inst.destn, res);
+  r.set(inst.src_t, res);
   pc_increase(4);
  }
 
@@ -171,7 +184,12 @@ void cpu::LH(const instruction& inst){ }
 void cpu::LHU(const instruction& inst){ }
 void cpu::LUI(const instruction& inst){ }
 void cpu::LW(const instruction& inst){
-
+  word base = r.get(inst.src_s);
+  word offset = sign_extend_imi(inst);
+  word res = m.read(base + offset);
+  r.set(inst.src_t, res);
+  m.print_mem();
+  pc_increase(4);
  }
 void cpu::LWL(const instruction& inst){ }
 void cpu::LWR(const instruction& inst){ }
@@ -190,7 +208,7 @@ void cpu::SLL(const instruction& inst){
   word data = r.get(inst.src_t) << inst.shamt;
   r.set(inst.destn, data);
   pc_increase(4);
-  }
+ }
 
 void cpu::SLLV(const instruction& inst){ }
 void cpu::SLT(const instruction& inst){ }
@@ -216,15 +234,22 @@ void cpu::SRL(const instruction& inst){
 void cpu::SRLV(const instruction& inst){ }
 void cpu::SUB(const instruction& inst){ }
 void cpu::SUBU(const instruction& inst){ }
-void cpu::SW(const instruction& inst){ }
+void cpu::SW(const instruction& inst){
+  word base = r.get(inst.src_s);
+  word offset = sign_extend_imi(inst);
+  word adr = base + offset;
+  word val = r.get(inst.src_t);
+  m.write(adr, val);
+  pc_increase(4);
+ }
 void cpu::XOR(const instruction& inst){ }
 void cpu::XORI(const instruction& inst){ }
 
 
 void cpu::test_fill(){
-  r.set(8, (word)(-1));
-  r.set(9, (word)(-1));
-  r.set(10, 2);
+  r.set(8, 5);
+  r.set(9, 5);
+  r.set(10, 0x20000004);
  }
 
 void cpu::reg_print(){
