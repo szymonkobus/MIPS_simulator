@@ -99,9 +99,14 @@ void cpu::execute_i(const instruction& inst){
     case 0x20: ADDI(inst); break;
     case 0x23: LW(inst); break;
     case 0x2B: SW(inst); break;
+    default: std::exit(-12); std::cerr << "error: instruction not implemented" << '\n';
   }
 };
-void cpu::execute_j(const instruction& inst){};
+void cpu::execute_j(const instruction& inst){
+  switch (inst.opcode) {
+    default: std::exit(-12); std::cerr << "error: instruction not implemented" << '\n';
+  }
+};
 
 
 word cpu::sign_extend_imi(const instruction& inst){ //T
@@ -259,6 +264,7 @@ void cpu::reg_print(){
  }
 
 void cpu::reg_s(){
+  //TODO: make it pretty
   for(int i = 0; i < 4; i++){
       for(int j = 0; j < 8; j++)
       std::cout << r.get(i*8 + j) << "\t\t";

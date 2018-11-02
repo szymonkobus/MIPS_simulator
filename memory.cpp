@@ -73,7 +73,7 @@ word memory::read(word adr){
     if(d_adr > data->size()) return 0;
     else return (*data)[d_adr];
   }else if( adr == 0x30000004){
-
+    //DO STUFF
   }
   std::cerr << "error: trying to read from address: " << adr << '\n';
   std::exit(-11);
