@@ -65,11 +65,7 @@ word memory::read(word adr){
 
 word memory::read_inst(int adr){
   if(adr >= 0x10000000 && adr < 0x11000000){
-<<<<<<< HEAD
-    int i_adr = adr - 0x10000000;
-=======
     int i_adr = (adr - 0x10000000) / 4;
->>>>>>> a3f9539582abd8289daae68f61739c4a322774f9
     return (*inst)[i_adr];
   }
   std::cerr << "error: trying to read instruction from address: " << adr << '\n';
