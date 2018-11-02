@@ -65,8 +65,8 @@ word memory::read(word adr){
 
 word memory::read_inst(int adr){
   if(adr >= 0x10000000 && adr < 0x11000000){
-    int i_adr = adr - 0x10000000;
-    return (*data)[i_adr];
+    int i_adr = (adr - 0x10000000) / 4;
+    return (*inst)[i_adr];
   }
   // TODO: ERROR
 }

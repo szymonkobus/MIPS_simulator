@@ -26,6 +26,8 @@ public:
   cpu();
   cpu(std::string binary);
   void run();
+  void test_fill();
+  void reg_print();
 private:
   void execute(const instruction& inst);
   void execute_r(const instruction& inst);

@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream> //debug
 #include "cpu.hpp"
 #include "instruction.hpp"
 
@@ -16,14 +17,17 @@ cpu::cpu(std::string binary): m(binary), r() {
 void cpu::run(){
   while (true) {
     word next_instruction = m.read_inst(pc);
+    std::cout<<next_instruction<<std::endl; //debug
     instruction c_inst(next_instruction);
     this->execute(c_inst);
     pc += 4;
+    this->reg_print(); //debug
   }
 }
 
 
 void cpu::execute(const instruction& inst){
+  std::cout<<"entered execute"<<std::endl;//debug
   switch(inst.type){
     case 'r': execute_r(inst); break;
     case 'i': execute_i(inst); break;
@@ -95,7 +99,7 @@ void cpu::SB(const instruction& inst){ }
 void cpu::SH(const instruction& inst){ }
 void cpu::SLL(const instruction& inst){ 
   signed_word data = r.get(inst.src_t) >> inst.shamt;
-  r.set(inst.destn, data ); 
+  r.set(inst.destn, data); 
   }
 void cpu::SLLV(const instruction& inst){ }
 void cpu::SLT(const instruction& inst){ }
@@ -117,3 +121,16 @@ void cpu::SUBU(const instruction& inst){ }
 void cpu::SW(const instruction& inst){ }
 void cpu::XOR(const instruction& inst){ }
 void cpu::XORI(const instruction& inst){ }
+
+
+void cpu::test_fill(){
+  r.set(8, 5);
+  r.set(9, 1);
+  r.set(10, 2);
+ }
+
+void cpu::reg_print(){
+  for(int i = 1; i < 32; i++){
+    std::cout<<"reg"<<i<<"\t"<<r.get(i)<<std::endl;
+  }
+ }
