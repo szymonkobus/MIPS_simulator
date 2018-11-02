@@ -26,9 +26,10 @@ void cpu::run(){
     word next_instruction = m.read_inst(pc);
 
     //std::cout << "run 2" << '\n';
-    std::cout<<next_instruction<<std::endl; //debug
+    std::cout<<"instruction: "<<next_instruction<<std::endl; //debug
     instruction c_inst(next_instruction);
-
+    std::cout<<"pc: "<<pc<<std::endl;
+    getchar();
     //std::cout << "run 3" << '\n';
     this->execute(c_inst);
 
@@ -36,9 +37,11 @@ void cpu::run(){
     //pc += 4;
     //this->reg_print(); //debug
     this->reg_print();
-    if(pc == 0){
+    std::cout<<"pc: "<<pc<<std::endl;
+
+    if(pc == 0){//dont know if correct...
       std::cout<<"finshed execution!"<<std::endl;
-      return;
+      exit(r.get(2));
     }
   }
 }
@@ -143,7 +146,9 @@ void cpu::ADDIU(const instruction& inst){
  }
 
 void cpu::ADDU(const instruction& inst){
-  word res = r.get(inst.src_s) + r.get(inst.src_t);
+  word r1 = r.get(inst.src_s);
+  word r2 = r.get(inst.src_t);
+  word res = r1 + r2;
   r.set(inst.destn, res);
   pc_increase(4);
  }
@@ -194,6 +199,7 @@ void cpu::SH(const instruction& inst){ }
 void cpu::SLL(const instruction& inst){
   word data = r.get(inst.src_t) << inst.shamt;
   r.set(inst.destn, data);
+  pc_increase(4);
   }
 
 void cpu::SLLV(const instruction& inst){ }
@@ -205,6 +211,8 @@ void cpu::SLTU(const instruction& inst){ }
 void cpu::SRA(const instruction& inst){
   s_word data = r.get(inst.src_t) >> inst.shamt;
   r.set(inst.destn, data);
+  pc_increase(4);
+
  }
 
 void cpu::SRAV(const instruction& inst){ }
@@ -212,6 +220,8 @@ void cpu::SRAV(const instruction& inst){ }
 void cpu::SRL(const instruction& inst){
   word data = r.get(inst.src_t) >> inst.shamt;
   r.set(inst.destn, data);
+  pc_increase(4);
+
  }
 
 void cpu::SRLV(const instruction& inst){ }
@@ -223,14 +233,14 @@ void cpu::XORI(const instruction& inst){ }
 
 
 void cpu::test_fill(){
-  r.set(8, (word)(-6));
-  r.set(9, (word)(-4));
+  r.set(8, (word)(-1));
+  r.set(9, (word)(-1));
   r.set(10, 2);
  }
 
 void cpu::reg_print(){
   for(int i = 1; i < 32; i++){
-    std::cout<<"reg"<<i<<"\t"<<r.get(i)<<std::endl;
+    std::cout<<"reg"<<i<<"\t"<<(s_word)r.get(i)<<std::endl;
   }
  }
 
