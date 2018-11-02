@@ -1,5 +1,6 @@
 #include <cstdint> //using
 #include <stdexcept> //std::exit
+#include <iostream> //debug
 #include "instruction.hpp"
 
 using word = uint32_t;
@@ -33,12 +34,13 @@ instruction::instruction(word inst){
     type = 'j';
     j_add =  inst & 0x3FFFFFF;
   }else{
+    std::cout<<"error -12"<<std::endl;
     std::exit(-12); // opcodee not found, exit with error
   }
 }
 
 bool instruction::is_R_type(int opcode){
-  return opcode = 0x00;
+  return opcode == 0x00;
 }
 bool instruction::is_I_type(int opcode){
   return opcode == 0x04||opcode == 0x05||opcode == 0x06||opcode == 0x07||opcode == 0x08||
