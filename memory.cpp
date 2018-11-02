@@ -43,8 +43,14 @@ memory::~memory(){
 void memory::write(word adr, word new_data){
   if(adr >= 0x20000000 && adr < 0x24000000){
     int d_adr = (adr - 0x20000000) / 4;
+    std::cout<<"d_address: "<<d_adr<<std::endl;
+    std::cout<<"data size: "<<data->size()<<std::endl;
     if(d_adr > data->size()){
+      std::cout<<"appended memory size"<<std::endl;
+
       data->resize(d_adr + 1, 0);
+      std::cout<<"data size: "<<data->size()<<std::endl;
+
     }
     (*data)[d_adr] = new_data;
   }else if( adr = 0x30000000){
@@ -90,4 +96,5 @@ void memory::print_mem() const{
   std::cout << "Data:" << '\n';
   for(int i = 0; i < data->size(); i++)
     std::cout << i << "\t" << (*data)[i] << '\n';
+  std::cout<<std::endl;
 }

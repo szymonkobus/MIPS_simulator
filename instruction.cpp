@@ -28,7 +28,7 @@ instruction::instruction(word inst){
   }else if(is_I_type(opcode)){
     type = 'i';
     src_s = (inst >> 21) & 0x1F;
-    destn = (inst >> 16) & 0x1F;
+    src_t = (inst >> 16) & 0x1F;
     i_imi =  inst & 0xFFFF;
   }else if(is_J_type(opcode)){
     type = 'j';
