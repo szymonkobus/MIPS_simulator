@@ -65,9 +65,23 @@ void cpu::execute_r(const instruction& inst){
   switch (inst.funct){
     case 0x00: SLL(inst); break;  //SLL
     case 0x02: SRL(inst); break;  //SRL
+    case 0x03: SRA(inst); break; //SRA
     case 0x08: JR(inst); break; //JR
+    case 0x10: MFHI(inst); break; //MFHI
+    case 0x12: MFLO(inst); break; //MFLO
+    case 0x18: MULT(inst); break;
+    case 0x19: MULTU(inst); break;
+    case 0x1A: DIV(inst); break;
+    case 0x1B: DIVU(inst); break;
     case 0x20: ADD(inst); break; //ADD
     case 0x21: ADDU(inst); break; //ADDU
+    case 0x22: SUB(inst); break;
+    case 0x23: SUBU(inst); break;
+    case 0x24: AND(inst); break;
+    case 0x25: OR(inst); break;
+    case 0x26: XOR(inst); break;
+    case 0x2A: SLT(inst); break;
+    case 0x2B: SLTU(inst); break;
 
     default: ;
   }
@@ -82,35 +96,38 @@ void cpu::execute_j(const instruction& inst){};
 
 // INSTRUCTIONS
 void cpu::ADD(const instruction& inst){
-  signed_word r1 = r.get(inst.src_s); 
-  signed_word r2 = r.get(inst.src_t);
-  signed_word result = r1 + r2;
+  word r1 = r.get(inst.src_s); 
+  word r2 = r.get(inst.src_t);
+  signed_word res = r1 + r2;
 
-  if((result <= 0 && r1 > 0 && r2 > 0)||(result >= 0 && r1 < 0 && r2 < 0)){
+  if((res <= 0 && r1 > 0 && r2 > 0)||(res >= 0 && r1 < 0 && r2 < 0)){
     std::cout<<"arithmetic error -10"<<std::endl;
-    char n;
-    std::cin>>n;
     std::exit(-10);
   }
-  r.set(inst.destn, result);
+  r.set(inst.destn, res);
   pc_increase(4);
  }
 void cpu::ADDI(const instruction& inst){
-  signed_word r1 = r.get(inst.src_s); 
-  signed_word r2 = r.get(inst.i_imi);
-  signed_word result = r1 + r2;
+  word r1 = r.get(inst.src_s); 
+  word r2 = r.get(inst.i_imi);
+  signed_word res = r1 + r2;
 
-  if((result <= 0 && r1 > 0 && r2 > 0)||(result >= 0 && r1 < 0 && r2 < 0)){
+  if((res <= 0 && r1 > 0 && r2 > 0)||(res >= 0 && r1 < 0 && r2 < 0)){
     std::cout<<"arithmetic error -10"<<std::endl;
     std::exit(-10);
   }
-  r.set(inst.destn, result);
+  r.set(inst.destn, res);
   pc_increase(4);
  }
-void cpu::ADDIU(const instruction& inst){ }
+void cpu::ADDIU(const instruction& inst){  
+  word r1 = r.get(inst.src_s); 
+  word r2 = r.get(inst.i_imi);
+  signed_word res = r1 + r2;
+  r.set(inst.destn, res);
+ }
 void cpu::ADDU(const instruction& inst){
-  word data = r.get(inst.src_s) + r.get(inst.src_t);
-  r.set(inst.destn, data);
+  word res = r.get(inst.src_s) + r.get(inst.src_t);
+  r.set(inst.destn, res);
   pc_increase(4);
  }
 void cpu::AND(const instruction& inst){ }
@@ -180,8 +197,8 @@ void cpu::XORI(const instruction& inst){ }
 
 
 void cpu::test_fill(){
-  r.set(8, 4294967295);
-  r.set(9, 4294967295);
+  r.set(8, (word)(0x7FFFFFFF));
+  r.set(9, (word)0xFFFFFF);
   r.set(10, 2);
  }
 
