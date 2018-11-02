@@ -8,7 +8,7 @@
 #include <iostream>
 
 using word = uint32_t;
-using signed_word = int32_t;
+using s_word = int32_t;
 
 cpu::cpu(){
   pc = 0x10000000;
@@ -35,7 +35,7 @@ void cpu::run(){
     std::cout << "run 4" << '\n';
     //pc += 4;
     //this->reg_print(); //debug
-    this->reg_s();
+    this->reg_print();
     if(npc == 0){
       std::cout<<"finshed execution!"<<std::endl;
       return;
@@ -102,16 +102,20 @@ word cpu::sign_extend_imi(const instruction& inst){ //T
 
 // INSTRUCTIONS
 void cpu::ADD(const instruction& inst){
-  word r1 = r.get(inst.src_s);
-  word r2 = r.get(inst.src_t);
-  signed_word res = r1 + r2;
+  s_word r1 = r.get(inst.src_s);
+  s_word r2 = r.get(inst.src_t);
+  s_word res = r1 + r2;
+
+  std::cout<<"r1: "<<r1<<std::endl;
+  std::cout<<"r2: "<<r2<<std::endl;
+  std::cout<<"res: "<<res<<std::endl;
 
   if((res <= 0 && r1 > 0 && r2 > 0)||(res >= 0 && r1 < 0 && r2 < 0)){
     std::cerr << "arithmetic error -10" << std::endl;
     std::exit(-10);
   }
 
-  r.set(inst.destn, res);
+  r.set(inst.destn, (word)(res));
   pc_increase(4);
  }
 
@@ -119,9 +123,9 @@ void cpu::ADDI(const instruction& inst){
   //TODO: check immiatde sing extension
   word r1 = r.get(inst.src_s);
   word imi = sign_extend_imi(inst);
-  signed_word res = r1 + imi;
+  s_word res = r1 + imi;
 
-  if( (res <= 0 && r1 > 0 && r2 > 0) || (res >= 0 && r1 < 0 && r2 < 0) ){
+  if( (res <= 0 && r1 > 0 && imi > 0) || (res >= 0 && r1 < 0 && imi < 0) ){
     std::cerr << "arithmetic error -10" << '\n';
     std::exit(-10);
   }
@@ -133,7 +137,7 @@ void cpu::ADDIU(const instruction& inst){
   //TODO: check immiatde sing extension
   word r1 = r.get(inst.src_s);
   word imi = sign_extend_imi(inst);
-  signed_word res = r1 + imi;
+  s_word res = r1 + imi;
   r.set(inst.destn, res);
   pc_increase(4);
  }
@@ -199,7 +203,7 @@ void cpu::SLTIU(const instruction& inst){ }
 void cpu::SLTU(const instruction& inst){ }
 
 void cpu::SRA(const instruction& inst){
-  signed_word data = r.get(inst.src_t) >> inst.shamt;
+  s_word data = r.get(inst.src_t) >> inst.shamt;
   r.set(inst.destn, data);
  }
 
@@ -219,8 +223,8 @@ void cpu::XORI(const instruction& inst){ }
 
 
 void cpu::test_fill(){
-  r.set(8, (word)(0x7FFFFFFF));
-  r.set(9, (word)0xFFFFFF);
+  r.set(8, (word)(-6));
+  r.set(9, (word)(-4));
   r.set(10, 2);
  }
 
