@@ -34,8 +34,8 @@ void cpu::run(){
 
     std::cout << "run 4" << '\n';
     //pc += 4;
-    this->reg_print(); //debug
-
+    //this->reg_print(); //debug
+    this->reg_s();
     if(npc == 0){
       std::cout<<"finshed execution!"<<std::endl;
       return;
@@ -207,3 +207,11 @@ void cpu::reg_print(){
     std::cout<<"reg"<<i<<"\t"<<r.get(i)<<std::endl;
   }
  }
+
+void cpu::reg_s(){
+  for(int i = 0; i < 4; i++){
+      for(int j = 0; i < 8; j++)
+      std::cout << r.get (i*8 + j) << "\t";
+    std::cout << '\n';
+  }
+}
