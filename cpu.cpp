@@ -1,5 +1,7 @@
 #include <string>
 #include <iostream> //debug
+#include <stdexcept> //std::exit
+
 #include "cpu.hpp"
 #include "instruction.hpp"
 
@@ -73,14 +75,34 @@ void cpu::execute_i(const instruction& inst){};
 void cpu::execute_j(const instruction& inst){};
 
 // INSTRUCTIONS
-void cpu::ADD(const instruction& inst){}
-void cpu::ADDI(const instruction& inst){ }
+void cpu::ADD(const instruction& inst){
+  signed_word r1 = r.get(inst.src_s); 
+  signed_word r2 = r.get(inst.src_t);
+  signed_word result = r1 + r2;
+
+  if((result <= 0 && r1 > 0 && r2 > 0)||(result >= 0 && r1 < 0 && r2 < 0)){
+    std::cout<<"arithmetic error -10"<<std::endl;
+    std::exit(-10);
+  }
+  r.set(inst.destn, result);
+ }
+void cpu::ADDI(const instruction& inst){
+  signed_word r1 = r.get(inst.src_s); 
+  signed_word r2 = r.get(inst.i_imi);
+  signed_word result = r1 + r2;
+
+  if((result <= 0 && r1 > 0 && r2 > 0)||(result >= 0 && r1 < 0 && r2 < 0)){
+    std::cout<<"arithmetic error -10"<<std::endl;
+    std::exit(-10);
+  }
+  r.set(inst.destn, result);
+ }
 void cpu::ADDIU(const instruction& inst){ }
 void cpu::ADDU(const instruction& inst){
   word data = r.get(inst.src_s) + r.get(inst.src_t);
   r.set(inst.destn, data);
   pc_increase(4);
-  }
+ }
 void cpu::AND(const instruction& inst){ }
 void cpu::ANDI(const instruction& inst){ }
 void cpu::BEQ(const instruction& inst){ }
@@ -148,8 +170,8 @@ void cpu::XORI(const instruction& inst){ }
 
 
 void cpu::test_fill(){
-  r.set(8, 5);
-  r.set(9, 1);
+  r.set(8, 4294967295);
+  r.set(9, 4294967295);
   r.set(10, 2);
  }
 

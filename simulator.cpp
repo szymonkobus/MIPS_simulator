@@ -10,7 +10,7 @@ int main(int argc, char const *argv[]) {
   //std::cout << "m2" << '\n';
   //m2.print_mem();
 
-  cpu c("bin_tst3.bin");
+  cpu c("bin_tst4.bin");
 
   //std::cout << "cpu mem: " << "\n";
   //c.m.print_mem();
@@ -18,8 +18,6 @@ int main(int argc, char const *argv[]) {
   //cpu c("bin_tst3.bin");
   std::cout << "cpu mem: " << "\n";
   c.m.print_mem();
-  char n;
-  std::cin>>n;
   c.test_fill();
   c.reg_print();
 
