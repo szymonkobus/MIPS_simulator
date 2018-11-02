@@ -10,7 +10,7 @@ int main(int argc, char const *argv[]) {
   //std::cout << "m2" << '\n';
   //m2.print_mem();
 
-  cpu c("bin_tst4.bin");
+  cpu c("./bin/bin_tst4.bin");
 
   //std::cout << "cpu mem: " << "\n";
   //c.m.print_mem();
