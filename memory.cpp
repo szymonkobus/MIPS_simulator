@@ -20,17 +20,23 @@ memory::memory(std::string binary){
   char buffer[4];
   int i = 0;
   //infile.peek();
-  while(!infile.eof()){
-      infile.read(buffer, 4);
-      infile.peek();
-      word instruction = (buffer[0]<<24|buffer[1]<<16|buffer[2]<<8|buffer[3]);
-      (*inst)[i] = instruction;
-      i++;
-      if(i > (0x1000000 / 4) ){
-        std::cerr << "error: binary too long" << '\n';
-        std::exit(-11);
-      }
+  if(infile.is_open()){
+    while(!infile.eof()){
+        infile.read(buffer, 4);
+        infile.peek();
+        word instruction = (buffer[0]<<24|buffer[1]<<16|buffer[2]<<8|buffer[3]);
+        (*inst)[i] = instruction;
+        i++;
+        if(i > (0x1000000 / 4) ){
+          std::cerr << "error: binary too long" << '\n';
+          std::exit(-11);
+        }
+    }
+  }else{
+    std::cerr << "error: couldn't open binary" << '\n';
+    std::exit(-11);
   }
+
   std::cout << "Number of instructions: " << i << '\n';
   infile.close();
 }
@@ -47,7 +53,7 @@ void memory::write(word adr, word new_data){
       data->resize(d_adr + 1, 0);
     }
     (*data)[d_adr] = new_data;
-  }else if( adr = 0x30000000){
+  }else if( adr == 0x30000000){
 
   }else{
     std::cerr << "error: trying to write to address: " << adr << '\n';
@@ -60,7 +66,7 @@ word memory::read(word adr){
     int d_adr = (adr - 0x20000000) / 4;
     if(d_adr > data->size()) return 0;
     else return (*data)[d_adr];
-  }else if( adr = 0x30000004){
+  }else if( adr == 0x30000004){
 
   }
   std::cerr << "error: trying to read from address: " << adr << '\n';

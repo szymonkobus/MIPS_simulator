@@ -22,20 +22,13 @@ cpu::cpu(std::string binary): m(binary), r() {
 
 void cpu::run(){
   while(true) {
-    //std::cout << "run 1" << '\n';
     word next_instruction = m.read_inst(pc);
-
-    //std::cout << "run 2" << '\n';
     std::cout<<next_instruction<<std::endl; //debug
     instruction c_inst(next_instruction);
 
-    //std::cout << "run 3" << '\n';
-    this->execute(c_inst);
+    execute(c_inst);
+    reg_s();
 
-    //std::cout << "run 4" << '\n';
-    //pc += 4;
-    //this->reg_print(); //debug
-    this->reg_print();
     if(pc == 0){
       std::cout<<"finshed execution!"<<std::endl;
       return;
@@ -106,12 +99,8 @@ void cpu::ADD(const instruction& inst){
   s_word r2 = r.get(inst.src_t);
   s_word res = r1 + r2;
 
-  std::cout<<"r1: "<<r1<<std::endl;
-  std::cout<<"r2: "<<r2<<std::endl;
-  std::cout<<"res: "<<res<<std::endl;
-
-  if((res <= 0 && r1 > 0 && r2 > 0)||(res >= 0 && r1 < 0 && r2 < 0)){
-    std::cerr << "arithmetic error -10" << std::endl;
+  if((res < 0 && r1 >= 0 && r2 >= 0)||(res >= 0 && r1 < 0 && r2 < 0)){
+    std::cerr << "exception: arithmetic error" << std::endl;
     std::exit(-10);
   }
 
@@ -126,9 +115,10 @@ void cpu::ADDI(const instruction& inst){
   s_word res = r1 + imi;
 
   if( (res <= 0 && r1 > 0 && imi > 0) || (res >= 0 && r1 < 0 && imi < 0) ){
-    std::cerr << "arithmetic error -10" << '\n';
+    std::cerr << "exception: arithmetic error" << '\n';
     std::exit(-10);
   }
+
   r.set(inst.destn, res);
   pc_increase(4);
  }
@@ -236,8 +226,8 @@ void cpu::reg_print(){
 
 void cpu::reg_s(){
   for(int i = 0; i < 4; i++){
-      for(int j = 0; i < 8; j++)
-      std::cout << r.get (i*8 + j) << "\t";
+      for(int j = 0; j < 8; j++)
+      std::cout << r.get(i*8 + j) << "\t\t";
     std::cout << '\n';
   }
 }

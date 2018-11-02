@@ -32,8 +32,7 @@ private:
   void execute_i(const instruction& inst);
   void execute_j(const instruction& inst);
 
-  void pc_increase(word offset);
-  word sign_extend_imi(const instruction& inst);
+
 
   //INSTRUCTIONS
   void ADD   (const instruction& inst);
@@ -89,6 +88,12 @@ private:
   void SW    (const instruction& inst);
   void XOR   (const instruction& inst);
   void XORI  (const instruction& inst);
+
+
+  //SUB-INSTRUCTION
+  void pc_increase(word offset);
+  word sign_extend_imi(const instruction& inst);
+  bool test_overflow(word a, word b, word res);
 };
 
 #endif
