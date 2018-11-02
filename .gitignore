@@ -4,5 +4,4 @@ notes.txt
 sim
 tst/
 *.exe
-*.bin
 .DS_Store

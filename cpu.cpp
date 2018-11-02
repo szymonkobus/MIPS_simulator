@@ -34,8 +34,8 @@ void cpu::run(){
 
     std::cout << "run 4" << '\n';
     //pc += 4;
-    this->reg_print(); //debug
-
+    //this->reg_print(); //debug
+    this->reg_s();
     if(npc == 0){
       std::cout<<"finshed execution!"<<std::endl;
       return;
@@ -82,7 +82,7 @@ void cpu::execute_j(const instruction& inst){};
 
 // INSTRUCTIONS
 void cpu::ADD(const instruction& inst){
-  signed_word r1 = r.get(inst.src_s); 
+  signed_word r1 = r.get(inst.src_s);
   signed_word r2 = r.get(inst.src_t);
   signed_word result = r1 + r2;
 
@@ -96,7 +96,7 @@ void cpu::ADD(const instruction& inst){
   pc_increase(4);
  }
 void cpu::ADDI(const instruction& inst){
-  signed_word r1 = r.get(inst.src_s); 
+  signed_word r1 = r.get(inst.src_s);
   signed_word r2 = r.get(inst.i_imi);
   signed_word result = r1 + r2;
 
@@ -190,3 +190,11 @@ void cpu::reg_print(){
     std::cout<<"reg"<<i<<"\t"<<r.get(i)<<std::endl;
   }
  }
+
+void cpu::reg_s(){
+  for(int i = 0; i < 4; i++){
+      for(int j = 0; i < 8; j++)
+      std::cout << r.get (i*8 + j) << "\t";
+    std::cout << '\n';
+  }
+}
