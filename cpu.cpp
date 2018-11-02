@@ -94,42 +94,56 @@ void cpu::execute_i(const instruction& inst){
 };
 void cpu::execute_j(const instruction& inst){};
 
+
+word cpu::sign_extend_imi(const instruction& inst){ //T
+  word imi = inst.i_imi;
+  return (imi >= 0x8000) ? 0xFFFF0000 | imi : imi;
+}
+
 // INSTRUCTIONS
 void cpu::ADD(const instruction& inst){
-  word r1 = r.get(inst.src_s); 
+  word r1 = r.get(inst.src_s);
   word r2 = r.get(inst.src_t);
   signed_word res = r1 + r2;
 
   if((res <= 0 && r1 > 0 && r2 > 0)||(res >= 0 && r1 < 0 && r2 < 0)){
-    std::cout<<"arithmetic error -10"<<std::endl;
+    std::cerr << "arithmetic error -10" << std::endl;
     std::exit(-10);
   }
-  r.set(inst.destn, res);
-  pc_increase(4);
- }
-void cpu::ADDI(const instruction& inst){
-  word r1 = r.get(inst.src_s); 
-  word r2 = r.get(inst.i_imi);
-  signed_word res = r1 + r2;
 
-  if((res <= 0 && r1 > 0 && r2 > 0)||(res >= 0 && r1 < 0 && r2 < 0)){
-    std::cout<<"arithmetic error -10"<<std::endl;
+  r.set(inst.destn, res);
+  pc_increase(4);
+ }
+
+void cpu::ADDI(const instruction& inst){
+  //TODO: check immiatde sing extension
+  word r1 = r.get(inst.src_s);
+  word imi = sign_extend_imi(inst);
+  signed_word res = r1 + imi;
+
+  if( (res <= 0 && r1 > 0 && r2 > 0) || (res >= 0 && r1 < 0 && r2 < 0) ){
+    std::cerr << "arithmetic error -10" << '\n';
     std::exit(-10);
   }
   r.set(inst.destn, res);
   pc_increase(4);
  }
-void cpu::ADDIU(const instruction& inst){  
-  word r1 = r.get(inst.src_s); 
-  word r2 = r.get(inst.i_imi);
-  signed_word res = r1 + r2;
+
+void cpu::ADDIU(const instruction& inst){
+  //TODO: check immiatde sing extension
+  word r1 = r.get(inst.src_s);
+  word imi = sign_extend_imi(inst);
+  signed_word res = r1 + imi;
   r.set(inst.destn, res);
+  pc_increase(4);
  }
+
 void cpu::ADDU(const instruction& inst){
   word res = r.get(inst.src_s) + r.get(inst.src_t);
   r.set(inst.destn, res);
   pc_increase(4);
  }
+
 void cpu::AND(const instruction& inst){ }
 void cpu::ANDI(const instruction& inst){ }
 void cpu::BEQ(const instruction& inst){ }
@@ -145,11 +159,13 @@ void cpu::DIVU(const instruction& inst){ }
 void cpu::J(const instruction& inst){ }
 void cpu::JALR(const instruction& inst){ }
 void cpu::JAL(const instruction& inst){ }
+
 void cpu::JR(const instruction& inst){
   word jump_address = r.get(inst.src_s);
   pc = npc;
   npc = jump_address;
  }
+
 void cpu::LB(const instruction& inst){ }
 void cpu::LBU(const instruction& inst){ }
 void cpu::LH(const instruction& inst){ }
@@ -170,24 +186,30 @@ void cpu::OR(const instruction& inst){ }
 void cpu::ORI(const instruction& inst){ }
 void cpu::SB(const instruction& inst){ }
 void cpu::SH(const instruction& inst){ }
+
 void cpu::SLL(const instruction& inst){
-  signed_word data = r.get(inst.src_t) >> inst.shamt;
+  word data = r.get(inst.src_t) << inst.shamt;
   r.set(inst.destn, data);
   }
+
 void cpu::SLLV(const instruction& inst){ }
 void cpu::SLT(const instruction& inst){ }
 void cpu::SLTI(const instruction& inst){ }
 void cpu::SLTIU(const instruction& inst){ }
 void cpu::SLTU(const instruction& inst){ }
+
 void cpu::SRA(const instruction& inst){
-  word data = r.get(inst.src_t) << inst.shamt;
+  signed_word data = r.get(inst.src_t) >> inst.shamt;
   r.set(inst.destn, data);
  }
+
 void cpu::SRAV(const instruction& inst){ }
+
 void cpu::SRL(const instruction& inst){
-  signed_word data = r.get(inst.src_t) << inst.shamt;
+  word data = r.get(inst.src_t) >> inst.shamt;
   r.set(inst.destn, data);
  }
+
 void cpu::SRLV(const instruction& inst){ }
 void cpu::SUB(const instruction& inst){ }
 void cpu::SUBU(const instruction& inst){ }

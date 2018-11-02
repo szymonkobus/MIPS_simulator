@@ -33,6 +33,7 @@ private:
   void execute_j(const instruction& inst);
 
   void pc_increase(word offset);
+  word sign_extend_imi(const instruction& inst);
 
   //INSTRUCTIONS
   void ADD   (const instruction& inst);
