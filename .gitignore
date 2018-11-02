@@ -4,5 +4,6 @@ notes.txt
 sim
 tst/
 *.exe
+*.exe.stackdump
 .DS_Store
 .vscode

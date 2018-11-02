@@ -47,6 +47,8 @@ void memory::write(word adr, word new_data){
       data->resize(d_adr + 1, 0);
     }
     (*data)[d_adr] = new_data;
+  }else if( adr = 0x30000000){
+
   }else{
     std::cerr << "error: trying to write to address: " << adr << '\n';
     std::exit(-11);
@@ -58,6 +60,8 @@ word memory::read(word adr){
     int d_adr = (adr - 0x20000000) / 4;
     if(d_adr > data->size()) return 0;
     else return (*data)[d_adr];
+  }else if( adr = 0x30000004){
+
   }
   std::cerr << "error: trying to read from address: " << adr << '\n';
   std::exit(-11);
