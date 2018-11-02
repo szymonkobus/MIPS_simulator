@@ -15,6 +15,7 @@ cpu::cpu(){
 cpu::cpu(std::string binary): m(binary), r() {
   m.print_mem();
   pc = 0x10000000;
+  npc = 0x10000004;
 }
 
 void cpu::run(){
@@ -30,10 +31,21 @@ void cpu::run(){
     this->execute(c_inst);
 
     std::cout << "run 4" << '\n';
-    pc += 4;
+    //pc += 4;
     this->reg_print(); //debug
+
+    if(npc == 0){
+      std::cout<<"finshed execution!"<<std::endl;
+      return;
+    }
   }
 }
+
+void cpu::pc_increase(word offset){
+  pc = npc;
+  npc += offset;
+}
+
 
 
 void cpu::execute(const instruction& inst){
@@ -52,6 +64,7 @@ void cpu::execute_r(const instruction& inst){
     case 0x00: SLL(inst); break;  //SLL
     case 0x02: SRL(inst); break;  //SRL
     case 0x21: ADDU(inst); break; //ADDU
+    case 0x08: JR(inst); break; //JR
     default: ;
   }
 }
@@ -66,6 +79,7 @@ void cpu::ADDIU(const instruction& inst){ }
 void cpu::ADDU(const instruction& inst){
   word data = r.get(inst.src_s) + r.get(inst.src_t);
   r.set(inst.destn, data);
+  pc_increase(4);
   }
 void cpu::AND(const instruction& inst){ }
 void cpu::ANDI(const instruction& inst){ }
@@ -83,8 +97,9 @@ void cpu::J(const instruction& inst){ }
 void cpu::JALR(const instruction& inst){ }
 void cpu::JAL(const instruction& inst){ }
 void cpu::JR(const instruction& inst){
-  word data = r.get(inst.src_s);
-  pc = data /*- 4*/;
+  word jump_address = r.get(inst.src_s);
+  pc = npc;
+  npc = jump_address;
  }
 void cpu::LB(const instruction& inst){ }
 void cpu::LBU(const instruction& inst){ }
