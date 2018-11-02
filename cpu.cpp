@@ -5,8 +5,6 @@
 #include "cpu.hpp"
 #include "instruction.hpp"
 
-#include <iostream>
-
 using word = uint32_t;
 using s_word = int32_t;
 
@@ -23,33 +21,19 @@ cpu::cpu(std::string binary): m(binary), r() {
 void cpu::run(){
   while(true) {
     word next_instruction = m.read_inst(pc);
-<<<<<<< HEAD
-    std::cout<<next_instruction<<std::endl; //debug
-    instruction c_inst(next_instruction);
 
-    execute(c_inst);
-    reg_s();
-
-    if(pc == 0){
-=======
-
-    //std::cout << "run 2" << '\n';
     std::cout<<"instruction: "<<next_instruction<<std::endl; //debug
     instruction c_inst(next_instruction);
     std::cout<<"pc: "<<pc<<std::endl;
-    getchar();
-    //std::cout << "run 3" << '\n';
+    getchar(); //
+
     this->execute(c_inst);
 
-    //std::cout << "run 4" << '\n';
-    //pc += 4;
-    //this->reg_print(); //debug
     this->reg_print();
     std::cout<<"pc: "<<pc<<std::endl;
 
     if(pc == 0){//dont know if correct...
->>>>>>> d1a63b9181006cd3988fd8ec4ea80182bfe6d9c4
-      std::cout<<"finshed execution!"<<std::endl;
+      std::cout << "finshed execution!" << std::endl;
       exit(r.get(2));
     }
   }
@@ -77,15 +61,15 @@ void cpu::execute_r(const instruction& inst){
   switch (inst.funct){
     case 0x00: SLL(inst); break;  //SLL
     case 0x02: SRL(inst); break;  //SRL
-    case 0x03: SRA(inst); break; //SRA
-    case 0x08: JR(inst); break; //JR
+    case 0x03: SRA(inst); break;  //SRA
+    case 0x08: JR(inst); break;   //JR
     case 0x10: MFHI(inst); break; //MFHI
     case 0x12: MFLO(inst); break; //MFLO
     case 0x18: MULT(inst); break;
     case 0x19: MULTU(inst); break;
     case 0x1A: DIV(inst); break;
     case 0x1B: DIVU(inst); break;
-    case 0x20: ADD(inst); break; //ADD
+    case 0x20: ADD(inst); break;  //ADD
     case 0x21: ADDU(inst); break; //ADDU
     case 0x22: SUB(inst); break;
     case 0x23: SUBU(inst); break;
@@ -95,7 +79,7 @@ void cpu::execute_r(const instruction& inst){
     case 0x2A: SLT(inst); break;
     case 0x2B: SLTU(inst); break;
 
-    default: ;
+    default: std::exit(-12); std::cerr << "error: instruction not implemented" << '\n';
   }
 }
 
@@ -227,7 +211,6 @@ void cpu::SRL(const instruction& inst){
   word data = r.get(inst.src_t) >> inst.shamt;
   r.set(inst.destn, data);
   pc_increase(4);
-
  }
 
 void cpu::SRLV(const instruction& inst){ }
