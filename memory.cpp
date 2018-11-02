@@ -7,13 +7,13 @@
 using word = uint32_t;
 
 memory::memory(){
-  data = new std::vector<word>(0,1);
-  inst = new std::vector<word>(0x1000000,0);
+  data = new std::vector<word>(0 , 1);
+  inst = new std::vector<word>(0x1000000 , 0);
 }
 
 memory::memory(std::string binary){
-  data = new std::vector<word>(0,1);
-  inst = new std::vector<word>(0x1000000,0);
+  data = new std::vector<word>(0,0);
+  inst = new std::vector<word>(0x1000000 / 4 , 0);
 
   std::ifstream infile;
   infile.open(binary, std::ios::binary);
@@ -26,8 +26,9 @@ memory::memory(std::string binary){
       word instruction = (buffer[0]<<24|buffer[1]<<16|buffer[2]<<8|buffer[3]);
       (*inst)[i] = instruction;
       i++;
-      if(i > (0x1000000 / 4)){
-        //TODO: ERROR
+      if(i > (0x1000000 / 4) ){
+        std::cerr << "error: binary too long" << '\n';
+        std::exit(-11);
       }
   }
   std::cout << "Number of instructions: " << i << '\n';
@@ -47,7 +48,8 @@ void memory::write(word adr, word new_data){
     }
     (*data)[d_adr] = new_data;
   }else{
-    //TODO: ERROR
+    std::cerr << "error: trying to write to address: " << adr << '\n';
+    std::exit(-11);
   }
 }
 
@@ -57,18 +59,17 @@ word memory::read(word adr){
     if(d_adr > data->size()) return 0;
     else return (*data)[d_adr];
   }
-  // TODO: ADDR_GETC
-
-  // TODO: ERROR
-  return 0;
+  std::cerr << "error: trying to read from address: " << adr << '\n';
+  std::exit(-11);
 }
 
 word memory::read_inst(int adr){
   if(adr >= 0x10000000 && adr < 0x11000000){
     int i_adr = adr - 0x10000000;
-    return (*data)[i_adr];
+    return (*inst)[i_adr];
   }
-  // TODO: ERROR
+  std::cerr << "error: trying to read instruction from address: " << adr << '\n';
+  std::exit(-11);
 }
 
 void memory::print_mem() const{

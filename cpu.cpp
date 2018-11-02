@@ -2,6 +2,8 @@
 #include "cpu.hpp"
 #include "instruction.hpp"
 
+#include <iostream>
+
 using word = uint32_t;
 
 cpu::cpu(){
@@ -9,14 +11,22 @@ cpu::cpu(){
 }
 
 cpu::cpu(std::string binary): m(binary), r() {
+  m.print_mem();
   pc = 0x10000000;
 }
 
 void cpu::run(){
-  while (true) {
+  while(true) {
+    std::cout << "run 1" << '\n';
     word next_instruction = m.read_inst(pc);
+
+    std::cout << "run 2" << '\n';
     instruction c_inst(next_instruction);
+
+    std::cout << "run 3" << '\n';
     this->execute(c_inst);
+
+    std::cout << "run 4" << '\n';
     pc += 4;
   }
 }
@@ -40,7 +50,6 @@ void cpu::execute_r(const instruction& inst){
     default: ;
   }
 }
-
 
 void cpu::execute_i(const instruction& inst){};
 void cpu::execute_j(const instruction& inst){};

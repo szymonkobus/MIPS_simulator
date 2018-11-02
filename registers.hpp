@@ -6,7 +6,7 @@ using word = uint32_t;
 
 class registers{
 private:
-  word reg[31];
+  word reg[32];
 public:
   registers();
   word get(int i);
