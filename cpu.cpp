@@ -22,21 +22,21 @@ cpu::cpu(std::string binary): m(binary), r() {
 
 void cpu::run(){
   while(true) {
-    std::cout << "run 1" << '\n';
+    //std::cout << "run 1" << '\n';
     word next_instruction = m.read_inst(pc);
 
-    std::cout << "run 2" << '\n';
+    //std::cout << "run 2" << '\n';
     std::cout<<next_instruction<<std::endl; //debug
     instruction c_inst(next_instruction);
 
-    std::cout << "run 3" << '\n';
+    //std::cout << "run 3" << '\n';
     this->execute(c_inst);
 
-    std::cout << "run 4" << '\n';
+    //std::cout << "run 4" << '\n';
     //pc += 4;
     //this->reg_print(); //debug
     this->reg_print();
-    if(npc == 0){
+    if(pc == 0){
       std::cout<<"finshed execution!"<<std::endl;
       return;
     }

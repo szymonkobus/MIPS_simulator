@@ -19,7 +19,7 @@ int main(int argc, char const *argv[]) {
   std::cout << "cpu mem: " << "\n";
   c.m.print_mem();
   c.test_fill();
-  c.reg_print();
+  //c.reg_print();
 
 
   c.run();
