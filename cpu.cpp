@@ -65,13 +65,19 @@ void cpu::execute_r(const instruction& inst){
   switch (inst.funct){
     case 0x00: SLL(inst); break;  //SLL
     case 0x02: SRL(inst); break;  //SRL
-    case 0x21: ADDU(inst); break; //ADDU
     case 0x08: JR(inst); break; //JR
+    case 0x20: ADD(inst); break; //ADD
+    case 0x21: ADDU(inst); break; //ADDU
+
     default: ;
   }
 }
 
-void cpu::execute_i(const instruction& inst){};
+void cpu::execute_i(const instruction& inst){
+  switch (inst.opcode){
+    case 0x20: ADDI(inst); break;
+  }
+};
 void cpu::execute_j(const instruction& inst){};
 
 // INSTRUCTIONS
@@ -82,9 +88,12 @@ void cpu::ADD(const instruction& inst){
 
   if((result <= 0 && r1 > 0 && r2 > 0)||(result >= 0 && r1 < 0 && r2 < 0)){
     std::cout<<"arithmetic error -10"<<std::endl;
+    char n;
+    std::cin>>n;
     std::exit(-10);
   }
   r.set(inst.destn, result);
+  pc_increase(4);
  }
 void cpu::ADDI(const instruction& inst){
   signed_word r1 = r.get(inst.src_s); 
@@ -96,6 +105,7 @@ void cpu::ADDI(const instruction& inst){
     std::exit(-10);
   }
   r.set(inst.destn, result);
+  pc_increase(4);
  }
 void cpu::ADDIU(const instruction& inst){ }
 void cpu::ADDU(const instruction& inst){
