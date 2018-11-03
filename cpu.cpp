@@ -30,13 +30,13 @@ void cpu::run(){
     std::cerr<<"instruction: "<<next_instruction<<std::endl;
     instruction c_inst(next_instruction);
 
-    std::cerr<<"pc: "<<pc<<std::endl;
+    //std::cerr<<"pc: "<<pc<<std::endl;
     //getchar(); //
 
     this->execute(c_inst);
 
     this->reg_print();
-    std::cerr<<"pc: "<<pc<<std::endl;
+    std::cerr<<"pc: "<<pc - 0x10000000<<std::endl;
 
     if(pc == 0){
       std::cerr << "finshed execution!" << std::endl;
@@ -82,29 +82,30 @@ void cpu::execute_r(const instruction& inst){
     case 0x2A: SLT(inst); break;
     case 0x2B: SLTU(inst); break;
 
-    default: std::exit(-12); std::cerr << "error: r instruction not implemented" << '\n';
+    default: std::cerr << "error: r instruction not implemented" << '\n'; std::exit(-12); 
   }
 }
 
 void cpu::execute_i(const instruction& inst){
   switch (inst.opcode){
-    case 0x20: ADDI(inst); break;
+    case 0x08: ADDI(inst); break;
+    case 0x0C: ANDI(inst); break;
     case 0x23: LW(inst); break;
     case 0x2B: SW(inst); break;
-    default: std::exit(-12); std::cerr << "error: i instruction not implemented" << '\n';
+    default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12); 
   }
-};
+ }
 void cpu::execute_j(const instruction& inst){
   switch (inst.opcode) {
     default: std::exit(-12); std::cerr << "error: j instruction not implemented" << '\n';
   }
-};
+ }
 
 
 word cpu::sign_extend_imi(const instruction& inst){ //T
   word imi = inst.i_imi;
   return (imi >= 0x8000) ? 0xFFFF0000 | imi : imi;
-}
+ }
 
 // INSTRUCTIONS
 void cpu::ADD(const instruction& inst){
@@ -132,7 +133,7 @@ void cpu::ADDI(const instruction& inst){
     std::exit(-10);
   }
 
-  r.set(inst.destn, res);
+  r.set(inst.src_t, res);
   pc_increase(4);
  }
 
@@ -153,9 +154,31 @@ void cpu::ADDU(const instruction& inst){
   pc_increase(4);
  }
 
-void cpu::AND(const instruction& inst){ }
-void cpu::ANDI(const instruction& inst){ }
-void cpu::BEQ(const instruction& inst){ }
+void cpu::AND(const instruction& inst){ 
+  word r1 = r.get(inst.src_s);
+  word r2 = r.get(inst.src_t);
+  word res = r1 & r2;
+  r.set(inst.destn, res);
+  pc_increase(4);
+ }
+void cpu::ANDI(const instruction& inst){ 
+  word r1 = r.get(inst.src_s);
+  word r2 = inst.i_imi;
+  word res = r1 & r2;
+  r.set(inst.src_t, res);
+  pc_increase(4);
+ }
+void cpu::BEQ(const instruction& inst){ 
+  word r1 = r.get(inst.src_s);
+  word r2 = r.get(inst.src_t);
+  if(r1 == r2){
+    word offset = sign_extend_imi(inst) << 2;
+    pc_increase(offset);
+  }
+  else{
+    pc_increase(4);
+  }
+}
 void cpu::BGEZ(const instruction& inst){ }
 void cpu::BGEZAL(const instruction& inst){ }
 void cpu::BGTZ(const instruction& inst){ }
@@ -244,9 +267,9 @@ void cpu::XORI(const instruction& inst){ }
 
 
 void cpu::test_fill(){
-  r.set(8, 5);
-  r.set(9, 5);
-  r.set(10, 0x20000004);
+  //r.set(8, 5);
+  //r.set(9, 5);
+  r.set(10, 0x20000008);
  }
 
 void cpu::reg_s(){
