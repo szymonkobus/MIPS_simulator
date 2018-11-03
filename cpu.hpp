@@ -27,11 +27,10 @@ public:
   void reg_print();
   void reg_s();
 private:
-  void execute(const instruction& inst);
+  void execute  (const instruction& inst);
   void execute_r(const instruction& inst);
   void execute_i(const instruction& inst);
   void execute_j(const instruction& inst);
-
 
 
   //INSTRUCTIONS
@@ -88,7 +87,6 @@ private:
   void SW    (const instruction& inst);
   void XOR   (const instruction& inst);
   void XORI  (const instruction& inst);
-
 
   //SUB-INSTRUCTION
   void pc_increase(word offset);

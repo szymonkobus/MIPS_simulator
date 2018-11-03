@@ -10,23 +10,28 @@ using s_word = int32_t;
 
 cpu::cpu(){
   pc = 0x10000000;
-}
-
-cpu::cpu(std::string binary): m(binary), r() {
-  m.print_mem();
-  pc = 0x10000000;
   npc = 0x10000004;
 }
 
+cpu::cpu(std::string binary): m(binary), r() {
+  pc = 0x10000000;
+  npc = 0x10000004;
+
+  std::cout << "Initial memory:" << '\n';
+  m.print_mem();
+  std::cout << '\n';
+}
+
 void cpu::run(){
+  std::cout << "CPU starts running." << '\n';
   while(true) {
     word next_instruction = m.read_inst(pc);
 
-
     std::cout<<"instruction: "<<next_instruction<<std::endl; //debug
     instruction c_inst(next_instruction);
+
     std::cout<<"pc: "<<pc<<std::endl;
-    getchar(); //
+    //getchar(); //
 
     this->execute(c_inst);
 
@@ -247,17 +252,22 @@ void cpu::test_fill(){
   r.set(10, 0x20000004);
  }
 
-void cpu::reg_print(){
+void cpu::reg_s(){
   for(int i = 1; i < 32; i++){
     std::cout<<"reg"<<i<<"\t"<<(s_word)r.get(i)<<std::endl;
   }
  }
 
-void cpu::reg_s(){
+void cpu::reg_print(){
   //TODO: make it pretty
   for(int i = 0; i < 4; i++){
-      for(int j = 0; j < 8; j++)
-      std::cout << r.get(i*8 + j) << "\t\t";
+      for(int j = 0; j < 8; j++){
+        std::string v = std::to_string(r.get(i*8 + j));
+        std::cout << v;
+        for(int i = v.length(); i < 12; i++){
+          std::cout << ' ';
+        }
+      }
     std::cout << '\n';
   }
 }
