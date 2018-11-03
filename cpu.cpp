@@ -88,6 +88,8 @@ void cpu::execute_r(const instruction& inst){
 
 void cpu::execute_i(const instruction& inst){
   switch (inst.opcode){
+    case 0x04: BEQ(inst); break;
+    case 0x05: BNE(inst); break;
     case 0x08: ADDI(inst); break;
     case 0x0C: ANDI(inst); break;
     case 0x23: LW(inst); break;
@@ -178,15 +180,85 @@ void cpu::BEQ(const instruction& inst){
   else{
     pc_increase(4);
   }
-}
-void cpu::BGEZ(const instruction& inst){ }
-void cpu::BGEZAL(const instruction& inst){ }
-void cpu::BGTZ(const instruction& inst){ }
-void cpu::BLEZ(const instruction& inst){ }
-void cpu::BLTZ(const instruction& inst){ }
-void cpu::BLTZAL(const instruction& inst){ }
-void cpu::BNE(const instruction& inst){ }
-void cpu::DIV(const instruction& inst){ }
+ }
+void cpu::BGEZ(const instruction& inst){
+  word r1 = r.get(inst.src_s);
+  if(r1 >= 0){
+    word offset = sign_extend_imi(inst) << 2;
+    pc_increase(offset);
+  }
+  else{
+    pc_increase(4);
+  }
+ }
+void cpu::BGEZAL(const instruction& inst){
+  word r1 = r.get(inst.src_s);
+  if(r1 >= 0){
+    word offset = sign_extend_imi(inst) << 2;
+    r.set(32, npc + 4);
+    pc_increase(offset);
+  }
+  else{
+    pc_increase(4);
+  }
+ }
+void cpu::BGTZ(const instruction& inst){
+  word r1 = r.get(inst.src_s);
+  if(r1 > 0){
+    word offset = sign_extend_imi(inst) << 2;
+    pc_increase(offset);
+  }
+  else{
+    pc_increase(4);
+  }
+ }
+void cpu::BLEZ(const instruction& inst){
+  word r1 = r.get(inst.src_s);
+  if(r1 <= 0){
+    word offset = sign_extend_imi(inst) << 2;
+    pc_increase(offset);
+  }
+  else{
+    pc_increase(4);
+  }
+ }
+void cpu::BLTZ(const instruction& inst){
+  word r1 = r.get(inst.src_s);
+  if(r1 < 0){
+    word offset = sign_extend_imi(inst) << 2;
+    pc_increase(offset);
+  }
+  else{
+    pc_increase(4);
+  }
+ }
+void cpu::BLTZAL(const instruction& inst){
+  word r1 = r.get(inst.src_s);
+  if(r1 < 0){
+    word offset = sign_extend_imi(inst) << 2;
+    r.set(32, npc + 4);
+    pc_increase(offset);
+  }
+  else{
+    pc_increase(4);
+  }
+ }
+void cpu::BNE(const instruction& inst){
+  word r1 = r.get(inst.src_s);
+  word r2 = r.get(inst.src_t);
+  if(r1 != r2){
+    word offset = sign_extend_imi(inst) << 2;
+    pc_increase(offset);
+  }
+  else{
+    pc_increase(4);
+  }
+ }
+void cpu::DIV(const instruction& inst){
+  s_word r1 = r.get(inst.src_s);
+  s_word r2 = r.get(inst.src_t);
+  
+ }
 void cpu::DIVU(const instruction& inst){ }
 void cpu::J(const instruction& inst){ }
 void cpu::JALR(const instruction& inst){ }

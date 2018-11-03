@@ -1,10 +1,13 @@
 #include "memory.hpp"
 #include <fstream>
+//#include <cstdint> //using
+
 
 //debug
 #include <iostream>
 
 using word = uint32_t;
+
 
 memory::memory(){
   data = new std::vector<word>(0 , 1);
@@ -17,14 +20,15 @@ memory::memory(std::string binary){
 
   std::ifstream infile;
   infile.open(binary, std::ios::binary);
-  char buffer[4];
+  char buffer[4]{0};
   int i = 0;
   //infile.peek();
   if(infile.is_open()){
     while(!infile.eof()){
         infile.read(buffer, 4);
         infile.peek();
-        word instruction = (buffer[0]<<24|buffer[1]<<16|buffer[2]<<8|buffer[3]);
+        word instruction = 0;
+        instruction = (static_cast<uint8_t>(buffer[0])<<24|static_cast<uint8_t>(buffer[1])<<16|static_cast<uint8_t>(buffer[2])<<8|static_cast<uint8_t>(buffer[3]));        
         (*inst)[i] = instruction;
         i++;
         if(i > (0x1000000 / 4) ){
