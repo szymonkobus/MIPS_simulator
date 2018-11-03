@@ -51,7 +51,6 @@ void cpu::pc_increase(word offset){
 }
 
 void cpu::execute(const instruction& inst){
-  std::cerr<<"entered execute"<<std::endl;//debug
   switch(inst.type){
     case 'r': execute_r(inst); break;
     case 'i': execute_i(inst); break;
@@ -70,13 +69,13 @@ void cpu::execute_r(const instruction& inst){
     case 0x12: MFLO(inst); break; //MFLO
     case 0x18: MULT(inst); break;
     case 0x19: MULTU(inst); break;
-    case 0x1A: DIV(inst); break;
-    case 0x1B: DIVU(inst); break;
+    case 0x1A: DIV(inst); break; //DIV
+    case 0x1B: DIVU(inst); break; //DIVU
     case 0x20: ADD(inst); break;  //ADD
     case 0x21: ADDU(inst); break; //ADDU
     case 0x22: SUB(inst); break;
     case 0x23: SUBU(inst); break;
-    case 0x24: AND(inst); break;
+    case 0x24: AND(inst); break; //AND
     case 0x25: OR(inst); break;
     case 0x26: XOR(inst); break;
     case 0x2A: SLT(inst); break;
@@ -268,7 +267,9 @@ void cpu::DIVU(const instruction& inst){
   HI = (word) r1 % r2;
   pc_increase(4);  
  }
-void cpu::J(const instruction& inst){ }
+void cpu::J(const instruction& inst){
+
+ }
 void cpu::JALR(const instruction& inst){ }
 void cpu::JAL(const instruction& inst){ }
 
