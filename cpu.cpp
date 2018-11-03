@@ -35,7 +35,7 @@ void cpu::run(){
 
     this->execute(c_inst);
 
-    this->reg_print();
+    this->reg_print(1);
     std::cerr<<"pc: "<<pc - 0x10000000<<std::endl;
 
     if(pc == 0){
@@ -257,9 +257,17 @@ void cpu::BNE(const instruction& inst){
 void cpu::DIV(const instruction& inst){
   s_word r1 = r.get(inst.src_s);
   s_word r2 = r.get(inst.src_t);
-  
+  LO = (s_word) r1 / r2;
+  HI = (s_word) r1 % r2;
+  pc_increase(4);
  }
-void cpu::DIVU(const instruction& inst){ }
+void cpu::DIVU(const instruction& inst){
+  word r1 = r.get(inst.src_s);
+  word r2 = r.get(inst.src_t);
+  LO = (word) r1 / r2;
+  HI = (word) r1 % r2;
+  pc_increase(4);  
+ }
 void cpu::J(const instruction& inst){ }
 void cpu::JALR(const instruction& inst){ }
 void cpu::JAL(const instruction& inst){ }
@@ -285,8 +293,16 @@ void cpu::LW(const instruction& inst){
  }
 void cpu::LWL(const instruction& inst){ }
 void cpu::LWR(const instruction& inst){ }
-void cpu::MFHI(const instruction& inst){ }
-void cpu::MFLO(const instruction& inst){ }
+void cpu::MFHI(const instruction& inst){
+  word data = HI;
+  r.set(inst.destn, data);
+  pc_increase(4);
+ }
+void cpu::MFLO(const instruction& inst){
+  word data = LO;
+  r.set(inst.destn, data);
+  pc_increase(4);  
+ }
 void cpu::MTHI(const instruction& inst){ }
 void cpu::MTLO(const instruction& inst){ }
 void cpu::MULT(const instruction& inst){ }
@@ -339,9 +355,9 @@ void cpu::XORI(const instruction& inst){ }
 
 
 void cpu::test_fill(){
-  //r.set(8, 5);
-  //r.set(9, 5);
-  r.set(10, 0x20000008);
+  r.set(8, 0xFFFFFFF9);
+  r.set(9, 0xFFFFFFFE);
+  //r.set(10, 0x20000008);
  }
 
 void cpu::reg_s(){
@@ -350,9 +366,22 @@ void cpu::reg_s(){
   }
  }
 
-void cpu::reg_print(){
+void cpu::reg_print(bool s_nbr){
   //TODO: make it pretty
-  for(int i = 0; i < 4; i++){
+  if(s_nbr){
+    for(int i = 0; i < 4; i++){
+      for(int j = 0; j < 8; j++){
+        std::string v = std::to_string((s_word)r.get(i*8 + j));
+        std::cerr << v;
+        for(int i = v.length(); i < 12; i++){
+          std::cerr << ' ';
+        }
+      }
+    std::cerr << '\n';
+    }    
+  }
+  else{
+    for(int i = 0; i < 4; i++){
       for(int j = 0; j < 8; j++){
         std::string v = std::to_string(r.get(i*8 + j));
         std::cerr << v;
@@ -361,5 +390,6 @@ void cpu::reg_print(){
         }
       }
     std::cerr << '\n';
+    }    
   }
 }

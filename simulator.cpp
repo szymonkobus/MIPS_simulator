@@ -5,13 +5,13 @@
 
 int main(int argc, char const *argv[]) {
 
-  cpu c("./bin/bin_tst9.bin");
+  cpu c("./bin/bin_tst10.bin");
 
   std::cerr << "cpu mem: " << "\n";
   c.m.print_mem();
   c.test_fill();
   std::cerr << "cpu registers initial"<<std::endl;
-  c.reg_print();
+  c.reg_print(1);
 
   c.run();
 

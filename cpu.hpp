@@ -24,7 +24,7 @@ public:
   void run();
   //TEST:
   void test_fill();
-  void reg_print();
+  void reg_print(bool s_nbr);
   void reg_s();
 private:
   void execute  (const instruction& inst);
