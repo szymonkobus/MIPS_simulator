@@ -1,6 +1,8 @@
 all: simulator.o cpu.o memory.o instruction.o registers.o
-	g++ -std=c++11 $^ -o sim #-Wc++11-extensions
+	g++ -std=c++11 $^ -o sim
 
+
+#-Wc++11-extensions
 #implicit rule
 #$< variable denotes the first dependency, %.cpp here.
 %.o : %.cpp %.hpp
