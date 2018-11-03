@@ -34,8 +34,8 @@ instruction::instruction(word inst){
     type = 'j';
     j_add =  inst & 0x3FFFFFF;
   }else{
-    std::cout<<"error -12"<<std::endl;
-    std::exit(-12); // opcodee not found, exit with error
+    std::cerr<<"error: opcode <" << opcode <<  "> not valid / implemented"<<std::endl;
+    std::exit(-12);
   }
 }
 

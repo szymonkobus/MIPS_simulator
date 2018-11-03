@@ -17,29 +17,29 @@ cpu::cpu(std::string binary): m(binary), r() {
   pc = 0x10000000;
   npc = 0x10000004;
 
-  std::cout << "Initial memory:" << '\n';
+  std::cerr << "Initial memory:" << '\n';
   m.print_mem();
-  std::cout << '\n';
+  std::cerr << '\n';
 }
 
 void cpu::run(){
-  std::cout << "CPU starts running." << '\n';
+  std::cerr << "CPU starts running." << '\n';
   while(true) {
     word next_instruction = m.read_inst(pc);
 
-    std::cout<<"instruction: "<<next_instruction<<std::endl; //debug
+    std::cerr<<"instruction: "<<next_instruction<<std::endl;
     instruction c_inst(next_instruction);
 
-    std::cout<<"pc: "<<pc<<std::endl;
+    std::cerr<<"pc: "<<pc<<std::endl;
     //getchar(); //
 
     this->execute(c_inst);
 
     this->reg_print();
-    std::cout<<"pc: "<<pc<<std::endl;
+    std::cerr<<"pc: "<<pc<<std::endl;
 
-    if(pc == 0){//dont know if correct...
-      std::cout << "finshed execution!" << std::endl;
+    if(pc == 0){
+      std::cerr << "finshed execution!" << std::endl;
       exit(r.get(2));
     }
   }
@@ -50,18 +50,15 @@ void cpu::pc_increase(word offset){
   npc += offset;
 }
 
-
-
 void cpu::execute(const instruction& inst){
-  std::cout<<"entered execute"<<std::endl;//debug
+  std::cerr<<"entered execute"<<std::endl;//debug
   switch(inst.type){
     case 'r': execute_r(inst); break;
     case 'i': execute_i(inst); break;
     case 'j': execute_j(inst); break;
-    default: ;//TODO: Error
+    default: std::cerr << "error: incorect instruction type" ;std::exit(-20);
   }
 }
-
 
 void cpu::execute_r(const instruction& inst){
   switch (inst.funct){
@@ -85,7 +82,7 @@ void cpu::execute_r(const instruction& inst){
     case 0x2A: SLT(inst); break;
     case 0x2B: SLTU(inst); break;
 
-    default: std::exit(-12); std::cerr << "error: instruction not implemented" << '\n';
+    default: std::exit(-12); std::cerr << "error: r instruction not implemented" << '\n';
   }
 }
 
@@ -94,12 +91,12 @@ void cpu::execute_i(const instruction& inst){
     case 0x20: ADDI(inst); break;
     case 0x23: LW(inst); break;
     case 0x2B: SW(inst); break;
-    default: std::exit(-12); std::cerr << "error: instruction not implemented" << '\n';
+    default: std::exit(-12); std::cerr << "error: i instruction not implemented" << '\n';
   }
 };
 void cpu::execute_j(const instruction& inst){
   switch (inst.opcode) {
-    default: std::exit(-12); std::cerr << "error: instruction not implemented" << '\n';
+    default: std::exit(-12); std::cerr << "error: j instruction not implemented" << '\n';
   }
 };
 
@@ -254,7 +251,7 @@ void cpu::test_fill(){
 
 void cpu::reg_s(){
   for(int i = 1; i < 32; i++){
-    std::cout<<"reg"<<i<<"\t"<<(s_word)r.get(i)<<std::endl;
+    std::cerr<<"reg"<<i<<"\t"<<(s_word)r.get(i)<<std::endl;
   }
  }
 
@@ -263,11 +260,11 @@ void cpu::reg_print(){
   for(int i = 0; i < 4; i++){
       for(int j = 0; j < 8; j++){
         std::string v = std::to_string(r.get(i*8 + j));
-        std::cout << v;
+        std::cerr << v;
         for(int i = v.length(); i < 12; i++){
-          std::cout << ' ';
+          std::cerr << ' ';
         }
       }
-    std::cout << '\n';
+    std::cerr << '\n';
   }
 }

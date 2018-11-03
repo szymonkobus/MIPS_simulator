@@ -37,7 +37,7 @@ memory::memory(std::string binary){
     std::exit(-11);
   }
 
-  std::cout << "Number of instructions: " << i << '\n';
+  std::cerr << "Number of instructions: " << i << '\n';
   infile.close();
 }
 
@@ -170,12 +170,12 @@ word memory::read_inst(int adr){
 }
 
 void memory::print_mem() const{
-  std::cout << "Instructions:" << '\n';
+  std::cerr << "Instructions:" << '\n';
   for(int i = 0; i < inst->size(); i++)
     if((*inst)[i]!= 0)
-      std::cout << i << "\t" << (*inst)[i] << '\n';
-  std::cout << "Data:" << '\n';
+      std::cerr << i << "\t" << (*inst)[i] << '\n';
+  std::cerr << "Data:" << '\n';
   for(int i = 0; i < data->size(); i++)
-    std::cout << i << "\t" << (*data)[i] << '\n';
-  std::cout<<std::endl;
+    std::cerr << i << "\t" << (*data)[i] << '\n';
+  std::cerr<<std::endl;
 }
