@@ -60,11 +60,7 @@ void memory::write_w(word adr, word new_data){
       data->resize(index + 1, 0);
     }
     (*data)[index] = new_data;
-<<<<<<< HEAD
   }else if(adr == 0x30000004 && adr % 4 == 0){
-=======
-  }else if((adr >> 2) == (0x300000004 >> 2) && adr % 4 == 0){
->>>>>>> af06252a69ea51af11f787ec7396bb36f98b4bcc
     // TODO: test
     std::putchar(new_data & 0xFF);
   }else{
@@ -86,11 +82,7 @@ void memory::write_h(word adr, word new_data){
     else          combined_data = (old_data & 0xFFFF0000) | new_data;
 
     (*data)[index] = combined_data;
-<<<<<<< HEAD
   }else if(adr == 0x30000004 && adr % 2 == 0){
-=======
-  }else if((adr >> 2) == (0x300000004 >> 2) && adr % 2 == 0){
->>>>>>> af06252a69ea51af11f787ec7396bb36f98b4bcc
     // TODO: test
     if(adr % 4 == 0) std::putchar(new_data & 0xF);
     else std::putchar(0);
@@ -131,7 +123,11 @@ word memory::read_w(word adr){
     if(index > data->size()) return 0;
     else return (*data)[index];
   }else if( adr == 0x30000000 && adr % 4 == 0){
-    return std::getchar();
+    char in = std::getchar();
+    word in_w = static_cast<int8_t>(in);
+    std::cerr<<"in char: "<<in_w<<std::endl;
+    return (in_w >= 0x8000) ? 0xFFFF0000 | in_w : in_w;
+    //return std::getchar();
   }
   std::cerr << "error: trying to read from address: " << adr << '\n';
   std::exit(-11);
