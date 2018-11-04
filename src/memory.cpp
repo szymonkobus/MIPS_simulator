@@ -60,7 +60,7 @@ void memory::write_w(word adr, word new_data){
       data->resize(index + 1, 0);
     }
     (*data)[index] = new_data;
-  }else if((adr >> 2) == (0x300000004 >> 2) && adr % 4 == 0){
+  }else if(adr == 0x30000004 && adr % 4 == 0){
     // TODO: test
     std::putchar(new_data & 0xFF);
   }else{
@@ -82,7 +82,7 @@ void memory::write_h(word adr, word new_data){
     else          combined_data = (old_data & 0xFFFF0000) | new_data;
 
     (*data)[index] = combined_data;
-  }else if((adr >> 2) == (0x300000004 >> 2) && adr % 2 == 0){
+  }else if(adr == 0x30000004 && adr % 2 == 0){
     // TODO: test
     if(adr % 4 == 0) std::putchar(new_data & 0xF);
     else std::putchar(0);
@@ -107,7 +107,7 @@ void memory::write_b(word adr, word new_data){
     else          combined_data = (old_data & 0xFFFFFF00) | new_data;
 
     (*data)[index] = combined_data;
-  }else if((adr >> 2) == (0x300000004 >> 2)){
+  }else if(adr == 0x30000004){
     // TODO: test
     if(adr % 4 == 0) std::putchar(new_data & 0xF);
     else std::putchar(0);
@@ -122,8 +122,12 @@ word memory::read_w(word adr){
     int index = (adr - 0x20000000) / 4;
     if(index > data->size()) return 0;
     else return (*data)[index];
-  }else if( (adr >> 2) == (0x300000000 >> 2) && adr % 4 == 0){
-    return std::getchar();
+  }else if( adr == 0x30000000 && adr % 4 == 0){
+    char in = std::getchar();
+    word in_w = static_cast<int8_t>(in);
+    std::cerr<<"in char: "<<in_w<<std::endl;
+    return (in_w >= 0x8000) ? 0xFFFF0000 | in_w : in_w;
+    //return std::getchar();
   }
   std::cerr << "error: trying to read from address: " << adr << '\n';
   std::exit(-11);
@@ -138,7 +142,7 @@ word memory::read_h(word adr){
     if(adr & 0x2) return (word_data & 0xFFFF0000) >> 16;
     else          return (word_data & 0x0000FFFF);
 
-  }else if((adr >> 2) == (0x300000000 >> 2) && adr % 2 == 0){
+  }else if(adr == 0x30000000  && adr % 2 == 0){
     if(adr % 4 == 0) return std::getchar();
     std::getchar();
     return 0;
@@ -158,7 +162,7 @@ word memory::read_b(word adr){
     if(adr & 0x3) return (word_data & 0x0000FF00) >> 8;
     else          return (word_data & 0x000000FF);
 
-  }else if( (adr >> 2) == (0x300000000 >> 2) && adr % 2 == 0){
+  }else if(adr == 0x30000000  && adr % 2 == 0){
     if(adr % 4 == 0) return std::getchar();
     std::getchar();
     return 0;
@@ -170,7 +174,7 @@ word memory::read_b(word adr){
 word memory::read_inst(int adr){
   if(adr >= 0x10000000 && adr < 0x11000000 && adr % 4 == 0){
     int index = (adr - 0x10000000) / 4;
-    if(index > n_inst){
+    if(index > n_inst  && false){ //TODO: napraw
       std::cerr << "error: trying to read instruction outside legal range"<< '\n';
       std::exit(-11);
     }

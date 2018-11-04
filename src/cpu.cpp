@@ -276,9 +276,9 @@ void cpu::J(const instruction& inst){
  }
 void cpu::JALR(const instruction& inst){ }
 void cpu::JAL(const instruction& inst){
-  pc = npc;
-  npc = (word)(npc & 0xF0000000)|(inst.j_add << 2);
   r.set(31, npc + 4);
+  pc = npc;
+  npc = (word)((pc & 0xF0000000)|(inst.j_add << 2));
  }
 
 void cpu::JR(const instruction& inst){
@@ -298,7 +298,7 @@ void cpu::LW(const instruction& inst){
   word offset = sign_extend_imi(inst);
   word res = m.read_w(base + offset);
   r.set(inst.src_t, res);
-  m.print_mem();
+  //m.print_mem();
   pc_increase(4);
  }
 
