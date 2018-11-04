@@ -10,7 +10,7 @@ class memory{
 public:
   std::vector<word>* inst;
   std::vector<word>* data;
-
+  int n_inst;
 public:
   memory();
   memory(std::string binary);

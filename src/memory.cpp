@@ -11,6 +11,7 @@ using word = uint32_t;
 memory::memory(){
   data = new std::vector<word>(0 , 1);
   inst = new std::vector<word>(0x1000000 , 0);
+  n_inst = 0;
 }
 
 memory::memory(std::string binary){
@@ -27,9 +28,9 @@ memory::memory(std::string binary){
         infile.read(buffer, 4);
         infile.peek();
         word instruction = 0;
-        instruction = (static_cast<uint8_t>(buffer[0])<<24|
-                       static_cast<uint8_t>(buffer[1])<<16|
-                       static_cast<uint8_t>(buffer[2])<<8|
+        instruction = (static_cast<uint8_t>(buffer[0]) << 24|
+                       static_cast<uint8_t>(buffer[1]) << 16|
+                       static_cast<uint8_t>(buffer[2]) <<  8|
                        static_cast<uint8_t>(buffer[3]));
         (*inst)[i] = instruction;
         i++;
@@ -42,7 +43,7 @@ memory::memory(std::string binary){
     std::cerr << "error: couldn't open binary" << '\n';
     std::exit(-11);
   }
-
+  n_inst = i + 4;
   std::cerr << "Number of instructions: " << i << '\n';
   infile.close();
 }
@@ -169,6 +170,10 @@ word memory::read_b(word adr){
 word memory::read_inst(int adr){
   if(adr >= 0x10000000 && adr < 0x11000000 && adr % 4 == 0){
     int index = (adr - 0x10000000) / 4;
+    if(index > n_inst){
+      std::cerr << "error: trying to read instruction outside legal range"<< '\n';
+      std::exit(-11);
+    }
     return (*inst)[index];
   }
   std::cerr << "error: trying to read instruction from address: " << adr << '\n';
