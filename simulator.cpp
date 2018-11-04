@@ -5,7 +5,7 @@
 
 int main(int argc, char const *argv[]) {
 
-  cpu c("./bin/bin_tst10.bin");
+  cpu c("./bin/bin_tst11.bin");
 
   std::cerr << "cpu mem: " << "\n";
   c.m.print_mem();

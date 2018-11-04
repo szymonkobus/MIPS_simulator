@@ -98,6 +98,8 @@ void cpu::execute_i(const instruction& inst){
  }
 void cpu::execute_j(const instruction& inst){
   switch (inst.opcode) {
+    case 0x02: J(inst); break;
+    case 0x03: JAL(inst); break;
     default: std::exit(-12); std::cerr << "error: j instruction not implemented" << '\n';
   }
  }
@@ -194,7 +196,7 @@ void cpu::BGEZAL(const instruction& inst){
   word r1 = r.get(inst.src_s);
   if(r1 >= 0){
     word offset = sign_extend_imi(inst) << 2;
-    r.set(32, npc + 4);
+    r.set(31, npc + 4);
     pc_increase(offset);
   }
   else{
@@ -235,7 +237,7 @@ void cpu::BLTZAL(const instruction& inst){
   word r1 = r.get(inst.src_s);
   if(r1 < 0){
     word offset = sign_extend_imi(inst) << 2;
-    r.set(32, npc + 4);
+    r.set(31, npc + 4);
     pc_increase(offset);
   }
   else{
@@ -268,10 +270,15 @@ void cpu::DIVU(const instruction& inst){
   pc_increase(4);  
  }
 void cpu::J(const instruction& inst){
-
+  pc = npc;
+  npc = (npc & 0xF0000000)|(inst.j_add << 2);
  }
 void cpu::JALR(const instruction& inst){ }
-void cpu::JAL(const instruction& inst){ }
+void cpu::JAL(const instruction& inst){
+  pc = npc;
+  npc = (word)(npc & 0xF0000000)|(inst.j_add << 2);
+  r.set(31, npc + 4);
+ }
 
 void cpu::JR(const instruction& inst){
   word jump_address = r.get(inst.src_s);
