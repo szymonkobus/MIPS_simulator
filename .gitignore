@@ -2,9 +2,9 @@
 *.out
 notes.txt
 sim
+mips_simulator
 tst/
 *.exe
 *.exe.stackdump
 .DS_Store
 .vscode
-bin/
