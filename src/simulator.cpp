@@ -4,7 +4,11 @@
 #include "cpu.hpp"
 
 int main(int argc, char const *argv[]) {
-  cpu c("MIPS_bin/bin_tst10.bin");
+  std::string name_bin = "MIPS_bin/bin_tst10.bin";
+
+  if(argc == 2) name_bin = argv[1];
+
+  cpu c(name_bin);
 
   std::cerr << "cpu mem: " << "\n";
   c.m.print_mem();
