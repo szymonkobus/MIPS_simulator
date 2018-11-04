@@ -34,9 +34,6 @@ void cpu::run(){
     std::cerr<<"instruction: "<<next_instruction<<std::endl;
     instruction c_inst(next_instruction);
 
-    //std::cerr<<"pc: "<<pc<<std::endl;
-    //getchar(); //
-
     this->execute(c_inst);
 
     this->reg_print(1);
@@ -295,6 +292,7 @@ void cpu::LBU(const instruction& inst){ }
 void cpu::LH(const instruction& inst){ }
 void cpu::LHU(const instruction& inst){ }
 void cpu::LUI(const instruction& inst){ }
+
 void cpu::LW(const instruction& inst){
   word base = r.get(inst.src_s);
   word offset = sign_extend_imi(inst);
@@ -303,6 +301,7 @@ void cpu::LW(const instruction& inst){
   m.print_mem();
   pc_increase(4);
  }
+
 void cpu::LWL(const instruction& inst){ }
 void cpu::LWR(const instruction& inst){ }
 void cpu::MFHI(const instruction& inst){
