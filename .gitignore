@@ -2,6 +2,7 @@
 *.out
 notes.txt
 sim
+mips_simulator
 tst/
 *.exe
 *.exe.stackdump

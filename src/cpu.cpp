@@ -11,11 +11,15 @@ using s_word = int32_t;
 cpu::cpu(){
   pc = 0x10000000;
   npc = 0x10000004;
+  LO = 0;
+  HI = 0;
 }
 
 cpu::cpu(std::string binary): m(binary), r() {
   pc = 0x10000000;
   npc = 0x10000004;
+  LO = 0;
+  HI = 0;
 
   std::cerr << "Initial memory:" << '\n';
   m.print_mem();
@@ -81,7 +85,7 @@ void cpu::execute_r(const instruction& inst){
     case 0x2A: SLT(inst); break;
     case 0x2B: SLTU(inst); break;
 
-    default: std::cerr << "error: r instruction not implemented" << '\n'; std::exit(-12); 
+    default: std::cerr << "error: r instruction not implemented" << '\n'; std::exit(-12);
   }
 }
 
@@ -93,7 +97,7 @@ void cpu::execute_i(const instruction& inst){
     case 0x0C: ANDI(inst); break;
     case 0x23: LW(inst); break;
     case 0x2B: SW(inst); break;
-    default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12); 
+    default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);
   }
  }
 void cpu::execute_j(const instruction& inst){
@@ -157,21 +161,21 @@ void cpu::ADDU(const instruction& inst){
   pc_increase(4);
  }
 
-void cpu::AND(const instruction& inst){ 
+void cpu::AND(const instruction& inst){
   word r1 = r.get(inst.src_s);
   word r2 = r.get(inst.src_t);
   word res = r1 & r2;
   r.set(inst.destn, res);
   pc_increase(4);
  }
-void cpu::ANDI(const instruction& inst){ 
+void cpu::ANDI(const instruction& inst){
   word r1 = r.get(inst.src_s);
   word r2 = inst.i_imi;
   word res = r1 & r2;
   r.set(inst.src_t, res);
   pc_increase(4);
  }
-void cpu::BEQ(const instruction& inst){ 
+void cpu::BEQ(const instruction& inst){
   word r1 = r.get(inst.src_s);
   word r2 = r.get(inst.src_t);
   if(r1 == r2){
@@ -267,7 +271,7 @@ void cpu::DIVU(const instruction& inst){
   word r2 = r.get(inst.src_t);
   LO = (word) r1 / r2;
   HI = (word) r1 % r2;
-  pc_increase(4);  
+  pc_increase(4);
  }
 void cpu::J(const instruction& inst){
   pc = npc;
@@ -309,7 +313,7 @@ void cpu::MFHI(const instruction& inst){
 void cpu::MFLO(const instruction& inst){
   word data = LO;
   r.set(inst.destn, data);
-  pc_increase(4);  
+  pc_increase(4);
  }
 void cpu::MTHI(const instruction& inst){ }
 void cpu::MTLO(const instruction& inst){ }
@@ -386,7 +390,7 @@ void cpu::reg_print(bool s_nbr){
         }
       }
     std::cerr << '\n';
-    }    
+    }
   }
   else{
     for(int i = 0; i < 4; i++){
@@ -398,6 +402,6 @@ void cpu::reg_print(bool s_nbr){
         }
       }
     std::cerr << '\n';
-    }    
+    }
   }
 }

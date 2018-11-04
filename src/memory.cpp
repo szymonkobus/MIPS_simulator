@@ -2,7 +2,6 @@
 #include <fstream>
 //#include <cstdint> //using
 
-
 //debug
 #include <iostream>
 
@@ -20,7 +19,7 @@ memory::memory(std::string binary){
 
   std::ifstream infile;
   infile.open(binary, std::ios::binary);
-  char buffer[4]{0};
+  char buffer[4] = {0,0,0,0};
   int i = 0;
   //infile.peek();
   if(infile.is_open()){
@@ -28,7 +27,10 @@ memory::memory(std::string binary){
         infile.read(buffer, 4);
         infile.peek();
         word instruction = 0;
-        instruction = (static_cast<uint8_t>(buffer[0])<<24|static_cast<uint8_t>(buffer[1])<<16|static_cast<uint8_t>(buffer[2])<<8|static_cast<uint8_t>(buffer[3]));        
+        instruction = (static_cast<uint8_t>(buffer[0])<<24|
+                       static_cast<uint8_t>(buffer[1])<<16|
+                       static_cast<uint8_t>(buffer[2])<<8|
+                       static_cast<uint8_t>(buffer[3]));
         (*inst)[i] = instruction;
         i++;
         if(i > (0x1000000 / 4) ){
