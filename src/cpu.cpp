@@ -300,7 +300,7 @@ void cpu::LW(const instruction& inst){
   word offset = sign_extend_imi(inst);
   word res = m.read_w(base + offset);
   r.set(inst.src_t, res);
-  m.print_mem();
+  //m.print_mem();
   pc_increase(4);
  }
 void cpu::LWL(const instruction& inst){ }
