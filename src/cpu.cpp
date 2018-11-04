@@ -367,7 +367,7 @@ void cpu::XORI(const instruction& inst){ }
 
 
 void cpu::test_fill(){
-  r.set(8, 0xFFFFFFF9);
+  r.set(8, 0x30000000);
   r.set(9, 0xFFFFFFFE);
   //r.set(10, 0x20000008);
  }

@@ -1,0 +1,10 @@
+addi $7, $7, 0x14
+off: addi $8, $8, 0x45
+addi $9, $9, 0x17
+addi $11, $11, 0xA
+bne $11, $7, off
+
+and $1, $8, $9
+andi $2, $11, 0xC
+addi $3, $3, 0x45
+jr $0
