@@ -1,0 +1,21 @@
+addi $10, $10, 0x7
+addi $11, $11, 0x2
+
+divu $8, $9
+mflo $16
+mfhi $17
+
+divu $8, $11
+mflo $18
+mfhi $19
+
+divu $10, $11
+mflo $20
+mfhi $21
+
+divu $10, $9
+mflo $22
+mfhi $23
+
+jr $0
+addi $2, $2, 0xFFBB

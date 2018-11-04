@@ -1,0 +1,8 @@
+addi $7, $7, 0x14
+off: addi $8, $8, 0x45
+addi $7, $7, 0x31
+beq $7, $8, off
+addi $1, $1, 0x1
+
+jr $0
+add $2, $2, $7
