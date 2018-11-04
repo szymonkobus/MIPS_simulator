@@ -1,0 +1,3 @@
+addu $t2, $t1, $t0
+jr $0
+add $t0, $t0, $t2
