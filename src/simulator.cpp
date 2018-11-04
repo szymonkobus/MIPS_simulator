@@ -4,7 +4,7 @@
 #include "cpu.hpp"
 
 int main(int argc, char const *argv[]) {
-  cpu c("bin_tst9.bin");
+  cpu c("MIPS_bin/bin_tst10.bin");
 
   std::cerr << "cpu mem: " << "\n";
   c.m.print_mem();

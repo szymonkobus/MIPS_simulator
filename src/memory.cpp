@@ -21,7 +21,7 @@ memory::memory(std::string binary){
   infile.open(binary, std::ios::binary);
   char buffer[4] = {0,0,0,0};
   int i = 0;
-  infile.peek();
+  //infile.peek();
   if(infile.is_open()){
     while(!infile.eof()){
         infile.read(buffer, 4);
