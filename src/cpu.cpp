@@ -113,13 +113,8 @@ word cpu::sign_extend_imi(const instruction& inst){ //T
 
 // INSTRUCTIONS
 void cpu::ADD(const instruction& inst){
-<<<<<<< HEAD
   s_word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
-=======
-  word r1 = r.get(inst.src_s);
-  word r2 = r.get(inst.src_t);
->>>>>>> 60f2b1676ce966de1e0b7ba4d417ffdde8d00b39
   s_word res = r1 + r2;
 
   if((res < 0 && r1 >= 0 && r2 >= 0)||(res >= 0 && r1 < 0 && r2 < 0)){
@@ -127,19 +122,15 @@ void cpu::ADD(const instruction& inst){
     std::exit(-10);
   }
 
-<<<<<<< HEAD
-  r[inst.destn] = (word) res;
-=======
-  int tmp_r1 = (get_bit(r1, 31)<<32)|r1;
-  int tmp_r2 = (get_bit(r2, 31)<<32)|r2;
-  int tmp_res = tmp_r1 + tmp_r2;
-  if(get_bit(tmp_res, 31) != get_bit(tmp_res, 32)){
-    //overflow
-  }
+  // int tmp_r1 = (get_bit(r1, 31)<<32)|r1;
+  // int tmp_r2 = (get_bit(r2, 31)<<32)|r2;
+  // int tmp_res = tmp_r1 + tmp_r2;
+  // if(get_bit(tmp_res, 31) != get_bit(tmp_res, 32)){
+  //   //overflow
+  // }
 
 
-  r.set(inst.destn, (word)(res));
->>>>>>> 60f2b1676ce966de1e0b7ba4d417ffdde8d00b39
+  r.set(inst.destn, (word)res);
   pc_increase(4);
  }
 
