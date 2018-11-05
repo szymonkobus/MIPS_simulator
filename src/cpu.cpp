@@ -113,8 +113,8 @@ word cpu::sign_extend_imi(const instruction& inst){ //T
 
 // INSTRUCTIONS
 void cpu::ADD(const instruction& inst){
-  s_word r1 = r.get(inst.src_s);
-  s_word r2 = r.get(inst.src_t);
+  s_word r1 = r[inst.src_s];
+  s_word r2 = r[inst.src_t];
   s_word res = r1 + r2;
 
   if((res < 0 && r1 >= 0 && r2 >= 0)||(res >= 0 && r1 < 0 && r2 < 0)){
@@ -122,13 +122,13 @@ void cpu::ADD(const instruction& inst){
     std::exit(-10);
   }
 
-  r.set(inst.destn, (word)(res));
+  r[inst.destn] = (word) res;
   pc_increase(4);
  }
 
 void cpu::ADDI(const instruction& inst){
   //TODO: check immiatde sing extension
-  word r1 = r.get(inst.src_s);
+  word r1 = r[inst.src_s];
   word imi = sign_extend_imi(inst);
   s_word res = r1 + imi;
 
@@ -137,7 +137,7 @@ void cpu::ADDI(const instruction& inst){
     std::exit(-10);
   }
 
-  r.set(inst.src_t, res);
+  r[inst.src_t] = res;
   pc_increase(4);
  }
 
@@ -151,10 +151,10 @@ void cpu::ADDIU(const instruction& inst){
  }
 
 void cpu::ADDU(const instruction& inst){
-  word r1 = r.get(inst.src_s);
-  word r2 = r.get(inst.src_t);
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
   word res = r1 + r2;
-  r.set(inst.destn, res);
+  r[inst.destn] = res;
   pc_increase(4);
  }
 
