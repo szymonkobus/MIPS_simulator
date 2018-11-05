@@ -2,11 +2,16 @@ CC = g++
 #CPPFLAGS = -W -Wall -std=c++11
 CPPFLAGS =-std=c++11
 
-simulator:  bin/registers.o bin/instruction.o bin/memory.o bin/cpu.o bin/simulator.o
-	g++ -std=c++11 $^ -o bin/mips_simulator
+simulator: bin_exists make_simulator
+
+make_simulator: bin/registers.o bin/instruction.o bin/memory.o bin/cpu.o bin/simulator.o
+	$(CC) $(CPPFLAGS) $^ -o bin/mips_simulator
 
 #implicit rule
 #$< variable denotes the first dependency, %.cpp here.
+
+bin_exists:
+	mkdir -p bin
 
 bin/simulator.o: src/simulator.cpp
 	$(CC) $(CPPFLAGS) src/simulator.cpp -c -o bin/simulator.o
