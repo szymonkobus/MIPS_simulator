@@ -1,15 +1,14 @@
 addi $10, $10, 0x7
 addi $11, $11, 0x2
 jal off
-addi $14, $14, 0xF
+jr $0
 
 addi $1, $1, 0xC24
 
 jr $0
 addi $2, $2, 0xFFBB
 
-off: addi $12, $12, 0x45
-jr $31
+off: jr $31
 addi $13, $13, 0x4B
 
 

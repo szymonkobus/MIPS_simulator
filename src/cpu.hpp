@@ -31,7 +31,7 @@ private:
   void execute_r(const instruction& inst);
   void execute_i(const instruction& inst);
   void execute_j(const instruction& inst);
-
+  int get_bit(int in, int indx);
 
   //INSTRUCTIONS
   void ADD   (const instruction& inst);
