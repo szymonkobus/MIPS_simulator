@@ -123,14 +123,13 @@ word memory::read_w(word adr){
     if(index > data->size()) return 0;
     else return (*data)[index];
   }else if( adr == 0x30000000 && adr % 4 == 0){
+    //sign extended
     word in_w = std::getchar();
-    std::cerr<<"in char: "<<in_w<<std::endl;
+    std::cerr << "in char: " << in_w << '\n';
     if(in_w == EOF){
       return -1;
     }
-    else{
-      return (in_w >= 0x8000) ? 0xFFFF0000 | in_w : in_w;
-    }
+    return (in_w == EOF) ? -1 : in_w;
     //return std::getchar();
   }
   std::cerr << "error: trying to read from address: " << adr << '\n';
