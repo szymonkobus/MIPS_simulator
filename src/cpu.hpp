@@ -33,6 +33,7 @@ private:
   void execute_j(const instruction& inst);
   int get_bit(int in, int indx);
 
+
   //INSTRUCTIONS
   void ADD   (const instruction& inst);
   void ADDI  (const instruction& inst);

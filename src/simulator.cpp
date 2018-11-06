@@ -4,9 +4,9 @@
 #include "cpu.hpp"
 
 int main(int argc, char const *argv[]) {
-  std::string name_bin = "MIPS_bin/out_bin.bin";
+  std::string name_bin = "MIPS_bin/bin_tst10.bin";
 
-  if(argc == 2) name_bin = argv[1];
+  if(argc >= 2) name_bin = argv[1];
   cpu c(name_bin);
 
   c.test_fill();

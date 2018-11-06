@@ -113,33 +113,16 @@ word cpu::sign_extend_imi(const instruction& inst){ //T
 
 // INSTRUCTIONS
 void cpu::ADD(const instruction& inst){
-<<<<<<< HEAD
   s_word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
-=======
-  word r1 = r.get(inst.src_s);
-  word r2 = r.get(inst.src_t);
->>>>>>> 60f2b1676ce966de1e0b7ba4d417ffdde8d00b39
   s_word res = r1 + r2;
 
   if((res < 0 && r1 >= 0 && r2 >= 0)||(res >= 0 && r1 < 0 && r2 < 0)){
     std::cerr << "exception: arithmetic error" << std::endl;
     std::exit(-10);
   }
-
-<<<<<<< HEAD
   r[inst.destn] = (word) res;
-=======
-  int tmp_r1 = (get_bit(r1, 31)<<32)|r1;
-  int tmp_r2 = (get_bit(r2, 31)<<32)|r2;
-  int tmp_res = tmp_r1 + tmp_r2;
-  if(get_bit(tmp_res, 31) != get_bit(tmp_res, 32)){
-    //overflow
-  }
 
-
-  r.set(inst.destn, (word)(res));
->>>>>>> 60f2b1676ce966de1e0b7ba4d417ffdde8d00b39
   pc_increase(4);
  }
 
@@ -305,7 +288,7 @@ void cpu::JR(const instruction& inst){
  }
 
 void cpu::LB(const instruction& inst){ }
-void cpu::LBU(const instruction& inst){ }
+void cpu::LBU(const instruction& inst){ } //dont implement yet i have to fix memory
 void cpu::LH(const instruction& inst){ }
 void cpu::LHU(const instruction& inst){ }
 void cpu::LUI(const instruction& inst){ }
@@ -356,52 +339,73 @@ void cpu::SRA(const instruction& inst){
   s_word data = r.get(inst.src_t) >> inst.shamt;
   r.set(inst.destn, data);
   pc_increase(4);
-
  }
 
-void cpu::SRAV(const instruction& inst){ }
+void cpu::SRAV(const instruction& inst){ // not tested
+  word r1 = r[inst.src_s];
+  s_word r2 = r[inst.src_t];
+  s_word res = r2 >> r1;
+  r[inst.destn] = res;
+  pc_increase(4);
+}
 
 void cpu::SRL(const instruction& inst){
-  word data = r.get(inst.src_t) >> inst.shamt;
-  r.set(inst.destn, data);
+  word res = r[inst.src_t] >> inst.shamt;
+  r[inst.destn] = res;
   pc_increase(4);
  }
 
-void cpu::SRLV(const instruction& inst){ }
+void cpu::SRLV(const instruction& inst){  // not tested
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
+  word res = r2 >> r1;
+  r[inst.destn] = res;
+  pc_increase(4);
+}
+
 void cpu::SUB(const instruction& inst){
-  s_word r1 = r.get(inst.src_s);
-  s_word r2 = r.get(inst.src_t);
+  s_word r1 = r[inst.src_s];
+  s_word r2 = r[inst.src_t];
   s_word res = r1 - r2;
   if((r1 < 0 && r2 < 0 && res > 0)||(r1 > 0 && r1 > r2 && res < 0 )){
     std::cerr << "exception: arithmetic error" << std::endl;
     std::exit(-10);
   }
   else{
-    r.set(inst.destn, res);
+    r[inst.destn] = res;
     pc_increase(4);
   }
  }
-void cpu::SUBU(const instruction& inst){ }
+void cpu::SUBU(const instruction& inst){ // not tested
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
+  word res = r1 - r2;
+  r[inst.destn] = res;
+  pc_increase(4);
+}
+
 void cpu::SW(const instruction& inst){
-  word base = r.get(inst.src_s);
+  word base = r[inst.src_s];
   word offset = sign_extend_imi(inst);
   word adr = base + offset;
-  word val = r.get(inst.src_t);
+  word val = r[inst.src_t];
   m.write_w(adr, val);
   pc_increase(4);
  }
+
 void cpu::XOR(const instruction& inst){
-  word r1 = r.get(inst.src_s);
-  word r2 = r.get(inst.src_t);
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
   word res = r1 ^ r2;
-  r.set(inst.destn, res);
+  r[inst.destn] = res;
   pc_increase(4);
  }
+
 void cpu::XORI(const instruction& inst){
-  word r1 = r.get(inst.src_s);
-  word r2 = sign_extend_imi(inst);
-  word res = r1 ^ r2;
-  r.set(inst.destn, res);
+  word r1 = r[inst.src_s];
+  word i = sign_extend_imi(inst);
+  word res = r1 ^ i;
+  r[inst.src_t] = res;
   pc_increase(4);
  }
 
