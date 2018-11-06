@@ -1,0 +1,5 @@
+TestId: ADDI_1
+Instruction: ADDI
+Author: sk3017
+Exit: 10
+Message: 5 + 5

@@ -1,0 +1,5 @@
+TestId: ADDI_2
+Instruction: ADDI
+Author: sk3017
+Exit: 246
+Message: -5 - 5
