@@ -5,10 +5,11 @@
 *.exe.stackdump
 sim
 mips_simulator
+parser
 
 notes.txt
 tst/
-parser/
+parser_dir/
 
 .DS_Store
 .vscode

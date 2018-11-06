@@ -1,0 +1,7 @@
+TestId: JR_1
+Instruction: JR
+Author: sk3017
+Exit: 0
+Message: JR $0
+Code:
+jr $0

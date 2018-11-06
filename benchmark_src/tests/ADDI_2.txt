@@ -3,3 +3,7 @@ Instruction: ADDI
 Author: sk3017
 Exit: 246
 Message: -5 - 5
+Code:
+addi $1, $0, -5
+addi $2, $1, -5
+jr $0
