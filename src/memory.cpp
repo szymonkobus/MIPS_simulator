@@ -1,7 +1,5 @@
 #include "memory.hpp"
 #include <fstream>
-//#include <cstdint> //using
-
 //debug
 #include <iostream>
 
@@ -60,7 +58,7 @@ void memory::write_w(word adr, word new_data){
       data->resize(index + 1, 0);
     }
     (*data)[index] = new_data;
-  }else if(adr == 0x30000004 && adr % 4 == 0){
+  }else if(adr == 0x30000004){
     // TODO: test
     std::putchar(new_data & 0xFF);
   }else{
@@ -78,13 +76,13 @@ void memory::write_h(word adr, word new_data){
     word old_data = (*data)[index];
 
     word combined_data;
-    if(adr & 0x2) combined_data = (old_data & 0x0000FFFF) | (new_data << 16);
-    else          combined_data = (old_data & 0xFFFF0000) | new_data;
+    if(adr & 0x2) combined_data = (old_data & 0xFFFF0000) | new_data;
+    else          combined_data = (old_data & 0x0000FFFF) | (new_data << 16);
 
     (*data)[index] = combined_data;
-  }else if(adr == 0x30000004 && adr % 2 == 0){
+  }else if((adr >> 2) == (0x30000004 >> 2) && adr % 2 == 0){
     // TODO: test
-    if(adr % 4 == 0) std::putchar(new_data & 0xF);
+    if(adr % 4 == 2) std::putchar(new_data & 0xF);
     else std::putchar(0);
   }else{
     std::cerr << "error: trying to write_half to address: " << adr << '\n';
@@ -101,15 +99,15 @@ void memory::write_b(word adr, word new_data){
     word old_data = (*data)[index];
 
     word combined_data;
-    if(adr & 0x3) combined_data = (old_data & 0x00FFFFFF) | (new_data << 24);
-    if(adr & 0x2) combined_data = (old_data & 0xFF00FFFF) | (new_data << 16);
-    if(adr & 0x1) combined_data = (old_data & 0xFFFF00FF) | (new_data <<  8);
-    else          combined_data = (old_data & 0xFFFFFF00) | new_data;
+    if(adr & 0x3) combined_data = (old_data & 0xFFFFFF00) | new_data;
+    if(adr & 0x2) combined_data = (old_data & 0xFFFF00FF) | (new_data <<  8);
+    if(adr & 0x1) combined_data = (old_data & 0xFF00FFFF) | (new_data << 16);
+    else          combined_data = (old_data & 0x00FFFFFF) | (new_data << 24);
 
     (*data)[index] = combined_data;
-  }else if(adr == 0x30000004){
+  }else if((adr >> 2) == (0x30000004 >> 2)){
     // TODO: test
-    if(adr % 4 == 0) std::putchar(new_data & 0xF);
+    if(adr % 4 == 3) std::putchar(new_data & 0xF);
     else std::putchar(0);
   }else{
     std::cerr << "error: trying to write_byte to address: " << adr << '\n';
@@ -119,18 +117,13 @@ void memory::write_b(word adr, word new_data){
 
 word memory::read_w(word adr){
   if(adr >= 0x20000000 && adr < 0x24000000 && adr % 4 == 0){
-    int index = (adr - 0x20000000) / 4;
+    int index = (adr - 0x20000000) >> 2;
     if(index > data->size()) return 0;
     else return (*data)[index];
-  }else if( adr == 0x30000000 && adr % 4 == 0){
-    //sign extended
+  }else if(adr == 0x30000000){
     word in_w = std::getchar();
-    std::cerr << "in char: " << in_w << '\n';
-    if(in_w == EOF){
-      return -1;
-    }
-    return (in_w == EOF) ? -1 : in_w;
-    //return std::getchar();
+    std::cerr << "read_w, in char: " << in_w << '\n';
+    return (in_w == EOF) ? -1 : in_w & 0x0FF;
   }
   std::cerr << "error: trying to read from address: " << adr << '\n';
   std::exit(-11);
@@ -142,12 +135,15 @@ word memory::read_h(word adr){
     if(index > data->size()) return 0;
 
     word word_data = (*data)[index];
-    if(adr & 0x2) return (word_data & 0xFFFF0000) >> 16;
-    else          return (word_data & 0x0000FFFF);
+    if(adr & 0x2) return (word_data & 0x0000FFFF);
+    else          return (word_data & 0xFFFF0000) >> 16;
 
-  }else if(adr == 0x30000000  && adr % 2 == 0){
-    if(adr % 4 == 0) return std::getchar();
-    std::getchar();
+  }else if((adr >> 2) == (0x30000000 >> 2) && adr % 2 == 0){
+    word in_w = std::getchar();
+    if(adr % 4 == 2){
+      std::cerr << "read_h, in char: " << in_w << '\n';
+      return (in_w == EOF) ? -1 : in_w & 0x0FF;
+    }
     return 0;
   }
   std::cerr << "error: trying to read from address: " << adr << '\n';
@@ -160,15 +156,17 @@ word memory::read_b(word adr){
     if(index > data->size()) return 0;
 
     word word_data = (*data)[index];
-    if(adr & 0x3) return (word_data & 0xFF000000) >> 24;
-    if(adr & 0x3) return (word_data & 0x00FF0000) >> 16;
-    if(adr & 0x3) return (word_data & 0x0000FF00) >> 8;
-    else          return (word_data & 0x000000FF);
+    if(adr & 0x3) return (word_data & 0x000000FF);
+    if(adr & 0x2) return (word_data & 0x0000FF00) >> 8;
+    if(adr & 0x1) return (word_data & 0x00FF0000) >> 16;
+    else          return (word_data & 0xFF000000) >> 24;
 
-  }else if(adr == 0x30000000  && adr % 2 == 0){
-    if(adr % 4 == 0) return std::getchar();
-    std::getchar();
-    return 0;
+  }else if((adr >> 2) == (0x30000000 >> 2)){  //shoudln't be used
+    word in_w = std::getchar();
+    if(adr % 4 == 3){
+      std::cerr << "read_b, in char: " << in_w << '\n';
+      return (in_w == EOF) ? -1 : in_w & 0x0FF;
+    }
   }
   std::cerr << "error: trying to read from address: " << adr << '\n';
   std::exit(-11);
