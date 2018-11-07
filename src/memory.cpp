@@ -161,7 +161,7 @@ word memory::read_b(word adr){
     if(adr & 0x1) return (word_data & 0x00FF0000) >> 16;
     else          return (word_data & 0xFF000000) >> 24;
 
-  }else if((adr >> 2) == (0x30000000 >> 2)){  //shoudln't be used
+  }else if((adr >> 2) == (0x30000000 >> 2)){  //shoudln't be used: think about the outcome
     word in_w = std::getchar();
     if(adr % 4 == 3){
       std::cerr << "read_b, in char: " << in_w << '\n';

@@ -8,8 +8,6 @@ int main(int argc, char const *argv[]) {
 
   if(argc == 2) name_bin = argv[1];
 
-
-
   cpu c(name_bin);
 
   c.test_fill();

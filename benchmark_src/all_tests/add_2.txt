@@ -1,0 +1,11 @@
+TestId: ADD_2
+Instruction: add
+Author: sk3017
+Exit: 254
+Message: no overflow
+
+addi $10, $0, 0xFFFF
+sll $11, $10, 16
+add $12, $11, $10
+add $2, $12, $12
+jr $0
