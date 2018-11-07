@@ -11,6 +11,9 @@ simulator: bin/registers.o bin/instruction.o bin/memory.o bin/cpu.o bin/simulato
 #implicit rule
 #$< variable denotes the first dependency, %.cpp here.
 
+simulator: src/mark2.cpp
+	g++ -std=c++11 mark2.cpp -o simulator
+
 bin_exists:
 	mkdir -p bin
 
