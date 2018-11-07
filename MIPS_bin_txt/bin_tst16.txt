@@ -1,0 +1,13 @@
+lui $3, 0xFFFF
+lui $4, 0x3108
+mthi $3
+mtlo $4
+
+mfhi $11
+sra $11, $11, 0x10
+mflo $12
+sra $12, $12, 0x10
+
+jr $0
+addi $2, $2, 0x45
+
