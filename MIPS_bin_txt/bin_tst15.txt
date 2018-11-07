@@ -1,0 +1,12 @@
+bgezal $8, off
+addi $1, $1, 0x1
+back: jr $0
+addi $2, $2, 0xC24
+
+off: add $30, $30, $31
+bltzal $9, back
+addi $1, $1, 0x1
+
+#branch not taken
+addi $2, $2, 0x45
+jr $0
