@@ -1,8 +1,8 @@
 TestId: JR_2
-Instruction: JR
+Instruction: jr
 Author: sk3017
 Exit: 1
 Message: delayed jump
-Code:
+
 jr $0
 addi $2, $0, 1

@@ -1,9 +1,9 @@
 TestId: ADDI_1
-Instruction: ADDI
+Instruction: addi
 Author: sk3017
 Exit: 10
 Message: 5 + 5
-Code:
+
 addi $1, $0, 0x5
 addi $2, $1, 0x5
 jr $0

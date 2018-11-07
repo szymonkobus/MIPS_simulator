@@ -101,7 +101,7 @@ void cpu::execute_j(const instruction& inst){
   switch (inst.opcode) {
     case 0x02: J(inst); break;
     case 0x03: JAL(inst); break;
-    default: std::exit(-12); std::cerr << "error: j instruction not implemented" << '\n';
+    default: std::cerr << "error: j instruction not implemented" << '\n'; std::exit(-12);
   }
  }
 
@@ -159,12 +159,13 @@ void cpu::ADDU(const instruction& inst){
  }
 
 void cpu::AND(const instruction& inst){
-  word r1 = r.get(inst.src_s);
-  word r2 = r.get(inst.src_t);
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
   word res = r1 & r2;
-  r.set(inst.destn, res);
+  r[inst.destn] = res;
   pc_increase(4);
  }
+
 void cpu::ANDI(const instruction& inst){
   word r1 = r.get(inst.src_s);
   word r2 = inst.i_imi;
