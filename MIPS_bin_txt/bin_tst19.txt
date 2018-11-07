@@ -1,0 +1,8 @@
+lui $3, 0x8000
+addi $4, $4, 0x1F
+srav $4, $3, $4
+jr $0
+srl $5, $3, 0x1F
+
+#expected -1 in $4, 1 in $5
+

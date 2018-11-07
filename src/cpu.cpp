@@ -36,7 +36,7 @@ void cpu::run(){
 
     this->execute(c_inst);
 
-    this->reg_print(0);
+    this->reg_print(1);
     std::cerr<<"pc: "<<pc - 0x10000000<<std::endl;
 
     if(pc == 0){
@@ -65,6 +65,7 @@ void cpu::execute_r(const instruction& inst){
     case 0x00: SLL(inst); break;  //SLL
     case 0x02: SRL(inst); break;  //SRL
     case 0x03: SRA(inst); break;  //SRA
+    case 0x07: SRAV(inst); break; //SRAV
     case 0x08: JR(inst); break;   //JR
     case 0x10: MFHI(inst); break; //MFHI
     case 0x11: MTHI(inst); break; //MTHI
@@ -104,6 +105,8 @@ void cpu::execute_i(const instruction& inst){
     case 0x06: BLEZ(inst); break;
     case 0x07: BGTZ(inst); break; 
     case 0x08: ADDI(inst); break; //ADDI
+    case 0x0A: SLTI(inst); break;
+    case 0x0B: SLTIU(inst); break;
     case 0x0C: ANDI(inst); break;
     case 0x0D: ORI(inst); break;
     case 0x0F: LUI(inst); break;
@@ -143,8 +146,8 @@ void cpu::ADD(const instruction& inst){
 
 void cpu::ADDI(const instruction& inst){
   //TODO: check immiatde sing extension
-  word r1 = r[inst.src_s];
-  word imi = sign_extend_imi(inst);
+  s_word r1 = r[inst.src_s];
+  s_word imi = sign_extend_imi(inst);
   s_word res = r1 + imi;
 
   if( (res <= 0 && r1 > 0 && imi > 0) || (res >= 0 && r1 < 0 && imi < 0) ){
@@ -320,7 +323,6 @@ void cpu::LW(const instruction& inst){
   word offset = sign_extend_imi(inst);
   word res = m.read_w(base + offset);
   r.set(inst.src_t, res);
-  //m.print_mem();
   pc_increase(4);
  }
 
@@ -379,16 +381,47 @@ void cpu::SB(const instruction& inst){ }
 void cpu::SH(const instruction& inst){ }
 
 void cpu::SLL(const instruction& inst){
-  word res = r[inst.src_t] << inst.shamt;
+  word r1 = r[inst.src_t];
+  word res = r1 << inst.shamt;
   r[inst.destn] = res;
   pc_increase(4);
  }
 
-void cpu::SLLV(const instruction& inst){ }
-void cpu::SLT(const instruction& inst){ }
-void cpu::SLTI(const instruction& inst){ }
-void cpu::SLTIU(const instruction& inst){ }
-void cpu::SLTU(const instruction& inst){ }
+void cpu::SLLV(const instruction& inst){
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
+  word res = r2 << r1;
+  r[inst.destn] = res;
+  pc_increase(4);
+ }
+void cpu::SLT(const instruction& inst){
+  s_word r1 = r[inst.src_s];
+  s_word r2 = r[inst.src_t];
+  word res = (r1 < r2) ? 1:0;
+  r[inst.destn] = res;
+  pc_increase(4);
+ }
+void cpu::SLTI(const instruction& inst){
+  s_word r1 = r[inst.src_s];
+  s_word r2 = sign_extend_imi(inst);
+  word res = (r1 < r2) ? 1:0;
+  r[inst.src_t] = res;
+  pc_increase(4);
+ }
+void cpu::SLTIU(const instruction& inst){
+  word r1 = r[inst.src_s];
+  word r2 = sign_extend_imi(inst);
+  word res = (r1 < r2) ? 1:0;
+  r[inst.src_t] = res;
+  pc_increase(4); 
+ }
+void cpu::SLTU(const instruction& inst){
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
+  word res = (r1 < r2) ? 1:0;
+  r[inst.destn] = res;
+  pc_increase(4);
+ }
 
 void cpu::SRA(const instruction& inst){
   s_word res = r[inst.src_t] >> inst.shamt;
@@ -405,7 +438,8 @@ void cpu::SRAV(const instruction& inst){ // not tested
 }
 
 void cpu::SRL(const instruction& inst){
-  word res = r[inst.src_t] >> inst.shamt;
+  word r1 = r[inst.src_t];
+  word res = r1 >> inst.shamt;
   r[inst.destn] = res;
   pc_increase(4);
  }
