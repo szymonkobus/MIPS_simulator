@@ -88,8 +88,10 @@ void cpu::execute_r(const instruction& inst){
 
 void cpu::execute_i(const instruction& inst){
   switch (inst.opcode){
-    case 0x01: {
+    case 0x01: { //branches
       switch (inst.src_t){
+        case 0x00: BLTZ(inst); break;
+        case 0x01: BGEZ(inst); break;
         case 0x10: BLTZAL(inst); break;
         case 0x11: BGEZAL(inst); break;
         default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);
@@ -97,10 +99,12 @@ void cpu::execute_i(const instruction& inst){
      } break;
     case 0x04: BEQ(inst); break;
     case 0x05: BNE(inst); break;
-    case 0x08: ADDI(inst); break;
+    case 0x06: BLEZ(inst); break;
+    case 0x07: BGTZ(inst); break; 
+    case 0x08: ADDI(inst); break; //ADDI
     case 0x0C: ANDI(inst); break;
-    case 0x23: LW(inst); break;
-    case 0x2B: SW(inst); break;
+    case 0x23: LW(inst); break; //LW
+    case 0x2B: SW(inst); break; //SW
     default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);
   }
  }
@@ -191,7 +195,7 @@ void cpu::BEQ(const instruction& inst){
   }
  }
 void cpu::BGEZ(const instruction& inst){
-  word r1 = r.get(inst.src_s);
+  s_word r1 = r.get(inst.src_s);
   if(r1 >= 0){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -201,7 +205,7 @@ void cpu::BGEZ(const instruction& inst){
   }
  }
 void cpu::BGEZAL(const instruction& inst){
-  word r1 = r.get(inst.src_s);
+  s_word r1 = r.get(inst.src_s);
   if(r1 >= 0){
     word offset = sign_extend_imi(inst) << 2;
     r.set(31, npc + 4);
@@ -212,7 +216,7 @@ void cpu::BGEZAL(const instruction& inst){
   }
  }
 void cpu::BGTZ(const instruction& inst){
-  word r1 = r.get(inst.src_s);
+  s_word r1 = r.get(inst.src_s);
   if(r1 > 0){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -222,7 +226,7 @@ void cpu::BGTZ(const instruction& inst){
   }
  }
 void cpu::BLEZ(const instruction& inst){
-  word r1 = r.get(inst.src_s);
+  s_word r1 = r.get(inst.src_s);
   if(r1 <= 0){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -232,7 +236,7 @@ void cpu::BLEZ(const instruction& inst){
   }
  }
 void cpu::BLTZ(const instruction& inst){
-  word r1 = r.get(inst.src_s);
+  s_word r1 = r.get(inst.src_s);
   if(r1 < 0){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
