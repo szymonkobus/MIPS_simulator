@@ -41,7 +41,7 @@ void cpu::run(){
 
     if(pc == 0){
       std::cerr << "finshed execution!" << std::endl;
-      exit(r.get(2));
+      exit(r[2]);
     }
   }
 }
@@ -126,7 +126,7 @@ void cpu::execute_j(const instruction& inst){
 
 word cpu::sign_extend_imi(const instruction& inst){ //T
   word imi = inst.i_imi;
-  return (imi >= 0x8000) ? 0xFFFF0000 | imi : imi;
+  return (imi >= 0x8000) ? (0xFFFF0000 | imi) : imi;
  }
 
 // INSTRUCTIONS
@@ -139,11 +139,10 @@ void cpu::ADD(const instruction& inst){
     std::cerr << "exception: arithmetic error" << std::endl;
     std::exit(-10);
   }
-  r[inst.destn] = (word) res;
 
+  r[inst.destn] = res;
   pc_increase(4);
  }
-
 void cpu::ADDI(const instruction& inst){
   //TODO: check immiatde sing extension
   s_word r1 = r[inst.src_s];
@@ -158,16 +157,13 @@ void cpu::ADDI(const instruction& inst){
   r[inst.src_t] = res;
   pc_increase(4);
  }
-
 void cpu::ADDIU(const instruction& inst){
-  //TODO: check immiatde sing extension
-  word r1 = r.get(inst.src_s);
+  word r1 = r[inst.src_s];
   word imi = sign_extend_imi(inst);
   s_word res = r1 + imi;
-  r.set(inst.src_t, res);
+  r[inst.src_t] = res;
   pc_increase(4);
  }
-
 void cpu::ADDU(const instruction& inst){
   word r1 = r[inst.src_s];
   word r2 = r[inst.src_t];
@@ -175,7 +171,6 @@ void cpu::ADDU(const instruction& inst){
   r[inst.destn] = res;
   pc_increase(4);
  }
-
 void cpu::AND(const instruction& inst){
   word r1 = r[inst.src_s];
   word r2 = r[inst.src_t];
@@ -183,17 +178,16 @@ void cpu::AND(const instruction& inst){
   r[inst.destn] = res;
   pc_increase(4);
  }
-
 void cpu::ANDI(const instruction& inst){
-  word r1 = r.get(inst.src_s);
+  word r1 = r[inst.src_s];
   word r2 = inst.i_imi;
   word res = r1 & r2;
-  r.set(inst.src_t, res);
+  r[inst.src_t] = res;
   pc_increase(4);
  }
 void cpu::BEQ(const instruction& inst){
-  word r1 = r.get(inst.src_s);
-  word r2 = r.get(inst.src_t);
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
   if(r1 == r2){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -203,7 +197,7 @@ void cpu::BEQ(const instruction& inst){
   }
  }
 void cpu::BGEZ(const instruction& inst){
-  s_word r1 = r.get(inst.src_s);
+  s_word r1 = r[inst.src_s];
   if(r1 >= 0){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -213,10 +207,10 @@ void cpu::BGEZ(const instruction& inst){
   }
  }
 void cpu::BGEZAL(const instruction& inst){
-  s_word r1 = r.get(inst.src_s);
+  s_word r1 = r[inst.src_s];
   if(r1 >= 0){
     word offset = sign_extend_imi(inst) << 2;
-    r.set(31, npc + 4);
+    r[31] = npc + 4;
     pc_increase(offset);
   }
   else{
@@ -224,7 +218,7 @@ void cpu::BGEZAL(const instruction& inst){
   }
  }
 void cpu::BGTZ(const instruction& inst){
-  s_word r1 = r.get(inst.src_s);
+  s_word r1 = r[inst.src_s];
   if(r1 > 0){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -234,7 +228,7 @@ void cpu::BGTZ(const instruction& inst){
   }
  }
 void cpu::BLEZ(const instruction& inst){
-  s_word r1 = r.get(inst.src_s);
+  s_word r1 = r[inst.src_s];
   if(r1 <= 0){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -244,7 +238,7 @@ void cpu::BLEZ(const instruction& inst){
   }
  }
 void cpu::BLTZ(const instruction& inst){
-  s_word r1 = r.get(inst.src_s);
+  s_word r1 = r[inst.src_s];
   if(r1 < 0){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -254,10 +248,10 @@ void cpu::BLTZ(const instruction& inst){
   }
  }
 void cpu::BLTZAL(const instruction& inst){
-  s_word r1 = r.get(inst.src_s);
+  s_word r1 = r[inst.src_s];
   if(r1 < 0){
     word offset = sign_extend_imi(inst) << 2;
-    r.set(31, npc + 4);
+    r[31] = npc + 4;
     pc_increase(offset);
   }
   else{
@@ -265,8 +259,8 @@ void cpu::BLTZAL(const instruction& inst){
   }
  }
 void cpu::BNE(const instruction& inst){
-  word r1 = r.get(inst.src_s);
-  word r2 = r.get(inst.src_t);
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
   if(r1 != r2){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -276,15 +270,15 @@ void cpu::BNE(const instruction& inst){
   }
  }
 void cpu::DIV(const instruction& inst){
-  s_word r1 = r.get(inst.src_s);
-  s_word r2 = r.get(inst.src_t);
+  s_word r1 = r[inst.src_s];
+  s_word r2 = r[inst.src_t];
   LO = (s_word) r1 / r2;
   HI = (s_word) r1 % r2;
   pc_increase(4);
  }
 void cpu::DIVU(const instruction& inst){
-  word r1 = r.get(inst.src_s);
-  word r2 = r.get(inst.src_t);
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
   LO = (word) r1 / r2;
   HI = (word) r1 % r2;
   pc_increase(4);
@@ -297,17 +291,15 @@ void cpu::JALR(const instruction& inst){
   //special instruction, need special treatment - possibly additional instruction type
  }
 void cpu::JAL(const instruction& inst){
-  r.set(31, npc + 4);
+  r[31] = npc + 4;
   pc = npc;
   npc = (word)((pc & 0xF0000000)|(inst.j_add << 2));
  }
-
 void cpu::JR(const instruction& inst){
-  word jump_address = r.get(inst.src_s);
+  word jump_address = r[inst.src_s];
   pc = npc;
   npc = jump_address;
  }
-
 void cpu::LB(const instruction& inst){ }
 void cpu::LBU(const instruction& inst){ } //dont implement yet i have to fix memory
 void cpu::LH(const instruction& inst){ }
@@ -317,25 +309,23 @@ void cpu::LUI(const instruction& inst){
   r[inst.src_t] = data;
   pc_increase(4);
  }
-
 void cpu::LW(const instruction& inst){
-  word base = r.get(inst.src_s);
+  word base = r[inst.src_s];
   word offset = sign_extend_imi(inst);
   word res = m.read_w(base + offset);
-  r.set(inst.src_t, res);
+  r[inst.src_t] = res;
   pc_increase(4);
  }
-
 void cpu::LWL(const instruction& inst){ }
 void cpu::LWR(const instruction& inst){ }
 void cpu::MFHI(const instruction& inst){
   word data = HI;
-  r.set(inst.destn, data);
+  r[inst.destn] = data;
   pc_increase(4);
  }
 void cpu::MFLO(const instruction& inst){
   word data = LO;
-  r.set(inst.destn, data);
+  r[inst.destn] = data;
   pc_increase(4);
  }
 void cpu::MTHI(const instruction& inst){
@@ -379,14 +369,12 @@ void cpu::ORI(const instruction& inst){
  }
 void cpu::SB(const instruction& inst){ }
 void cpu::SH(const instruction& inst){ }
-
 void cpu::SLL(const instruction& inst){
   word r1 = r[inst.src_t];
   word res = r1 << inst.shamt;
   r[inst.destn] = res;
   pc_increase(4);
  }
-
 void cpu::SLLV(const instruction& inst){
   word r1 = r[inst.src_s];
   word r2 = r[inst.src_t];
@@ -422,13 +410,11 @@ void cpu::SLTU(const instruction& inst){
   r[inst.destn] = res;
   pc_increase(4);
  }
-
 void cpu::SRA(const instruction& inst){
   s_word res = r[inst.src_t] >> inst.shamt;
   r[inst.destn] = res;
   pc_increase(4);
  }
-
 void cpu::SRAV(const instruction& inst){ // not tested
   word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
@@ -436,22 +422,19 @@ void cpu::SRAV(const instruction& inst){ // not tested
   r[inst.destn] = res;
   pc_increase(4);
 }
-
 void cpu::SRL(const instruction& inst){
   word r1 = r[inst.src_t];
   word res = r1 >> inst.shamt;
   r[inst.destn] = res;
   pc_increase(4);
  }
-
 void cpu::SRLV(const instruction& inst){  // not tested
   word r1 = r[inst.src_s];
   word r2 = r[inst.src_t];
   word res = r2 >> r1;
   r[inst.destn] = res;
   pc_increase(4);
-}
-
+ }
 void cpu::SUB(const instruction& inst){
   s_word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
@@ -473,8 +456,7 @@ void cpu::SUBU(const instruction& inst){ // not tested
   word res = r1 - r2;
   r[inst.destn] = res;
   pc_increase(4);
-}
-
+ }
 void cpu::SW(const instruction& inst){
   word base = r[inst.src_s];
   word offset = sign_extend_imi(inst);
@@ -483,7 +465,6 @@ void cpu::SW(const instruction& inst){
   m.write_w(adr, val);
   pc_increase(4);
  }
-
 void cpu::XOR(const instruction& inst){
   word r1 = r[inst.src_s];
   word r2 = r[inst.src_t];
@@ -491,7 +472,6 @@ void cpu::XOR(const instruction& inst){
   r[inst.destn] = res;
   pc_increase(4);
  }
-
 void cpu::XORI(const instruction& inst){
   word r1 = r[inst.src_s];
   word i = sign_extend_imi(inst);
@@ -539,7 +519,7 @@ void cpu::reg_print(bool s_nbr){
     std::cerr << '\n';
     }
   }
-}
+ }
 
 int cpu::get_bit(int in, int indx){
   return(in>>indx)&0x1;

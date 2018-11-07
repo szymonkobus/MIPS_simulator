@@ -23,6 +23,7 @@ def print_file(TestId, Instruction, Author, Exit, Message):
     print("Message: " + Message)
 
 p_parser = "parser/bin/parser"
+#p_parser = "parser.exe"
 p_tests = "benchmark_src/tests/"
 p_tests_code = "benchmark_src/tst_bench_code/"
 p_tests_binary = "benchmark_src/tst_bench_bin/"
@@ -35,7 +36,6 @@ files = os.listdir(p_tests)
 
 for file_name in files:
     file = open(p_tests + file_name)
-
     TestId = file.readline()[8:-1]
     Instruction = file.readline()[13:-1]
     Author = file.readline()[8:-1]
@@ -45,6 +45,7 @@ for file_name in files:
 
     if(parser_exists and not file_exists(p_tests_binary + TestId + ".bin")):
         create_bin(file, TestId, p_parser, p_tests_binary)
+        #create_bin u mnie nie działa...
 
     if(file_exists(p_tests_binary + TestId + ".bin")):
         exit = sps.call([simulator, p_tests_binary + TestId + ".bin"], stderr=sps.PIPE)
