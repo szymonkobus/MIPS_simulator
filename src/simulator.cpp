@@ -10,7 +10,7 @@ int main(int argc, char const *argv[]) {
 
   cpu c(name_bin);
 
-  c.test_fill();
+  //c.test_fill();
 
   c.run();
 

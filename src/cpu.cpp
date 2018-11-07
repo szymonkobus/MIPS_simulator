@@ -69,8 +69,8 @@ void cpu::execute_r(const instruction& inst){
     case 0x10: MFHI(inst); break; //MFHI
     case 0x11: MTHI(inst); break; //MTHI
     case 0x12: MFLO(inst); break; //MFLO
-    case 0x13: MTLO(inst); break; ///MTLO
-    case 0x18: MULT(inst); break;
+    case 0x13: MTLO(inst); break; //MTLO
+    case 0x18: MULT(inst); break; //MULT
     case 0x19: MULTU(inst); break;
     case 0x1A: DIV(inst); break; //DIV
     case 0x1B: DIVU(inst); break; //DIVU
@@ -105,6 +105,7 @@ void cpu::execute_i(const instruction& inst){
     case 0x07: BGTZ(inst); break; 
     case 0x08: ADDI(inst); break; //ADDI
     case 0x0C: ANDI(inst); break;
+    case 0x0D: ORI(inst); break;
     case 0x0F: LUI(inst); break;
     case 0x23: LW(inst); break; //LW
     case 0x2B: SW(inst); break; //SW
@@ -347,21 +348,39 @@ void cpu::MULT(const instruction& inst){
   s_word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
   int64_t res = static_cast<int64_t> (r1) * static_cast<int64_t> (r2);
-  
-  //std::cerr<<"multiplication result: "<<res<<std::endl;
+
   LO = static_cast<word> (res & 0x00000000FFFFFFFF);
   HI = static_cast<word> ((res & 0xFFFFFFFF00000000) >> 32);
   pc_increase(4);
  }
-void cpu::MULTU(const instruction& inst){ }
-void cpu::OR(const instruction& inst){ }
-void cpu::ORI(const instruction& inst){ }
+void cpu::MULTU(const instruction& inst){
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
+  uint64_t res = static_cast<uint64_t> (r1) * static_cast<uint64_t> (r2);
+
+  LO = static_cast<word> (res & 0x00000000FFFFFFFF);
+  HI = static_cast<word> ((res & 0xFFFFFFFF00000000) >> 32);
+  pc_increase(4);
+ }
+void cpu::OR(const instruction& inst){
+  word r1 = r[inst.src_s];
+  word r2 = r[inst.src_t];
+  word res = r1 | r2;
+  r[inst.destn] = res;
+  pc_increase(4);
+ }
+void cpu::ORI(const instruction& inst){
+  word r1 = r[inst.src_s];
+  word res = r1 | inst.i_imi;
+  r[inst.src_t] = res;
+  pc_increase(4);
+ }
 void cpu::SB(const instruction& inst){ }
 void cpu::SH(const instruction& inst){ }
 
 void cpu::SLL(const instruction& inst){
-  word data = r.get(inst.src_t) << inst.shamt;
-  r.set(inst.destn, data);
+  word res = r[inst.src_t] << inst.shamt;
+  r[inst.destn] = res;
   pc_increase(4);
  }
 
@@ -372,8 +391,8 @@ void cpu::SLTIU(const instruction& inst){ }
 void cpu::SLTU(const instruction& inst){ }
 
 void cpu::SRA(const instruction& inst){
-  s_word data = r.get(inst.src_t) >> inst.shamt;
-  r.set(inst.destn, data);
+  s_word res = r[inst.src_t] >> inst.shamt;
+  r[inst.destn] = res;
   pc_increase(4);
  }
 

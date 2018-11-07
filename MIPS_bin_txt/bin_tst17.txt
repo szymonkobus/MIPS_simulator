@@ -1,12 +1,10 @@
-addi $3, $3, 0x5
-addi $4, $4, 0x45
+addi $3, $3, 0xFFFF
+addi $4, $4, 0xFFFF
 mult $3, $4
 mfhi $5
 mflo $6
 
-lui $3, 0xFFFF
-lui $4, 0x3108
-mult $3, $4
+multu $3, $4
 mfhi $13
 mflo $14
 
