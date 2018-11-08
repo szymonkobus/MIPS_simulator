@@ -384,9 +384,9 @@ void cpu::LWR(const instruction& inst){
   word res = r[inst.src_t];
   int w_off = offset & 0x3;
   switch(w_off){
-    case 0x0: res = ((res & 0xFFFFFF00) | full_word >> 24); break;
-    case 0x1: res = ((res & 0xFFFF0000) | full_word >> 16); break;
-    case 0x2: res = ((res & 0xFF000000) | full_word >> 8 ); break;
+    case 0x0: res = (res & 0xFFFFFF00) | full_word >> 24; break;
+    case 0x1: res = (res & 0xFFFF0000) | full_word >> 16; break;
+    case 0x2: res = (res & 0xFF000000) | full_word >> 8;  break;
     case 0x3: res = full_word; break;
   }
   r[inst.src_t] = res;
@@ -604,7 +604,3 @@ void cpu::reg_print(bool s_nbr){
     }
   }
  }
-
-int cpu::get_bit(int in, int indx){
-  return(in>>indx)&0x1;
-}
