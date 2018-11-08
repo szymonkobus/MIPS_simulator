@@ -67,6 +67,7 @@ void cpu::execute_r(const instruction& inst){
     case 0x03: SRA(inst); break;  //SRA
     case 0x07: SRAV(inst); break; //SRAV
     case 0x08: JR(inst); break;   //JR
+    case 0x09: JALR(inst); break;
     case 0x10: MFHI(inst); break; //MFHI
     case 0x11: MTHI(inst); break; //MTHI
     case 0x12: MFLO(inst); break; //MFLO
@@ -105,12 +106,15 @@ void cpu::execute_i(const instruction& inst){
     case 0x06: BLEZ(inst); break;
     case 0x07: BGTZ(inst); break; 
     case 0x08: ADDI(inst); break; //ADDI
+    case 0x09: ADDIU(inst); break;
     case 0x0A: SLTI(inst); break;
     case 0x0B: SLTIU(inst); break;
     case 0x0C: ANDI(inst); break;
     case 0x0D: ORI(inst); break;
     case 0x0F: LUI(inst); break;
+    case 0x20: LB(inst); break;
     case 0x23: LW(inst); break; //LW
+    case 0x24: LBU(inst); break;
     case 0x2B: SW(inst); break; //SW
     default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);
   }
@@ -288,7 +292,10 @@ void cpu::J(const instruction& inst){
   npc = (npc & 0xF0000000)|(inst.j_add << 2);
  }
 void cpu::JALR(const instruction& inst){
-  //special instruction, need special treatment - possibly additional instruction type
+  r[inst.destn] = npc + 4;
+  word adr = r[inst.src_s];
+  pc = npc;
+  npc = adr;  
  }
 void cpu::JAL(const instruction& inst){
   r[31] = npc + 4;
@@ -300,8 +307,26 @@ void cpu::JR(const instruction& inst){
   pc = npc;
   npc = jump_address;
  }
-void cpu::LB(const instruction& inst){ }
-void cpu::LBU(const instruction& inst){ } //dont implement yet i have to fix memory
+void cpu::LB(const instruction& inst){
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
+  word res = m.read_b((word) base + offset);
+  std::cerr<<"unsigned byte: "<<res<<std::endl;
+  std::cerr<<std::endl;
+  if(res >= 0x80) res = 0xFFFFFF00 | res;
+  r[inst.src_t] = res;
+  pc_increase(4);
+ }
+void cpu::LBU(const instruction& inst){
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
+  word res = m.read_b((word) base + offset);
+  std::cerr<<"unsigned byte: "<<res<<std::endl;
+  std::cerr<<std::endl;
+  //if(res >= 0x80) res = 0xFFFFFF00 | res;
+  r[inst.src_t] = res;
+  pc_increase(4);
+ } //dont implement yet i have to fix memory
 void cpu::LH(const instruction& inst){ }
 void cpu::LHU(const instruction& inst){ }
 void cpu::LUI(const instruction& inst){
@@ -310,9 +335,9 @@ void cpu::LUI(const instruction& inst){
   pc_increase(4);
  }
 void cpu::LW(const instruction& inst){
-  word base = r[inst.src_s];
-  word offset = sign_extend_imi(inst);
-  word res = m.read_w(base + offset);
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
+  word res = m.read_w((word) base + offset);
   r[inst.src_t] = res;
   pc_increase(4);
  }
@@ -340,7 +365,6 @@ void cpu::MULT(const instruction& inst){
   s_word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
   int64_t res = static_cast<int64_t> (r1) * static_cast<int64_t> (r2);
-
   LO = static_cast<word> (res & 0x00000000FFFFFFFF);
   HI = static_cast<word> ((res & 0xFFFFFFFF00000000) >> 32);
   pc_increase(4);
@@ -349,7 +373,6 @@ void cpu::MULTU(const instruction& inst){
   word r1 = r[inst.src_s];
   word r2 = r[inst.src_t];
   uint64_t res = static_cast<uint64_t> (r1) * static_cast<uint64_t> (r2);
-
   LO = static_cast<word> (res & 0x00000000FFFFFFFF);
   HI = static_cast<word> ((res & 0xFFFFFFFF00000000) >> 32);
   pc_increase(4);
@@ -439,8 +462,6 @@ void cpu::SUB(const instruction& inst){
   s_word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
   s_word res = r1 - r2;
-  //exceptions:
-  //positive - negative = negative || negative - positive = positive
   if((r1 >= 0 && r2 < 0 && res < 0)||(r1 < 0 && r2 >= 0 && res > 0 )){
     std::cerr << "exception: arithmetic error" << std::endl;
     std::exit(-10);

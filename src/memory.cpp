@@ -73,11 +73,14 @@ void memory::write_h(word adr, word new_data){
     if(index >= data->size()){
       data->resize(index + 1, 0);
     }
-    word old_data = (*data)[index];
 
+    word old_data = (*data)[index];
     word combined_data;
-    if(adr & 0x2) combined_data = (old_data & 0xFFFF0000) | new_data;
-    else          combined_data = (old_data & 0x0000FFFF) | (new_data << 16);
+    int hw_off = adr & 0x3;
+    switch(hw_off){
+      case 0x0: combined_data = (old_data & 0x0000FFFF) | (new_data << 16);
+      case 0x2: combined_data = (old_data & 0xFFFF0000) | new_data;
+    }
 
     (*data)[index] = combined_data;
   }else if((adr >> 2) == (0x30000004 >> 2) && adr % 2 == 0){
@@ -96,13 +99,16 @@ void memory::write_b(word adr, word new_data){
     if(index >= data->size()){
       data->resize(index + 1, 0);
     }
-    word old_data = (*data)[index];
 
+    word old_data = (*data)[index];
     word combined_data;
-    if(adr & 0x3) combined_data = (old_data & 0xFFFFFF00) | new_data;
-    if(adr & 0x2) combined_data = (old_data & 0xFFFF00FF) | (new_data <<  8);
-    if(adr & 0x1) combined_data = (old_data & 0xFF00FFFF) | (new_data << 16);
-    else          combined_data = (old_data & 0x00FFFFFF) | (new_data << 24);
+    int byte_off = adr & 0x3;
+    switch(byte_off){
+      case 0x0: combined_data = (old_data & 0x00FFFFFF) | (new_data << 24);
+      case 0x1: combined_data = (old_data & 0xFF00FFFF) | (new_data << 16);
+      case 0x2: combined_data = (old_data & 0xFFFF00FF) | (new_data <<  8);
+      case 0x3: combined_data = (old_data & 0xFFFFFF00) | new_data;
+    }
 
     (*data)[index] = combined_data;
   }else if((adr >> 2) == (0x30000004 >> 2)){
@@ -131,12 +137,15 @@ word memory::read_w(word adr){
 
 word memory::read_h(word adr){
   if(adr >= 0x20000000 && adr < 0x24000000 && adr % 2 == 0){
-    int index = (adr - 0x20000000) / 4;
+    int index = (int) (adr - 0x20000000) / 4;
     if(index > data->size()) return 0;
 
     word word_data = (*data)[index];
-    if(adr & 0x2) return (word_data & 0x0000FFFF);
-    else          return (word_data & 0xFFFF0000) >> 16;
+    int hw_off = adr & 0x3;
+    switch(hw_off){
+      case 0x0: return (word_data & 0xFFFF0000) >> 16);
+      case 0x2: return (word_data & 0x0000FFFF);
+    }
 
   }else if((adr >> 2) == (0x30000000 >> 2) && adr % 2 == 0){
     word in_w = std::getchar();
@@ -151,15 +160,18 @@ word memory::read_h(word adr){
 }
 
 word memory::read_b(word adr){
-  if(adr >= 0x20000000 && adr < 0x24000000 && adr % 2 == 0){
-    int index = (adr - 0x20000000) / 4;
+  if(adr >= 0x20000000 && adr < 0x24000000){
+    int index = (int) (adr - 0x20000000) / 4;
     if(index > data->size()) return 0;
 
     word word_data = (*data)[index];
-    if(adr & 0x3) return (word_data & 0x000000FF);
-    if(adr & 0x2) return (word_data & 0x0000FF00) >> 8;
-    if(adr & 0x1) return (word_data & 0x00FF0000) >> 16;
-    else          return (word_data & 0xFF000000) >> 24;
+    int byte_off = adr & 0x3;
+    switch(byte_off){
+      case 0x0: return (word_data & 0xFF000000) >> 24;
+      case 0x1: return (word_data & 0x00FF0000) >> 16;
+      case 0x2: return (word_data & 0x0000FF00) >> 8;
+      case 0x3: return (word_data & 0x000000FF);
+    }
 
   }else if((adr >> 2) == (0x30000000 >> 2)){  //shoudln't be used: think about the outcome
     word in_w = std::getchar();

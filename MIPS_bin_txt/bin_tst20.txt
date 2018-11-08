@@ -2,7 +2,6 @@ addi $3, $3, 0xFFFF
 addi $4, $4, 0x1
 slt $8, $3, $4
 sltu $9, $3, $4
-
 slti $10, $3, 0x1
 sltiu $11, $3, 0x1
 jr $0
