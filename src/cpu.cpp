@@ -106,15 +106,17 @@ void cpu::execute_i(const instruction& inst){
     case 0x06: BLEZ(inst); break;
     case 0x07: BGTZ(inst); break; 
     case 0x08: ADDI(inst); break; //ADDI
-    case 0x09: ADDIU(inst); break;
+    case 0x09: ADDIU(inst); break; //ADDIU
     case 0x0A: SLTI(inst); break;
     case 0x0B: SLTIU(inst); break;
     case 0x0C: ANDI(inst); break;
-    case 0x0D: ORI(inst); break;
-    case 0x0F: LUI(inst); break;
-    case 0x20: LB(inst); break;
+    case 0x0D: ORI(inst); break; //ORI
+    case 0x0F: LUI(inst); break; //LUI
+    case 0x20: LB(inst); break; //LB
+    case 0x22: LWL(inst); break;
     case 0x23: LW(inst); break; //LW
-    case 0x24: LBU(inst); break;
+    case 0x24: LBU(inst); break; //LBU
+    case 0x26: LWR(inst); break;
     case 0x2B: SW(inst); break; //SW
     default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);
   }
@@ -310,9 +312,8 @@ void cpu::JR(const instruction& inst){
 void cpu::LB(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
-  word res = m.read_b((word) base + offset);
-  std::cerr<<"unsigned byte: "<<res<<std::endl;
-  std::cerr<<std::endl;
+  word adr = base + offset;
+  word res = m.read_b(adr);
   if(res >= 0x80) res = 0xFFFFFF00 | res;
   r[inst.src_t] = res;
   pc_increase(4);
@@ -320,15 +321,28 @@ void cpu::LB(const instruction& inst){
 void cpu::LBU(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
-  word res = m.read_b((word) base + offset);
-  std::cerr<<"unsigned byte: "<<res<<std::endl;
-  std::cerr<<std::endl;
-  //if(res >= 0x80) res = 0xFFFFFF00 | res;
+  word adr = base + offset;
+  word res = m.read_b(adr);
   r[inst.src_t] = res;
   pc_increase(4);
- } //dont implement yet i have to fix memory
-void cpu::LH(const instruction& inst){ }
-void cpu::LHU(const instruction& inst){ }
+ }
+void cpu::LH(const instruction& inst){
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
+  word adr = base + offset;
+  word res = m.read_h(adr);
+  if(res >= 0x8000) res = 0xFFFF0000 | res;
+  r[inst.src_t] = res;
+  pc_increase(4);
+ }
+void cpu::LHU(const instruction& inst){
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
+  word adr = base + offset;
+  word res = m.read_h(adr);
+  r[inst.src_t] = res;
+  pc_increase(4);
+ }
 void cpu::LUI(const instruction& inst){
   word data = inst.i_imi << 16;
   r[inst.src_t] = data;
@@ -337,12 +351,47 @@ void cpu::LUI(const instruction& inst){
 void cpu::LW(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
-  word res = m.read_w((word) base + offset);
+  word adr = base + offset;
+  word res = m.read_w(adr);
   r[inst.src_t] = res;
   pc_increase(4);
  }
-void cpu::LWL(const instruction& inst){ }
-void cpu::LWR(const instruction& inst){ }
+void cpu::LWL(const instruction& inst){
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
+  //word w_adr = (word) ((base + offset) - (base + offset) % 4);
+  word w_adr = (base + offset) - (base + offset) % 4;
+
+  word full_word = m.read_w(w_adr);
+  word res = r[inst.src_t];
+  int w_off = offset & 0x3;
+  switch(w_off){
+    case 0x0: res = full_word; break;
+    case 0x1: res = (res & 0x000000FF) | (full_word & 0x00FFFFFF) << 8;  break;
+    case 0x2: res = (res & 0x0000FFFF) | (full_word & 0x0000FFFF) << 16; break;
+    case 0x3: res = (res & 0x00FFFFFF) | (full_word & 0x000000FF) << 24; break;
+  }
+  r[inst.src_t] = res;
+  pc_increase(4);
+ }
+void cpu::LWR(const instruction& inst){
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
+  //word w_adr = (word) ((base + offset) - (base + offset) % 4);
+  word w_adr = (base + offset) - (base + offset) % 4;
+
+  word full_word = m.read_w(w_adr);
+  word res = r[inst.src_t];
+  int w_off = offset & 0x3;
+  switch(w_off){
+    case 0x0: res = ((res & 0xFFFFFF00) | full_word >> 24); break;
+    case 0x1: res = ((res & 0xFFFF0000) | full_word >> 16); break;
+    case 0x2: res = ((res & 0xFF000000) | full_word >> 8 ); break;
+    case 0x3: res = full_word; break;
+  }
+  r[inst.src_t] = res;
+  pc_increase(4);
+ }
 void cpu::MFHI(const instruction& inst){
   word data = HI;
   r[inst.destn] = data;
@@ -390,8 +439,22 @@ void cpu::ORI(const instruction& inst){
   r[inst.src_t] = res;
   pc_increase(4);
  }
-void cpu::SB(const instruction& inst){ }
-void cpu::SH(const instruction& inst){ }
+void cpu::SB(const instruction& inst){
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
+  word adr = base + offset;
+  word val = r[inst.src_t] & 0x000000FF;
+  m.write_b(adr, val);
+  pc_increase(4);
+ }
+void cpu::SH(const instruction& inst){
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
+  word adr = base + offset;
+  word val = r[inst.src_t] & 0x0000FFFF;
+  m.write_h(adr, val);
+  pc_increase(4);
+ }
 void cpu::SLL(const instruction& inst){
   word r1 = r[inst.src_t];
   word res = r1 << inst.shamt;
@@ -479,8 +542,8 @@ void cpu::SUBU(const instruction& inst){ // not tested
   pc_increase(4);
  }
 void cpu::SW(const instruction& inst){
-  word base = r[inst.src_s];
-  word offset = sign_extend_imi(inst);
+  s_word base = r[inst.src_s];
+  s_word offset = sign_extend_imi(inst);
   word adr = base + offset;
   word val = r[inst.src_t];
   m.write_w(adr, val);

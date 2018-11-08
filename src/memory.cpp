@@ -143,7 +143,7 @@ word memory::read_h(word adr){
     word word_data = (*data)[index];
     int hw_off = adr & 0x3;
     switch(hw_off){
-      case 0x0: return (word_data & 0xFFFF0000) >> 16);
+      case 0x0: return (word_data & 0xFFFF0000) >> 16;
       case 0x2: return (word_data & 0x0000FFFF);
     }
 
