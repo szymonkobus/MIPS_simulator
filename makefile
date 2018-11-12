@@ -41,3 +41,6 @@ run: simulator
 
 clear:
 	rm -rf bin
+
+rmtst:
+	rm benchmark_src/tst_bench_bin/*

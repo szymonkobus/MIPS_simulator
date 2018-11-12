@@ -22,10 +22,9 @@ def print_file(TestId, Instruction, Author, Exit, Message):
     print("Exit: " + Exit)
     print("Message: " + Message)
 
-#p_parser = "parser/bin/parser"
-p_parser = "parser.exe"
-p_tests = "benchmark_src/tests/"
-p_tests_code = "benchmark_src/tst_bench_code/"
+p_parser = "parser/bin/parser"
+#p_parser = "parser.exe"
+p_tests = "benchmark_src/all_tests/"
 p_tests_binary = "benchmark_src/tst_bench_bin/"
 
 simulator = "bin/mips_simulator"
@@ -34,7 +33,7 @@ parser_exists = file_exists(p_parser)
 
 files = os.listdir(p_tests)
 
-for file_name in files:
+for file_name in sorted(files):
     file = open(p_tests + file_name)
     TestId = file.readline()[8:-1]
     Instruction = file.readline()[13:-1]
@@ -49,7 +48,7 @@ for file_name in files:
 
     if(file_exists(p_tests_binary + TestId + ".bin")):
         exit = sps.call([simulator, p_tests_binary + TestId + ".bin"], stderr=sps.PIPE)
-        #print("\nexti: {}".format(exit))
+        print("\nexit: {}".format(exit))
         Status = "Pass" if (int(Expected_Exit) == exit) else "Fail"
         # TestId , Instruction , Status , Author [, Message]
         print(TestId + " , " + Instruction + " , " + Status + " , " + Author + " , " + Message)
