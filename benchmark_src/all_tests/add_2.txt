@@ -1,4 +1,4 @@
-TestId: ADD_1
+TestId: ADD_2
 Instruction: add
 Author: sk3017
 Exit: 240
