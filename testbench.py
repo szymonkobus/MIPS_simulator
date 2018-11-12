@@ -25,7 +25,6 @@ def print_file(TestId, Instruction, Author, Exit, Message):
 p_parser = "parser/bin/parser"
 #p_parser = "parser.exe"
 p_tests = "benchmark_src/tests/"
-p_tests_code = "benchmark_src/tst_bench_code/"
 p_tests_binary = "benchmark_src/tst_bench_bin/"
 
 simulator = "bin/mips_simulator"
@@ -49,7 +48,7 @@ for file_name in files:
 
     if(file_exists(p_tests_binary + TestId + ".bin")):
         exit = sps.call([simulator, p_tests_binary + TestId + ".bin"], stderr=sps.PIPE)
-        #print("\nexti: {}".format(exit))
+        print("\nexti: {}".format(exit))
         Status = "Pass" if (int(Expected_Exit) == exit) else "Fail"
         # TestId , Instruction , Status , Author [, Message]
         print(TestId + " , " + Instruction + " , " + Status + " , " + Author + " , " + Message)

@@ -1,10 +1,10 @@
-TestId: ADD_1
-Instruction: add
+TestId: ADDU_2
+Instruction: addu
 Author: sk3017
 Exit: 240
 Message: (-13) + (-3)
 
 addi $10, $0, -13
 addi $11, $0, -3
-add $2, $10, $11
+addu $2, $10, $11
 jr $0
