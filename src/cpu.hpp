@@ -92,6 +92,8 @@ private:
   void pc_increase(word offset);
   word sign_extend_imi(const instruction& inst);
   bool test_overflow(word a, word b, word res);
+  void test_zero_fields_R(const instruction& inst);
+  void test_zero_fields_I(const instruction& inst);
 };
 
 #endif
