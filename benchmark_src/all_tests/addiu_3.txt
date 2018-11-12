@@ -2,7 +2,7 @@ TestId: ADDIU_3
 Instruction: addiu
 Author: sk3017
 Exit: 1
-Message: sign extension of immediate
+Message: sign extension
 
 addiu $1, $0, -5
 srl $2, $1, 31

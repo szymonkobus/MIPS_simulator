@@ -104,7 +104,7 @@ void cpu::execute_i(const instruction& inst){
     case 0x04: BEQ(inst); break;
     case 0x05: BNE(inst); break;
     case 0x06: BLEZ(inst); break;
-    case 0x07: BGTZ(inst); break; 
+    case 0x07: BGTZ(inst); break;
     case 0x08: ADDI(inst); break; //ADDI
     case 0x09: ADDIU(inst); break; //ADDIU
     case 0x0A: SLTI(inst); break;
@@ -214,9 +214,9 @@ void cpu::BGEZ(const instruction& inst){
  }
 void cpu::BGEZAL(const instruction& inst){
   s_word r1 = r[inst.src_s];
+  r[31] = npc + 4;          // wydaje mi sie ze reg31 zmienia sie niezaleznie czy condition jest prawdziwe czy nie
   if(r1 >= 0){
     word offset = sign_extend_imi(inst) << 2;
-    r[31] = npc + 4;
     pc_increase(offset);
   }
   else{
@@ -255,9 +255,9 @@ void cpu::BLTZ(const instruction& inst){
  }
 void cpu::BLTZAL(const instruction& inst){
   s_word r1 = r[inst.src_s];
+  r[31] = npc + 4; // same stuff
   if(r1 < 0){
     word offset = sign_extend_imi(inst) << 2;
-    r[31] = npc + 4;
     pc_increase(offset);
   }
   else{
@@ -297,7 +297,7 @@ void cpu::JALR(const instruction& inst){
   r[inst.destn] = npc + 4;
   word adr = r[inst.src_s];
   pc = npc;
-  npc = adr;  
+  npc = adr;
  }
 void cpu::JAL(const instruction& inst){
   r[31] = npc + 4;
@@ -487,7 +487,7 @@ void cpu::SLTIU(const instruction& inst){
   word r2 = sign_extend_imi(inst);
   word res = (r1 < r2) ? 1:0;
   r[inst.src_t] = res;
-  pc_increase(4); 
+  pc_increase(4);
  }
 void cpu::SLTU(const instruction& inst){
   word r1 = r[inst.src_s];
