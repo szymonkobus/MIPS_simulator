@@ -61,36 +61,38 @@ void cpu::execute(const instruction& inst){
 }
 
 void cpu::execute_r(const instruction& inst){
+  test_zero_fields_R(inst);
   switch (inst.funct){
-    case 0x00: SLL(inst); break;  //SLL
-    case 0x02: SRL(inst); break;  //SRL
-    case 0x03: SRA(inst); break;  //SRA
-    case 0x07: SRAV(inst); break; //SRAV
-    case 0x08: JR(inst); break;   //JR
-    case 0x09: JALR(inst); break;
-    case 0x10: MFHI(inst); break; //MFHI
-    case 0x11: MTHI(inst); break; //MTHI
-    case 0x12: MFLO(inst); break; //MFLO
-    case 0x13: MTLO(inst); break; //MTLO
-    case 0x18: MULT(inst); break; //MULT
-    case 0x19: MULTU(inst); break;
-    case 0x1A: DIV(inst); break; //DIV
-    case 0x1B: DIVU(inst); break; //DIVU
-    case 0x20: ADD(inst); break;  //ADD
-    case 0x21: ADDU(inst); break; //ADDU
-    case 0x22: SUB(inst); break;
-    case 0x23: SUBU(inst); break;
-    case 0x24: AND(inst); break; //AND
-    case 0x25: OR(inst); break;
-    case 0x26: XOR(inst); break;
-    case 0x2A: SLT(inst); break;
-    case 0x2B: SLTU(inst); break;
+    case 0x00: SLL(inst); break;  //rs
+    case 0x02: SRL(inst); break;  //rs
+    case 0x03: SRA(inst); break;  //rs
+    case 0x07: SRAV(inst); break; //shamt
+    case 0x08: JR(inst); break;   //rt,rd
+    case 0x09: JALR(inst); break; //rt
+    case 0x10: MFHI(inst); break; //rs,rt
+    case 0x11: MTHI(inst); break; //rt,rd,shamt
+    case 0x12: MFLO(inst); break; //rs,rt
+    case 0x13: MTLO(inst); break; //rt,rd,shamt
+    case 0x18: MULT(inst); break; //rd,shamt
+    case 0x19: MULTU(inst); break; //rd,shamt
+    case 0x1A: DIV(inst); break; //rd,shamt
+    case 0x1B: DIVU(inst); break; //rd,shamt
+    case 0x20: ADD(inst); break;  //shamt
+    case 0x21: ADDU(inst); break; //shamt
+    case 0x22: SUB(inst); break; //shamt
+    case 0x23: SUBU(inst); break; //shamt
+    case 0x24: AND(inst); break; //shamt
+    case 0x25: OR(inst); break; //shamt
+    case 0x26: XOR(inst); break; //shamt
+    case 0x2A: SLT(inst); break; //shamt
+    case 0x2B: SLTU(inst); break; //shamt
 
     default: std::cerr << "error: r instruction not implemented" << '\n'; std::exit(-12);
   }
 }
 
 void cpu::execute_i(const instruction& inst){
+  test_zero_fields_I(inst);
   switch (inst.opcode){
     case 0x01: { //branches
       switch (inst.src_t){
@@ -99,25 +101,25 @@ void cpu::execute_i(const instruction& inst){
         case 0x10: BLTZAL(inst); break;
         case 0x11: BGEZAL(inst); break;
         default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);
-     }
+      }
      } break;
     case 0x04: BEQ(inst); break;
     case 0x05: BNE(inst); break;
-    case 0x06: BLEZ(inst); break;
-    case 0x07: BGTZ(inst); break;
-    case 0x08: ADDI(inst); break; //ADDI
-    case 0x09: ADDIU(inst); break; //ADDIU
+    case 0x06: BLEZ(inst); break; //rt
+    case 0x07: BGTZ(inst); break; //rt
+    case 0x08: ADDI(inst); break;
+    case 0x09: ADDIU(inst); break;
     case 0x0A: SLTI(inst); break;
     case 0x0B: SLTIU(inst); break;
     case 0x0C: ANDI(inst); break;
-    case 0x0D: ORI(inst); break; //ORI
-    case 0x0F: LUI(inst); break; //LUI
-    case 0x20: LB(inst); break; //LB
+    case 0x0D: ORI(inst); break;
+    case 0x0F: LUI(inst); break; //rs
+    case 0x20: LB(inst); break;
     case 0x22: LWL(inst); break;
-    case 0x23: LW(inst); break; //LW
-    case 0x24: LBU(inst); break; //LBU
+    case 0x23: LW(inst); break;
+    case 0x24: LBU(inst); break;
     case 0x26: LWR(inst); break;
-    case 0x2B: SW(inst); break; //SW
+    case 0x2B: SW(inst); break;
     default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);
   }
  }
@@ -604,3 +606,42 @@ void cpu::reg_print(bool s_nbr){
     }
   }
  }
+
+ void cpu::test_zero_fields_R(const instruction& inst){
+  if(inst.opcode != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);}
+  switch (inst.funct){
+    case 0x00: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break;  //rs
+    case 0x02: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break;  //rs
+    case 0x03: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs
+    case 0x07: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
+    case 0x08: if(inst.src_t != 0 || inst.destn != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break;   //rt,rd
+    case 0x09: if(inst.src_t != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt
+    case 0x10: if(inst.src_s != 0 || inst.src_t != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs,rt
+    case 0x11: if(inst.src_t != 0 || inst.destn != 0 && inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt,rd,shamt
+    case 0x12: if(inst.src_s != 0 || inst.src_t != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs,rt
+    case 0x13: if(inst.src_t != 0 || inst.destn != 0 && inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt,rd,shamt
+    case 0x18: if(inst.destn != 0 || inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rd,shamt
+    case 0x19: if(inst.destn != 0 || inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rd,shamt
+    case 0x1A: if(inst.destn != 0 || inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rd,shamt
+    case 0x1B: if(inst.destn != 0 || inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rd,shamt
+    case 0x20: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break;  //shamt
+    case 0x21: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
+    case 0x22: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
+    case 0x23: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
+    case 0x24: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
+    case 0x25: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
+    case 0x26: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
+    case 0x2A: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
+    case 0x2B: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
+
+    default: std::cerr << "error: r instruction not implemented" << '\n'; std::exit(-12);
+  }
+  }
+
+  void cpu::test_zero_fields_I(const instruction& inst){
+    switch (inst.opcode){
+    case 0x06: if(inst.src_t != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt
+    case 0x07: if(inst.src_t != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt
+    case 0x0F: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs
+    }
+  }

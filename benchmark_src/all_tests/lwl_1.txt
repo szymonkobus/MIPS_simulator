@@ -1,3 +1,9 @@
+TestId: LWL_1
+Instruction: LWL
+Author: ak9717
+Exit: 239
+Message: LWL 4 numbers
+
 lui $1, 0x2000
 addi $1, $1, 0x7FFC
 lui $7, 0x3108
@@ -15,23 +21,14 @@ ori $12, $12, 0xD06A
 ori $13, $13, 0x4444
 
 add $18, $18, $10
-add $26, $26, $10
 add $19, $19, $11
-add $27, $27, $11
 add $20, $20, $12
-add $28, $28, $12
 add $21, $21, $13
-add $29, $29, $13
 
 lwl $18, 0x0($1)
 lwl $19, 0x1($1)
 lwl $20, 0x2($1)
 lwl $21, 0x3($1)
-
-lwr $26, 0x0($1)
-lwr $27, 0x1($1)
-lwr $28, 0x2($1)
-lwr $29, 0x3($1)
 
 srl $2, $18, 0x18
 srl $3, $19, 0x10
@@ -41,32 +38,5 @@ srl $3, $20, 0x8
 andi $3, $3, 0xFF
 add $2, $2, $3
 andi $3, $21, 0xFF
-add $2, $2, $3
-
-srl $2, $26, 0x18
-srl $3, $27, 0x10
-andi $3, $3, 0xFF
-sub $2, $2, $3
-srl $3, $28, 0x8
-andi $3, $3, 0xFF
-sub $2, $2, $3
-andi $3, $29, 0xFF
-sub $2, $2, $3
-
 jr $0
-
-#at the end:
-#10 0x69696969
-#11 0xABCDEF12
-#12 0xBACAD06A
-#13 0x1C3F4444
-
-#18 0x3108AA88
-#19 0x08AA8812
-#20 0xAA88D06A
-#21 0x883F4444
-
-#26 0x69696931
-#27 0xABCD3108
-#28 0xBA3108AA
-#29 0x3108AA88
+add $2, $2, $3
