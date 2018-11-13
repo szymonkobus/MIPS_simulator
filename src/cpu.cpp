@@ -61,7 +61,7 @@ void cpu::execute(const instruction& inst){
 }
 
 void cpu::execute_r(const instruction& inst){
-  test_zero_fields_R(inst);
+  //test_zero_fields_R(inst);
   switch (inst.funct){
     case 0x00: SLL(inst); break;  //rs
     case 0x02: SRL(inst); break;  //rs
@@ -92,7 +92,7 @@ void cpu::execute_r(const instruction& inst){
 }
 
 void cpu::execute_i(const instruction& inst){
-  test_zero_fields_I(inst);
+  //test_zero_fields_I(inst);
   switch (inst.opcode){
     case 0x01: { //branches
       switch (inst.src_t){
@@ -115,6 +115,7 @@ void cpu::execute_i(const instruction& inst){
     case 0x0D: ORI(inst); break;
     case 0x0F: LUI(inst); break; //rs
     case 0x20: LB(inst); break;
+    case 0x21: LH(inst); break;
     case 0x22: LWL(inst); break;
     case 0x23: LW(inst); break;
     case 0x24: LBU(inst); break;
@@ -311,6 +312,7 @@ void cpu::JR(const instruction& inst){
   pc = npc;
   npc = jump_address;
  }
+
 void cpu::LB(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
@@ -320,6 +322,7 @@ void cpu::LB(const instruction& inst){
   r[inst.src_t] = res;
   pc_increase(4);
  }
+
 void cpu::LBU(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
@@ -328,6 +331,7 @@ void cpu::LBU(const instruction& inst){
   r[inst.src_t] = res;
   pc_increase(4);
  }
+
 void cpu::LH(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
@@ -337,6 +341,7 @@ void cpu::LH(const instruction& inst){
   r[inst.src_t] = res;
   pc_increase(4);
  }
+
 void cpu::LHU(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
@@ -345,11 +350,13 @@ void cpu::LHU(const instruction& inst){
   r[inst.src_t] = res;
   pc_increase(4);
  }
+
 void cpu::LUI(const instruction& inst){
   word data = inst.i_imi << 16;
   r[inst.src_t] = data;
   pc_increase(4);
  }
+
 void cpu::LW(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
@@ -607,6 +614,7 @@ void cpu::reg_print(bool s_nbr){
   }
  }
 
+/*
 void cpu::test_zero_fields_R(const instruction& inst){
   if(inst.opcode != 0)
     std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);
@@ -645,3 +653,4 @@ void cpu::test_zero_fields_R(const instruction& inst){
     case 0x0F: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs
     }
   }
+*/

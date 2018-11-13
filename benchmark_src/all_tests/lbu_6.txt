@@ -1,0 +1,9 @@
+TestId: LBU_6
+Instruction: lbu
+Author: sk3017
+Exit: 245
+Message: reading from illegal address: 0x10000000
+
+lui $20, 0x1000    #base
+lbu $10, 0x0($20)
+jr $0
