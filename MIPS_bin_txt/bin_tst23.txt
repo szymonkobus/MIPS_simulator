@@ -4,23 +4,27 @@ addi $4, $4, 0xFFF9
 div $3, $4
 mflo $11
 mfhi $12
+add $11, $11, $12
+addi $12, $0,  
+beq $11
+
 
 #-101/7
-addi $6, $6, 0xFF9B
+div2: addi $6, $6, 0xFF9B
 addi $7, $7, 0x7
 div $6, $7
 mflo $14
 mfhi $15
 
 #101/7
-addi $19, $19, 0x65
+div3: addi $19, $19, 0x65
 addi $20, $20, 0x7
 div $19, $20
 mflo $27
 mfhi $28
 
 #-101/-7
-addi $22, $22, 0xFF9B
+div4: addi $22, $22, 0xFF9B
 addi $23, $23, 0xFFF9
 div $22, $23
 mflo $30

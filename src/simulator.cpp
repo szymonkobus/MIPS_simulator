@@ -4,7 +4,7 @@
 #include "cpu.hpp"
 
 int main(int argc, char const *argv[]) {
-  std::string name_bin = "MIPS_bin/out_bin.bin";
+  std::string name_bin = "MIPS_bin/bin_tst22.mips.bin";
 
   if(argc == 2) name_bin = argv[1];
 
