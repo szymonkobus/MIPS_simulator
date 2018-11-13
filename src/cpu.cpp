@@ -607,8 +607,9 @@ void cpu::reg_print(bool s_nbr){
   }
  }
 
- void cpu::test_zero_fields_R(const instruction& inst){
-  if(inst.opcode != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);}
+void cpu::test_zero_fields_R(const instruction& inst){
+  if(inst.opcode != 0)
+    std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);
   switch (inst.funct){
     case 0x00: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break;  //rs
     case 0x02: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break;  //rs
@@ -633,10 +634,9 @@ void cpu::reg_print(bool s_nbr){
     case 0x26: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
     case 0x2A: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
     case 0x2B: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
-
     default: std::cerr << "error: r instruction not implemented" << '\n'; std::exit(-12);
   }
-  }
+}
 
   void cpu::test_zero_fields_I(const instruction& inst){
     switch (inst.opcode){
