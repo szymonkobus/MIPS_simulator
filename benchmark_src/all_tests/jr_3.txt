@@ -1,0 +1,8 @@
+TestId: JR_3
+Instruction: jr
+Author: sk3017
+Exit: 1
+Message: delayed jump
+
+jr $0
+addi $2, $0, 1

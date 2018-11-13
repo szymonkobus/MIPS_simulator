@@ -2,7 +2,12 @@ TestId: JR_2
 Instruction: jr
 Author: sk3017
 Exit: 1
-Message: delayed jump
+Message: forward jump
 
+lui $15, 0x1000
+addiu $15, $15, 20
+jr $15
+nop
 jr $0
-addi $2, $0, 1
+addi $2, $2, 1
+jr $0

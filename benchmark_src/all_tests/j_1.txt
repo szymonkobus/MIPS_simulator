@@ -1,0 +1,12 @@
+TestId: J_1
+Instruction: j
+Author: sk3017
+Exit: 7
+Message: jump to 4012
+
+j 4012
+addiu $2, $0, 3
+jr $0
+mnop 1000
+addiu $2, $0, 7
+jr $0
