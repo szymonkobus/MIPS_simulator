@@ -608,10 +608,12 @@ void cpu::reg_print(bool s_nbr){
  }
 
 void cpu::test_zero_fields_R(const instruction& inst){
-  if(inst.opcode != 0)
-    std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);
+  if(inst.opcode != 0){
+    std::cerr << "error: invalid instruction (opcode)" << '\n'; 
+    std::exit(-12);
+  }
   switch (inst.funct){
-    case 0x00: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break;  //rs
+    case 0x00: if(inst.src_s != 0) {std::cerr << "error: invalid instruction srcs" << '\n'; std::exit(-12);} break;  //rs
     case 0x02: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break;  //rs
     case 0x03: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs
     case 0x07: if(inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //shamt
