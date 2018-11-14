@@ -1,0 +1,10 @@
+TestId: Lh_6
+Instruction: lh
+Author: sk3017
+Exit: 245
+Message: reading unaligned address
+
+lui $20, 0x2400    #base
+addiu $20, $20, 0x1
+lh $10, 0x0($20)
+jr $0

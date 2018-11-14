@@ -5,7 +5,6 @@
 
 using word = uint32_t;
 
-
 memory::memory(){
   data = new std::vector<word>(0 , 1);
   inst = new std::vector<word>(0x1000000 , 0);
@@ -131,7 +130,7 @@ word memory::read_w(word adr){
     std::cerr << "read_w, in char: " << in_w << '\n';
     return (in_w == EOF) ? -1 : in_w & 0x0FF;
   }
-  std::cerr << "error: trying to read from address: " << adr << '\n';
+  std::cerr << "error: trying to read word from address: " << adr << '\n';
   std::exit(-11);
  }
 
@@ -155,14 +154,14 @@ word memory::read_h(word adr){
     }
     return 0;
   }
-  std::cerr << "error: trying to read from address: " << adr << '\n';
+  std::cerr << "error: trying to read halfword from address: " << adr << '\n';
   std::exit(-11);
 }
 
 word memory::read_b(word adr){
   if(adr >= 0x20000000 && adr < 0x24000000){
     int index = (int) (adr - 0x20000000) / 4;
-    if(index > data->size()) return 0;
+    if(index >= data->size()) return 0;
 
     word word_data = (*data)[index];
     int byte_off = adr & 0x3;
@@ -180,7 +179,7 @@ word memory::read_b(word adr){
       return (in_w == EOF) ? -1 : in_w & 0x0FF;
     }
   }
-  std::cerr << "error: trying to read from address: " << adr << '\n';
+  std::cerr << "error: trying to read byte from address: " << adr << '\n';
   std::exit(-11);
 }
 
