@@ -119,6 +119,7 @@ void cpu::execute_i(const instruction& inst){
     case 0x22: LWL(inst); break;
     case 0x23: LW(inst); break;
     case 0x24: LBU(inst); break;
+    case 0x25: LHU(inst); break;
     case 0x26: LWR(inst); break;
     case 0x2B: SW(inst); break;
     default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);

@@ -1,9 +1,9 @@
-TestId: Lh_4
-Instruction: lh
+TestId: LW_3
+Instruction: lw
 Author: sk3017
 Exit: 245
 Message: reading from illegal address: 0x24000000
 
 lui $20, 0x2400    #base
-lh $10, 0x0($20)
+lw $10, 0x0($20)
 jr $0

@@ -44,7 +44,6 @@ for file_name in sorted(files):
 
     if(parser_exists and not file_exists(p_tests_binary + TestId + ".bin")):
         create_bin(file, TestId, p_parser, p_tests_binary)
-        #create_bin u mnie nie działa...
 
     if(file_exists(p_tests_binary + TestId + ".bin")):
         exit = sps.call([simulator, p_tests_binary + TestId + ".bin"], stderr=sps.PIPE)

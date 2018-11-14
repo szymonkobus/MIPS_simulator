@@ -1,8 +1,8 @@
-TestId: LWL_1
+TestId: LWL_3
 Instruction: lwl
 Author: sk3017
-Exit: 35
-Message: load with 0 offset
+Exit: 64
+Message: load with 2 offset
 
 lui $20, 0x2030     #base
 
@@ -10,9 +10,8 @@ lui $10, 0x1122
 addiu $10, $10, 0x3344
 sw $10, 0x0($20)
 
-lwl $4, 0x0($20)
-lui $5, 0x1122
-addiu $5, $5, 0x3344
+lwl $4, 0x2($20)
+lui $5, 0x3344
 
 beq $5, $4, pass
 nop
