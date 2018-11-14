@@ -1,0 +1,11 @@
+TestId: OR_1
+Instruction: OR
+Author: ak9717
+Exit: 13
+Message: 1100 | 0001 =
+
+addi $3, $3, 0xC
+addi $2, $2, 0x1
+or $2, $2, $3
+jr $0
+nop

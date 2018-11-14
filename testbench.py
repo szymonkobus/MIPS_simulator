@@ -5,12 +5,12 @@ def file_exists(file):
     return os.path.exists(file)
 
 def create_bin(file, TestId, p_parser, p_tests_binary):
-    par = sps.Popen([p_parser],stdin=sps.PIPE, stderr=sps.PIPE, stdout=sps.PIPE)
+    par = sps.Popen("./"[p_parser],stdin=sps.PIPE, stderr=sps.PIPE, stdout=sps.PIPE)
     code = ""
     next_line = file.readline()
     next_line = file.readline()
     while(next_line != None and next_line != ""):
-        code = code + next_line;
+        code = code + next_line
         next_line = file.readline()
     code = code + "exit\n" + p_tests_binary + TestId + ".bin\n"
     par.communicate(input = code.encode())
