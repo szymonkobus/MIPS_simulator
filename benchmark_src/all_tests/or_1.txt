@@ -1,5 +1,5 @@
 TestId: OR_1
-Instruction: OR
+Instruction: or
 Author: ak9717
 Exit: 13
 Message: 1100 | 0001 =
