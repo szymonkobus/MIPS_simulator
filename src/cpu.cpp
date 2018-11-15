@@ -66,6 +66,7 @@ void cpu::execute_r(const instruction& inst){
     case 0x00: SLL(inst); break;  //rs
     case 0x02: SRL(inst); break;  //rs
     case 0x03: SRA(inst); break;  //rs
+    case 0x04: SLLV(inst); break; // TODO: dodalem to nie wiem czy gdzies jescze trzeba cos zmienic
     case 0x07: SRAV(inst); break; //shamt
     case 0x08: JR(inst); break;   //rt,rd
     case 0x09: JALR(inst); break; //rt
@@ -476,13 +477,15 @@ void cpu::SLL(const instruction& inst){
   r[inst.destn] = res;
   pc_increase(4);
  }
+
 void cpu::SLLV(const instruction& inst){
   word r1 = r[inst.src_s];
-  word r2 = r[inst.src_t];
+  word r2 = r[inst.src_t] & 0x1F;
   word res = r2 << r1;
   r[inst.destn] = res;
   pc_increase(4);
  }
+
 void cpu::SLT(const instruction& inst){
   s_word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
