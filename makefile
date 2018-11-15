@@ -40,7 +40,8 @@ run: simulator
 	./bin/mips_simulator
 
 clear:
-	rm -rf bin
+	rm -rf bin/*.o
+	rm -rf bin/mips_simulator
 
 rmtst:
 	rm benchmark_src/tst_bench_bin/*

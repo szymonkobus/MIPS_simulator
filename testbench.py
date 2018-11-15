@@ -23,7 +23,6 @@ def print_file(TestId, Instruction, Author, Exit, Message):
     print("Message: " + Message)
 
 p_parser = "parser/bin/parser"
-#p_parser = "parser.exe"
 p_tests = "benchmark_src/tests/"
 p_tests_binary = "benchmark_src/tst_bench_bin/"
 

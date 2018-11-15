@@ -121,6 +121,7 @@ void cpu::execute_i(const instruction& inst){
     case 0x24: LBU(inst); break;
     case 0x25: LHU(inst); break;
     case 0x26: LWR(inst); break;
+    case 0x28: SB(inst); break;
     case 0x2B: SW(inst); break;
     default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);
   }
@@ -449,6 +450,7 @@ void cpu::ORI(const instruction& inst){
   r[inst.src_t] = res;
   pc_increase(4);
  }
+
 void cpu::SB(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
@@ -457,6 +459,7 @@ void cpu::SB(const instruction& inst){
   m.write_b(adr, val);
   pc_increase(4);
  }
+
 void cpu::SH(const instruction& inst){
   s_word base = r[inst.src_s];
   s_word offset = sign_extend_imi(inst);
@@ -618,7 +621,7 @@ void cpu::reg_print(bool s_nbr){
 /*
 void cpu::test_zero_fields_R(const instruction& inst){
   if(inst.opcode != 0){
-    std::cerr << "error: invalid instruction (opcode)" << '\n'; 
+    std::cerr << "error: invalid instruction (opcode)" << '\n';
     std::exit(-12);
   }
   switch (inst.funct){

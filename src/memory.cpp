@@ -53,9 +53,9 @@ memory::~memory(){
 void memory::write_w(word adr, word new_data){
   if(adr >= 0x20000000 && adr < 0x24000000 && adr % 4 == 0){
     int index = (adr - 0x20000000) >> 2;
-    if(index >= data->size()){
+    if(index >= data->size())
       data->resize(index + 1, 0);
-    }
+
     (*data)[index] = new_data;
   }else if(adr == 0x30000004){
     // TODO: test
@@ -69,15 +69,14 @@ void memory::write_w(word adr, word new_data){
 void memory::write_h(word adr, word new_data){
   if(adr >= 0x20000000 && adr < 0x24000000 && adr % 2 == 0){
     int index = (adr - 0x20000000) >> 2;
-    if(index >= data->size()){
+    if(index >= data->size())
       data->resize(index + 1, 0);
-    }
 
     word old_data = (*data)[index];
     word combined_data;
-    int hw_off = adr & 0x3;
-    switch(hw_off){
-      case 0x0: combined_data = (old_data & 0x0000FFFF) | (new_data << 16);
+
+    switch(adr & 0x3){
+      case 0x0: combined_data = (old_data & 0x0000FFFF) | (new_data << 16);  break;
       case 0x2: combined_data = (old_data & 0xFFFF0000) | new_data;
     }
 
@@ -101,13 +100,19 @@ void memory::write_b(word adr, word new_data){
 
     word old_data = (*data)[index];
     word combined_data;
-    int byte_off = adr & 0x3;
-    switch(byte_off){
-      case 0x0: combined_data = (old_data & 0x00FFFFFF) | (new_data << 24);
-      case 0x1: combined_data = (old_data & 0xFF00FFFF) | (new_data << 16);
-      case 0x2: combined_data = (old_data & 0xFFFF00FF) | (new_data <<  8);
-      case 0x3: combined_data = (old_data & 0xFFFFFF00) | new_data;
+
+    switch(adr & 0x3){
+      case 0x0: combined_data = ((old_data & 0x00FFFFFF) | (new_data << 24)); break;
+      case 0x1: combined_data = ((old_data & 0xFF00FFFF) | (new_data << 16)); break;
+      case 0x2: combined_data = ((old_data & 0xFFFF00FF) | (new_data <<  8)); break;
+      case 0x3: combined_data = ((old_data & 0xFFFFFF00) | new_data);
     }
+
+    std::cerr << "lb acces." << '\n';
+    std::cerr << "address: " << adr << '\n';
+    std::cerr << "old_data: " << old_data << '\n';
+    std::cerr << "combined_data: " << combined_data << '\n';
+    std::cerr << "adr & 0x3: " << (adr & 0x3) << '\n';
 
     (*data)[index] = combined_data;
   }else if((adr >> 2) == (0x30000004 >> 2)){
@@ -140,9 +145,9 @@ word memory::read_h(word adr){
     if(index > data->size()) return 0;
 
     word word_data = (*data)[index];
-    int hw_off = adr & 0x3;
-    switch(hw_off){
-      case 0x0: return (word_data & 0xFFFF0000) >> 16;
+
+    switch(adr & 0x2){
+      case 0x0: return (word_data & 0xFFFF0000) >> 16; break;
       case 0x2: return (word_data & 0x0000FFFF);
     }
 
@@ -164,11 +169,11 @@ word memory::read_b(word adr){
     if(index >= data->size()) return 0;
 
     word word_data = (*data)[index];
-    int byte_off = adr & 0x3;
-    switch(byte_off){
-      case 0x0: return (word_data & 0xFF000000) >> 24;
-      case 0x1: return (word_data & 0x00FF0000) >> 16;
-      case 0x2: return (word_data & 0x0000FF00) >> 8;
+
+    switch(adr & 0x3){
+      case 0x0: return (word_data & 0xFF000000) >> 24;  break;
+      case 0x1: return (word_data & 0x00FF0000) >> 16;  break;
+      case 0x2: return (word_data & 0x0000FF00) >> 8;   break;
       case 0x3: return (word_data & 0x000000FF);
     }
 
@@ -186,7 +191,7 @@ word memory::read_b(word adr){
 word memory::read_inst(int adr){
   if(adr >= 0x10000000 && adr < 0x11000000 && adr % 4 == 0){
     int index = (adr - 0x10000000) / 4;
-    if(index > n_inst  && false){ //TODO: napraw
+    if(index > n_inst && false){ //TODO: napraw
       std::cerr << "error: trying to read instruction outside legal range"<< '\n';
       std::exit(-11);
     }
