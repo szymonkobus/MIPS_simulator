@@ -76,8 +76,8 @@ void memory::write_h(word adr, word new_data){
     word combined_data;
 
     switch(adr & 0x3){
-      case 0x0: combined_data = (old_data & 0x0000FFFF) | (new_data << 16);  break;
-      case 0x2: combined_data = (old_data & 0xFFFF0000) | new_data;
+      case 0x0: combined_data = ((old_data & 0x0000FFFF) | (new_data << 16));  break;
+      case 0x2: combined_data = ((old_data & 0xFFFF0000) | new_data);
     }
 
     (*data)[index] = combined_data;
@@ -107,12 +107,6 @@ void memory::write_b(word adr, word new_data){
       case 0x2: combined_data = ((old_data & 0xFFFF00FF) | (new_data <<  8)); break;
       case 0x3: combined_data = ((old_data & 0xFFFFFF00) | new_data);
     }
-
-    std::cerr << "lb acces." << '\n';
-    std::cerr << "address: " << adr << '\n';
-    std::cerr << "old_data: " << old_data << '\n';
-    std::cerr << "combined_data: " << combined_data << '\n';
-    std::cerr << "adr & 0x3: " << (adr & 0x3) << '\n';
 
     (*data)[index] = combined_data;
   }else if((adr >> 2) == (0x30000004 >> 2)){

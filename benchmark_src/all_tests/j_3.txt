@@ -4,9 +4,9 @@ Author: sk3017
 Exit: 10
 Message: delayed branch
 
-j 4012
+j 12
 addiu $2, $0, 3
 jr $0
-mnop 1000
+
 addiu $2, $2, 7
 jr $0

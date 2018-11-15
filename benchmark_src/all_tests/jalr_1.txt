@@ -5,12 +5,21 @@ Exit: 7
 Message: jump to 4028
 
 lui $15, 0x1000
-addiu $15, $15, 4028
+addiu $15, $15, 68
 jalr $26, $15
 addiu $2, $0, 3
 jr $0
 
-mnop 1000
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
 
 addiu $2, $0, 5
 jr $0

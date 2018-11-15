@@ -122,6 +122,7 @@ void cpu::execute_i(const instruction& inst){
     case 0x25: LHU(inst); break;
     case 0x26: LWR(inst); break;
     case 0x28: SB(inst); break;
+    case 0x29: SH(inst); break;
     case 0x2B: SW(inst); break;
     default: std::cerr << "error: i instruction not implemented" << '\n'; std::exit(-12);
   }
@@ -468,6 +469,7 @@ void cpu::SH(const instruction& inst){
   m.write_h(adr, val);
   pc_increase(4);
  }
+
 void cpu::SLL(const instruction& inst){
   word r1 = r[inst.src_t];
   word res = r1 << inst.shamt;
