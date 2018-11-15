@@ -13,3 +13,6 @@ parser_dir/
 
 .DS_Store
 .vscode
+
+_pycache_
+dist
