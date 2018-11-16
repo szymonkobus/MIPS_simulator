@@ -67,6 +67,7 @@ void cpu::execute_r(const instruction& inst){
     case 0x02: SRL(inst); break;  //rs
     case 0x03: SRA(inst); break;  //rs
     case 0x04: SLLV(inst); break; // TODO: dodalem to nie wiem czy gdzies jescze trzeba cos zmienic
+    case 0x06: SRLV(inst); break;
     case 0x07: SRAV(inst); break; //shamt
     case 0x08: JR(inst); break;   //rt,rd
     case 0x09: JALR(inst); break; //rt
@@ -114,6 +115,7 @@ void cpu::execute_i(const instruction& inst){
     case 0x0B: SLTIU(inst); break;
     case 0x0C: ANDI(inst); break;
     case 0x0D: ORI(inst); break;
+    case 0x0E: XORI(inst); break;
     case 0x0F: LUI(inst); break; //rs
     case 0x20: LB(inst); break;
     case 0x21: LH(inst); break;
@@ -136,8 +138,7 @@ void cpu::execute_j(const instruction& inst){
   }
  }
 
-
-word cpu::sign_extend_imi(const instruction& inst){ //T
+word cpu::sign_extend_imi(const instruction& inst){
   word imi = inst.i_imi;
   return (imi >= 0x8000) ? (0xFFFF0000 | imi) : imi;
  }
@@ -479,8 +480,8 @@ void cpu::SLL(const instruction& inst){
  }
 
 void cpu::SLLV(const instruction& inst){
-  word r1 = r[inst.src_s];
-  word r2 = r[inst.src_t] & 0x1F;
+  word r1 = r[inst.src_s] & 0x1F;
+  word r2 = r[inst.src_t];
   word res = r2 << r1;
   r[inst.destn] = res;
   pc_increase(4);
@@ -514,31 +515,37 @@ void cpu::SLTU(const instruction& inst){
   r[inst.destn] = res;
   pc_increase(4);
  }
+
 void cpu::SRA(const instruction& inst){
-  s_word res = r[inst.src_t] >> inst.shamt;
+  s_word r1 = r[inst.src_t];
+  s_word res = r1 >> inst.shamt;
   r[inst.destn] = res;
   pc_increase(4);
  }
-void cpu::SRAV(const instruction& inst){ // not tested
+
+void cpu::SRAV(const instruction& inst){
   word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
   s_word res = r2 >> r1;
   r[inst.destn] = res;
   pc_increase(4);
 }
+
 void cpu::SRL(const instruction& inst){
   word r1 = r[inst.src_t];
   word res = r1 >> inst.shamt;
   r[inst.destn] = res;
   pc_increase(4);
  }
-void cpu::SRLV(const instruction& inst){  // not tested
-  word r1 = r[inst.src_s];
+
+void cpu::SRLV(const instruction& inst){
+  word r1 = r[inst.src_s] & 0x1F;
   word r2 = r[inst.src_t];
   word res = r2 >> r1;
   r[inst.destn] = res;
   pc_increase(4);
- }
+}
+
 void cpu::SUB(const instruction& inst){
   s_word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];

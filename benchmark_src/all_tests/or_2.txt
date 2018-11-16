@@ -2,7 +2,7 @@ TestId: OR_2
 Instruction: or
 Author: ak9717
 Exit: 13
-Message: 1100 | 1001 =
+Message: 1100 | 1001
 
 addi $3, $3, 0xC
 addi $2, $2, 0x9
