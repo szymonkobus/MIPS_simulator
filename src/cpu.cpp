@@ -630,7 +630,7 @@ void cpu::reg_print(bool s_nbr){
   }
  }
 
-/*
+
 void cpu::test_zero_fields_R(const instruction& inst){
   if(inst.opcode != 0){
     std::cerr << "error: invalid instruction (opcode)" << '\n';
@@ -671,4 +671,4 @@ void cpu::test_zero_fields_R(const instruction& inst){
     case 0x0F: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs
     }
   }
-*/
+

@@ -70,10 +70,10 @@ for file_name in sorted(files):
         if(exists(p_tests_binary + TestId + '.mips.bin')):#
             exit = sps.call([simulator, p_tests_binary + TestId + '.mips.bin'], stderr=sps.PIPE)#
             #print(p_tests_binary + TestId + '.mips.bin')
-            if(int(Expected_Exit) == exit):
+            if (int(Expected_Exit) == exit):
                 Status = "Pass"
                 passed_tst += 1
         #print(TestId + ", " + Instruction + ", " + Status + ", " + Author + ", " + Message)
         test_file.close()
 print("passed %d/%d tests" %(passed_tst, done_tst))
-rm(p_tests_binary) #? czemu
+rm(p_tests_binary)
