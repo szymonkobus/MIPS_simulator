@@ -41,7 +41,7 @@ memory::memory(std::string binary){
     std::exit(-11);
   }
   n_inst = i + 4;
-  std::cerr << "Number of instructions: " << i << '\n';
+  //std::cerr << "Number of instructions: " << i << '\n';
   infile.close();
 }
 
@@ -120,11 +120,16 @@ void memory::write_b(word adr, word new_data){
 }
 
 word memory::read_w(word adr){
-  if(adr >= 0x20000000 && adr < 0x24000000 && adr % 4 == 0){
-    int index = (adr - 0x20000000) >> 2;
-    if(index > data->size()) return 0;
+  if((adr >= 0x20000000 && adr < 0x24000000) && adr % 4 == 0){
+    int index = (int) (adr - 0x20000000) / 4;
+    if(index >= data->size()) return 0;
     else return (*data)[index];
-  }else if(adr == 0x30000000){
+  }
+  if((adr >= 0x10000000 && adr < 0x11000000) && adr % 4 == 0){
+    int index = (int) (adr - 0x10000000) / 4;
+    return (*inst)[index];
+  }
+  else if(adr == 0x30000000){
     word in_w = std::getchar();
     std::cerr << "read_w, in char: " << in_w << '\n';
     return (in_w == EOF) ? -1 : in_w & 0x0FF;
@@ -134,18 +139,17 @@ word memory::read_w(word adr){
  }
 
 word memory::read_h(word adr){
-  if(adr >= 0x20000000 && adr < 0x24000000 && adr % 2 == 0){
+  word word_data;
+  if((adr >= 0x20000000 && adr < 0x24000000) && adr % 2 == 0){
     int index = (int) (adr - 0x20000000) / 4;
-    if(index > data->size()) return 0;
-
-    word word_data = (*data)[index];
-
-    switch(adr & 0x2){
-      case 0x0: return (word_data & 0xFFFF0000) >> 16; break;
-      case 0x2: return (word_data & 0x0000FFFF);
-    }
-
-  }else if((adr >> 2) == (0x30000000 >> 2) && adr % 2 == 0){
+    if(index >= data->size()) return 0;
+    word_data = (*data)[index];
+  }
+  else if((adr >= 0x10000000 && adr < 0x11000000) && adr % 2 == 0){
+    int index = (int) (adr - 0x10000000) / 4;
+    word_data = (*inst)[index];
+  }
+  else if((adr >> 2) == (0x30000000 >> 2) && adr % 2 == 0){
     word in_w = std::getchar();
     if(adr % 4 == 2){
       std::cerr << "read_h, in char: " << in_w << '\n';
@@ -153,42 +157,51 @@ word memory::read_h(word adr){
     }
     return 0;
   }
-  std::cerr << "error: trying to read halfword from address: " << adr << '\n';
-  std::exit(-11);
+  else{
+    std::cerr << "error: trying to read halfword from address: " << adr << '\n';
+    std::exit(-11);
+  }
+
+  switch(adr & 0x2){
+    case 0x0: return (word_data & 0xFFFF0000) >> 16; break;
+    case 0x2: return (word_data & 0x0000FFFF);
+  }
 }
 
 word memory::read_b(word adr){
+  word word_data;
   if(adr >= 0x20000000 && adr < 0x24000000){
     int index = (int) (adr - 0x20000000) / 4;
     if(index >= data->size()) return 0;
-
-    word word_data = (*data)[index];
-
-    switch(adr & 0x3){
-      case 0x0: return (word_data & 0xFF000000) >> 24;  break;
-      case 0x1: return (word_data & 0x00FF0000) >> 16;  break;
-      case 0x2: return (word_data & 0x0000FF00) >> 8;   break;
-      case 0x3: return (word_data & 0x000000FF);
-    }
-
-  }else if((adr >> 2) == (0x30000000 >> 2)){  //shoudln't be used: think about the outcome
+    word_data = (*data)[index];
+  }
+  else if(adr >= 0x10000000 && adr < 0x11000000){
+    int index = (int) (adr - 0x10000000) / 4;
+    word_data = (*inst)[index];
+  }
+  else if((adr >> 2) == (0x30000000 >> 2)){  //shoudln't be used: think about the outcome
     word in_w = std::getchar();
     if(adr % 4 == 3){
       std::cerr << "read_b, in char: " << in_w << '\n';
       return (in_w == EOF) ? -1 : in_w & 0x0FF;
     }
   }
-  std::cerr << "error: trying to read byte from address: " << adr << '\n';
-  std::exit(-11);
+  else{
+    std::cerr << "error: trying to read byte from address: " << adr << '\n';
+    std::exit(-11);
+  }
+
+  switch(adr & 0x3){
+    case 0x0: return (word_data & 0xFF000000) >> 24;  break;
+    case 0x1: return (word_data & 0x00FF0000) >> 16;  break;
+    case 0x2: return (word_data & 0x0000FF00) >> 8;   break;
+    case 0x3: return (word_data & 0x000000FF);
+  }
 }
 
 word memory::read_inst(int adr){
-  if(adr >= 0x10000000 && adr < 0x11000000 && adr % 4 == 0){
+  if((adr >= 0x10000000 && adr < 0x11000000) && adr % 4 == 0){
     int index = (adr - 0x10000000) / 4;
-    if(index > n_inst && false){ //TODO: napraw
-      std::cerr << "error: trying to read instruction outside legal range"<< '\n';
-      std::exit(-11);
-    }
     return (*inst)[index];
   }
   std::cerr << "error: trying to read instruction from address: " << adr << '\n';

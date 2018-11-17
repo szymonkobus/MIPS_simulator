@@ -1,5 +1,6 @@
 import os
 import subprocess as sps
+import sys
 
 def file_exists(file):
     return os.path.exists(file)
@@ -22,11 +23,14 @@ def print_file(TestId, Instruction, Author, Exit, Message):
     print("Exit: " + Exit)
     print("Message: " + Message)
 
-p_parser = "parser/bin/parser"
+p_parser = "mips-parser-master/bin/parser"
 p_tests = "benchmark_src/all_tests/"
 p_tests_binary = "benchmark_src/tst_bench_bin/"
 
 simulator = "bin/mips_simulator"
+if(len(sys.argv) > 1):
+    simulator = sys.argv[1]
+print(simulator)
 
 parser_exists = file_exists(p_parser)
 

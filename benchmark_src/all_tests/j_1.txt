@@ -4,7 +4,8 @@ Author: sk3017
 Exit: 7
 Message: jump to 12
 
-j 12
+j 0xC
+nop
 addiu $2, $0, 3
 jr $0
 

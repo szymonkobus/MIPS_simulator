@@ -23,6 +23,6 @@ nop
 
 
 test: addiu $2, $0, 7
-j 8
+j 0x8
 nop
 jr $0

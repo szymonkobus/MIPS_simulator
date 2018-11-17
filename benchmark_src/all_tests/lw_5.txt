@@ -1,4 +1,4 @@
-TestId: LW_6
+TestId: LW_5
 Instruction: lw
 Author: sk3017
 Exit: 245

@@ -1,9 +1,10 @@
 TestId: LB_6
 Instruction: lb
 Author: sk3017
-Exit: 245
-Message: reading from illegal address: 0x10000000
+Exit: 197
+Message: reading address: 0x10000000
 
 lui $20, 0x1000    #base
-lb $10, 0x0($20)
+lb $10, 5($20)
+srl $2, $10, 1
 jr $0

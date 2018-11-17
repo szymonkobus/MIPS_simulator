@@ -21,26 +21,26 @@ cpu::cpu(std::string binary): m(binary), r() {
   LO = 0;
   HI = 0;
 
-  std::cerr << "Initial memory:" << '\n';
-  m.print_mem();
-  std::cerr << '\n';
+  //std::cerr << "Initial memory:" << '\n';
+  //m.print_mem();
+  //std::cerr << '\n';
 }
 
 void cpu::run(){
-  std::cerr << "CPU starts running." << '\n';
+  //std::cerr << "CPU starts running." << '\n';
   while(true) {
     word next_instruction = m.read_inst(pc);
 
-    std::cerr<<"instruction: "<<next_instruction<<std::endl;
+    //std::cerr<<"instruction: "<<std::hex<<next_instruction<<std::dec<<std::endl;
     instruction c_inst(next_instruction);
 
     this->execute(c_inst);
 
-    this->reg_print(1);
-    std::cerr<<"pc: "<<pc - 0x10000000<<std::endl;
+    //this->reg_print(1);
+    //std::cerr<<"pc: "<<pc - 0x10000000<<std::endl;
 
     if(pc == 0){
-      std::cerr << "finshed execution!" << std::endl;
+      //std::cerr << "finshed execution!" << std::endl;
       exit(r[2]);
     }
   }
@@ -671,4 +671,3 @@ void cpu::test_zero_fields_R(const instruction& inst){
     case 0x0F: if(inst.src_s != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs
     }
   }
-

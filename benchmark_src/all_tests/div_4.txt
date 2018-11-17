@@ -1,7 +1,7 @@
 TestId: DIV_4
 Instruction: div
 Author: sk3017
-Exit: -3
+Exit: 253
 Message: -101 % 7 = 3 or -4
 
 addiu $10, $0, 101
@@ -15,8 +15,10 @@ nop
 mfhi $25
 addiu $5, $0, 3
 beq $25, $5, pass
+nop
 addiu $6, $0, -4
 beq $25, $6, pass
+nop
 
 jr $0
 mfhi $2
