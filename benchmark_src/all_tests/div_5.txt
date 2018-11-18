@@ -1,7 +1,7 @@
 TestId: DIV_5
 Instruction: div
 Author: sk3017
-Exit: 1
+Exit: 50
 Message: 101 = q * (-7) + r
 
 addiu $10, $0, 101
@@ -32,5 +32,5 @@ nop
 jr $0
 add $2, $25, $26
 
-pass: addiu $2, $0, 1
+pass: addiu $2, $0, 50
 jr $0

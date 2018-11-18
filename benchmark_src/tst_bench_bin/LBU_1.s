@@ -1,0 +1,34 @@
+lui $20, 0x2000     #base
+
+lui $10, 0x0102
+addiu $10, $10, 0x0304
+sw $10, 0x0($20)
+
+lbu $25, 0x0($20)
+addiu $15, $0, 0x1
+beq $25, $15, pass1
+addu $2, $0, $25
+jr $0
+
+pass1: lbu $26, 0x1($20)
+addiu $15, $0, 0x2
+beq $26, $15, pass2
+addu $2, $0, $26
+jr $0
+
+pass2: lbu $27, 0x2($20)
+addiu $15, $0, 0x3
+beq $27, $15, pass3
+addu $2, $0, $27
+jr $0
+
+pass3: lbu $28, 0x3($20)
+addiu $15, $0, 0x4
+beq $28, $15 pass4
+addu $2, $0, $28
+jr $0
+
+nop
+
+pass4: addiu $2, $0, 0x5
+jr $0

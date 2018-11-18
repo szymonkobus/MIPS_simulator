@@ -1,0 +1,6 @@
+addi $10, $0, 0x7FFF      #0x00007FFF
+sll $11, $10, 16          #0x7FFF0000
+add $12, $11, $10         #0x7FFF7FFF
+addi $13, $12, 0x7FFF     #0x7FFFFFFE
+addu $2, $13, $13         #0xFFFFFFFC overflow
+jr $0

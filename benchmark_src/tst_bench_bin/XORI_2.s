@@ -1,0 +1,13 @@
+lui $4, 0x3547
+addiu $4, $4, 0x8FAD
+
+xori $6, $4, 0xFAB4
+xori $6, $6, 0xFAB4
+
+beq $6, $4, pass
+addiu $2, $0, 11
+jr $0
+nop
+
+pass: addiu $2, $0, 31
+jr $0

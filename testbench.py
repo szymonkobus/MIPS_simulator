@@ -23,8 +23,8 @@ def print_file(TestId, Instruction, Author, Exit, Message):
     print("Exit: " + Exit)
     print("Message: " + Message)
 
-p_parser = "mips-parser-master/bin/parser"
-p_tests = "benchmark_src/all_tests/"
+p_parser = "parser/bin/parser"
+p_tests = "benchmark_src/tests/"
 p_tests_binary = "benchmark_src/tst_bench_bin/"
 
 simulator = "bin/mips_simulator"

@@ -1,7 +1,7 @@
 TestId: DIV_4
 Instruction: div
 Author: sk3017
-Exit: 253
+Exit: 50
 Message: -101 % 7 = 3 or -4
 
 addiu $10, $0, 101

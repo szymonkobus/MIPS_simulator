@@ -1,0 +1,36 @@
+lui $1, 0x2000
+addi $1, $1, 0x7FFC
+lui $7, 0x3108
+ori $7, $7, 0xAA88
+
+sw $7, 0x0($1)
+lui $10, 0x6969
+lui $11, 0xABCD
+lui $12, 0xBACA
+lui $13, 0x1C3F
+
+ori $10, $10, 0x6969
+ori $11, $11, 0xEF12
+ori $12, $12, 0xD06A
+ori $13, $13, 0x4444
+
+add $18, $18, $10
+add $19, $19, $11
+add $20, $20, $12
+add $21, $21, $13
+
+lwl $18, 0x0($1)
+lwl $19, 0x1($1)
+lwl $20, 0x2($1)
+lwl $21, 0x3($1)
+
+srl $2, $18, 0x18
+srl $3, $19, 0x10
+andi $3, $3, 0xFF
+add $2, $2, $3
+srl $3, $20, 0x8
+andi $3, $3, 0xFF
+add $2, $2, $3
+andi $3, $21, 0xFF
+jr $0
+add $2, $2, $3
