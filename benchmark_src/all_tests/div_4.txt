@@ -23,5 +23,5 @@ nop
 jr $0
 mfhi $2
 
-pass: addiu $2, $0, 1
+pass: addiu $2, $0, 50
 jr $0
