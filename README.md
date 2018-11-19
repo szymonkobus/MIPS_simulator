@@ -5,4 +5,4 @@
 * [Andrzej Kowalewski](https://github.com/akowal3)
 
 
-[Cheat sheet for instructions](https://inst.eecs.berkeley.edu/~cs61c/resources/MIPS_help.html)
+The testbench uses [mips parser](https://github.com/olly-larkin/mips-parser) created by wonderful [Olly Larkin](https://github.com/olly-larkin)
