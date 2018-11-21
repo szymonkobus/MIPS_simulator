@@ -185,6 +185,7 @@ word memory::read_b(word adr){
       std::cerr << "read_b, in char: " << in_w << '\n';
       return (in_w == EOF) ? -1 : in_w & 0x0FF;
     }
+    return 0;
   }
   else{
     std::cerr << "error: trying to read byte from address: " << adr << '\n';
