@@ -83,7 +83,7 @@ void memory::write_h(word adr, word new_data){
     (*data)[index] = combined_data;
   }else if((adr >> 2) == (0x30000004 >> 2) && adr % 2 == 0){
     // TODO: test
-    if(adr % 4 == 2) std::putchar(new_data & 0xF);
+    if(adr % 4 == 2) std::putchar(new_data & 0xFF);
     else std::putchar(0);
   }else{
     std::cerr << "error: trying to write_half to address: " << adr << '\n';
@@ -111,7 +111,7 @@ void memory::write_b(word adr, word new_data){
     (*data)[index] = combined_data;
   }else if((adr >> 2) == (0x30000004 >> 2)){
     // TODO: test
-    if(adr % 4 == 3) std::putchar(new_data & 0xF);
+    if(adr % 4 == 3) std::putchar(new_data & 0xFF);
     else std::putchar(0);
   }else{
     std::cerr << "error: trying to write_byte to address: " << adr << '\n';
