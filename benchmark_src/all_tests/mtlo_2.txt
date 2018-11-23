@@ -1,10 +1,10 @@
-TestId: MTHI_2
+TestId: MTLO_2
 Instruction: mthi
 Author: sk3107
 Exit: 6
 Message: no exepctions
 
-aaddiu $10, $0, -1
+addiu $10, $0, -1
 addiu $11, $0, 2
 multu $10, $11
 nop

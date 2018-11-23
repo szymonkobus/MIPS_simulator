@@ -83,7 +83,7 @@ void memory::write_h(word adr, word new_data){
     (*data)[index] = combined_data;
   }else if((adr >> 2) == (0x30000004 >> 2) && adr % 2 == 0){
     // TODO: test
-    if(adr % 4 == 2) std::putchar(new_data & 0xF);
+    if(adr % 4 == 2) std::putchar(new_data & 0xFF);
     else std::putchar(0);
   }else{
     std::cerr << "error: trying to write_half to address: " << adr << '\n';
@@ -111,7 +111,7 @@ void memory::write_b(word adr, word new_data){
     (*data)[index] = combined_data;
   }else if((adr >> 2) == (0x30000004 >> 2)){
     // TODO: test
-    if(adr % 4 == 3) std::putchar(new_data & 0xF);
+    if(adr % 4 == 3) std::putchar(new_data & 0xFF);
     else std::putchar(0);
   }else{
     std::cerr << "error: trying to write_byte to address: " << adr << '\n';
@@ -153,9 +153,9 @@ word memory::read_h(word adr){
     word in_w = std::getchar();
     if(adr % 4 == 2){
       std::cerr << "read_h, in char: " << in_w << '\n';
-      return (in_w == EOF) ? -1 : in_w & 0x0FF;
+      return (in_w == EOF) ? 0xFFFF : in_w & 0x0FF;
     }
-    return 0;
+    return (in_w == EOF) ? 0xFFFF : 0;
   }
   else{
     std::cerr << "error: trying to read halfword from address: " << adr << '\n';
@@ -183,8 +183,9 @@ word memory::read_b(word adr){
     word in_w = std::getchar();
     if(adr % 4 == 3){
       std::cerr << "read_b, in char: " << in_w << '\n';
-      return (in_w == EOF) ? -1 : in_w & 0x0FF;
+      return (in_w == EOF) ? 0xFF : in_w & 0xFF;
     }
+    return (in_w == EOF) ? 0xFF : 0;
   }
   else{
     std::cerr << "error: trying to read byte from address: " << adr << '\n';

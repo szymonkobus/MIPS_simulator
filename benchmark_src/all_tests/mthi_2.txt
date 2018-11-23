@@ -4,7 +4,7 @@ Author: sk3107
 Exit: 6
 Message: no exepctions
 
-aaddiu $10, $0, -1
+addiu $10, $0, -1
 addiu $11, $0, 2
 multu $10, $11
 nop
@@ -13,5 +13,6 @@ mthi $10
 nop
 nop
 mfhi $2
+nop
 addiu $2, $0, 6
 jr $0
