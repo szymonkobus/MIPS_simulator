@@ -1,0 +1,14 @@
+TestId: PUTC_06
+Instruction: PUTC
+Author: ak9717
+Exit: 77
+Message: sb 0x30000007
+IO: r«
+
+lui $3, 0x3000
+addi $3, $3, 0x0004
+addi $4, $0, 0xAB
+sb $4, 0x3($3)
+nop
+jr $0
+addi $2, $0, 0x5

@@ -1,0 +1,36 @@
+TestId: DIV_5
+Instruction: div
+Author: sk3017
+Exit: 50
+Message: 101 = q * (-7) + r
+
+addiu $10, $0, 101
+addiu $11, $0, 7
+sub $11, $0, $11
+div $10, $11
+
+nop
+nop
+
+mflo $25
+nop
+sub $15, $0, $25
+sub $15, $15, $25
+sub $15, $15, $25
+sub $15, $15, $25
+sub $15, $15, $25
+sub $15, $15, $25
+sub $15, $15, $25
+mfhi $26
+nop
+add $15, $15, $26
+
+addiu $5, $0, 101
+beq $15, $5, pass
+nop
+
+jr $0
+add $2, $25, $26
+
+pass: addiu $2, $0, 50
+jr $0

@@ -1,0 +1,9 @@
+TestId: ADDI_3
+Instruction: addi
+Author: sk3017
+Exit: 1
+Message: sign extension
+
+addi $1, $0, -5
+srl $2, $1, 31
+jr $0

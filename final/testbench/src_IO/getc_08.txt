@@ -1,0 +1,18 @@
+TestId: GETC_08
+Instruction: GETC
+Author: ak9717
+Exit: 107
+Message: lw EOF
+IO: w
+
+lui $3, 0x3000
+addi $4, $0, 5
+lw $4, 0x0($3)
+nop
+addi $5, $5, -1
+beq $4, $5, pass
+nop
+jr $0
+addi $2, $0, 17
+pass: addi $2, $0, 107
+jr $0

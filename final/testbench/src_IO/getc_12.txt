@@ -1,0 +1,22 @@
+TestId: GETC_12
+Instruction: GETC
+Author: ak9717
+Exit: 107
+Message: lwl offset: 0x2
+IO: wz
+
+lui $3, 0x3000
+lui $4, 0x6731
+addi $4, $4, 0x1234
+lui $5, 0x007A
+addi $5, $5, 0x1234
+lwl $4, 0x2($3)
+beq $4, $5, pass
+nop
+jr $0
+addi $2, $0, 0x45
+nop
+nop
+pass: addi $2, $2, 107
+jr $0
+nop
