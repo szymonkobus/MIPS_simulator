@@ -17,6 +17,8 @@ beq $25, $5, pass
 addiu $6, $0, -15
 beq $25, $6, pass
 
+nop
+
 jr $0
 mflo $2
 

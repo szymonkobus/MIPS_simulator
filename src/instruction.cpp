@@ -45,7 +45,7 @@ bool instruction::is_R_type(int opcode){
 bool instruction::is_I_type(int opcode){
   return opcode == 0x01 || opcode == 0x04 || opcode == 0x05 || opcode == 0x06 || opcode == 0x07 ||
          opcode == 0x08 || opcode == 0x09 || opcode == 0x0A || opcode == 0x0B || opcode == 0x0C ||
-         opcode == 0x0D || opcode == 0x0E || opcode == 0x0F || opcode == 0x20 || opcode == 0x21 || 
+         opcode == 0x0D || opcode == 0x0E || opcode == 0x0F || opcode == 0x20 || opcode == 0x21 ||
          opcode == 0x22 || opcode == 0x23 || opcode == 0x24 || opcode == 0x25 || opcode == 0x26 ||
          opcode == 0x28 || opcode == 0x29 || opcode == 0x2B;
 }
