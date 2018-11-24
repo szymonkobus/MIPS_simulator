@@ -301,12 +301,14 @@ void cpu::J(const instruction& inst){
   pc = npc;
   npc = (npc & 0xF0000000)|(inst.j_add << 2);
  }
+
 void cpu::JALR(const instruction& inst){
   r[inst.destn] = npc + 4;
   word adr = r[inst.src_s];
   pc = npc;
   npc = adr;
  }
+ 
 void cpu::JAL(const instruction& inst){
   r[31] = npc + 4;
   pc = npc;

@@ -24,13 +24,12 @@ def print_file(TestId, Instruction, Author, Exit, Message):
     print("Message: " + Message)
 
 p_parser = "parser/bin/parser"
-p_tests = "benchmark_src/tests/"
+p_tests = "benchmark_src/all_tests/"
 p_tests_binary = "benchmark_src/tst_bench_bin/"
 
 simulator = "bin/mips_simulator"
 if(len(sys.argv) > 1):
     simulator = sys.argv[1]
-print(simulator)
 
 parser_exists = file_exists(p_parser)
 
@@ -50,7 +49,6 @@ for file_name in sorted(files):
 
     if(file_exists(p_tests_binary + TestId + ".bin")):
         exit = sps.call([simulator, p_tests_binary + TestId + ".bin"], stderr=sps.PIPE)
-        #print("\nexit: {}".format(exit))
         Status = "Pass" if (int(Expected_Exit) == exit) else "Fail"
         # TestId , Instruction , Status , Author [, Message]
         print(TestId + " , " + Instruction + " , " + Status + " , " + Author + " , " + Message)
