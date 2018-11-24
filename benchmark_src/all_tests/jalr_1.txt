@@ -2,7 +2,7 @@ TestId: JALR_1
 Instruction: jalr
 Author: sk3017
 Exit: 7
-Message: jump to 4028
+Message: jump to 68
 
 lui $15, 0x1000
 addiu $15, $15, 68
