@@ -1,0 +1,23 @@
+TestId: JAL_6
+Instruction: jal
+Author: sk3017
+Exit: 10
+Message: delayed jump
+
+jal 22
+addiu $2, $0, 3
+jr $0
+
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+
+addiu $2, $2, 7
+jr $0

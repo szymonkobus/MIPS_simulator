@@ -1,0 +1,15 @@
+TestId: SLTIU_1
+Instruction: sltiu
+Author: sk3107
+Exit: 5
+Message: -1 < 1
+
+addi $3, $0, -1
+sltiu $2, $3, 1
+bgtz $2, fail
+addi $2, $0, 5
+jr $0
+nop
+
+fail: addi $2, $0, 3
+jr $0

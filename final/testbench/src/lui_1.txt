@@ -1,0 +1,9 @@
+TestId: LUI_1
+Instruction: lui
+Author: sk3017
+Exit: 1
+Message: loading a const
+
+lui $10, 0x1000
+srl $2, $10, 28
+jr $0

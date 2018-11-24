@@ -1,0 +1,20 @@
+TestId: DIV_8
+Instruction: div
+Author: ak9717
+Exit: 15
+Message: 101/7
+
+addi $3, $3, 0x65
+addi $4, $4, 0x7
+div $3, $4
+mflo $11
+mfhi $12
+addi $13, $13, 0xE
+beq $11, $13, good
+nop
+jr $0
+addi $2, $2, 0xFB
+
+good: slti $2, $12, 0x4
+jr $0
+add $2, $2, $11

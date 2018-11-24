@@ -1,0 +1,16 @@
+TestId: SRA_1
+Instruction: sra
+Author: sk3017
+Exit: 3
+Message: shifting by 1
+
+addiu $5, $0, -1
+sra $6, $5, 1
+beq $6, $5, pass
+addiu $2, $0, 11
+jr $0
+
+nop
+
+pass: addiu $2, $0, 3
+jr $0

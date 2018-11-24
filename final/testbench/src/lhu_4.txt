@@ -1,0 +1,9 @@
+TestId: LHU_4
+Instruction: lhu
+Author: sk3017
+Exit: 245
+Message: reading from illegal address: 0x24000000
+
+lui $20, 0x2400    #base
+lhu $10, 0x0($20)
+jr $0

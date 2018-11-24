@@ -1,0 +1,10 @@
+TestId: JR_5
+Instruction: jr
+Author: sk3017
+Exit: 245
+Message: jump to last inst mem
+
+addiu $2, $0, 3
+lui $10, 0x1100
+addiu $10, $10, -10
+jr $10

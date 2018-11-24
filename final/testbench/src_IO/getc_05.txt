@@ -1,0 +1,13 @@
+TestId: GETC_05
+Instruction: GETC
+Author: ak9717
+Exit: 104
+Message: lb 0x30000003
+IO: wc
+
+lui $3, 0x3000
+addi $2, $0, 5
+lb $2, 0x3($3)
+nop
+addi $2, $2, 5
+jr $0

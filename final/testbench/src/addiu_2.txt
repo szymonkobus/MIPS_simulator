@@ -1,0 +1,9 @@
+TestId: ADDIU_2
+Instruction: addiu
+Author: sk3017
+Exit: 251
+Message: 5 + (-10)
+
+addiu $1, $0, 5
+addiu $2, $1, -10
+jr $0
