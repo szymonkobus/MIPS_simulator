@@ -2,7 +2,7 @@ TestId: DIV_1
 Instruction: div
 Author: sk3017
 Exit: 14
-Message: 101 / 7 = 14
+Message: q (101 / 7) = 14
 
 addiu $10, $0, 101
 addiu $11, $0, 7

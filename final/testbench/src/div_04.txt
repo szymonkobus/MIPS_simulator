@@ -2,11 +2,10 @@ TestId: DIV_4
 Instruction: div
 Author: sk3017
 Exit: 50
-Message: -101 % 7 = 3 or -4
+Message: r (101 / -7) = 3 or -4
 
 addiu $10, $0, 101
-sub $10, $0, $10
-addiu $11, $0, 7
+addiu $11, $0, -7
 div $10, $11
 
 nop
@@ -15,9 +14,9 @@ nop
 mfhi $25
 addiu $5, $0, 3
 beq $25, $5, pass
-nop
 addiu $6, $0, -4
 beq $25, $6, pass
+
 nop
 
 jr $0

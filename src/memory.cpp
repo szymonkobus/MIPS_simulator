@@ -132,7 +132,7 @@ word memory::read_w(word adr){
   else if(adr == 0x30000000){
     word in_w = std::getchar();
     std::cerr << "read_w, in char: " << in_w << '\n';
-    return (in_w == EOF) ? -1 : in_w & 0x0FF;
+    return (in_w == EOF) ? -1 : in_w & 0x000000FF;
   }
   std::cerr << "error: trying to read word from address: " << adr << '\n';
   std::exit(-11);
@@ -153,7 +153,7 @@ word memory::read_h(word adr){
     word in_w = std::getchar();
     if(adr % 4 == 2){
       std::cerr << "read_h, in char: " << in_w << '\n';
-      return (in_w == EOF) ? 0xFFFF : in_w & 0x0FF;
+      return (in_w == EOF) ? 0xFFFF : in_w & 0x00FF;
     }
     return (in_w == EOF) ? 0xFFFF : 0;
   }
