@@ -6,4 +6,5 @@ Message: reading from address: 0x10000000
 
 lui $20, 0x1000    #base
 lbu $2, 4($20)
+nop
 jr $0
