@@ -2,7 +2,7 @@ TestId: DIV_3
 Instruction: div
 Author: sk3017
 Exit: 50
-Message: 101 / -7 = -14 or -15
+Message: q (101 / -7) = -14 or -15
 
 addiu $10, $0, 101
 addiu $11, $0, -7
@@ -16,6 +16,7 @@ addiu $5, $0, -14
 beq $25, $5, pass
 addiu $6, $0, -15
 beq $25, $6, pass
+
 nop
 
 jr $0
