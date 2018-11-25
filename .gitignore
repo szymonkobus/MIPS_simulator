@@ -10,6 +10,7 @@ parser
 notes.txt
 tst/
 parser_dir/
+other_simulators/
 
 .DS_Store
 .vscode

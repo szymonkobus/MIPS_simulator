@@ -50,6 +50,8 @@ for file_name in sorted(files):
     if(file_exists(p_tests_binary + TestId + ".bin")):
         exit = sps.call([simulator, p_tests_binary + TestId + ".bin"], stderr=sps.PIPE)
         Status = "Pass" if (int(Expected_Exit) == exit) else "Fail"
+        if(Status == 'Fail'):
+            print("Exit: {}".format(exit))
         # TestId , Instruction , Status , Author [, Message]
         print(TestId + " , " + Instruction + " , " + Status + " , " + Author + " , " + Message)
     file.close()

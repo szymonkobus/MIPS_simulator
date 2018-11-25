@@ -1,0 +1,15 @@
+TestId: DIVU_2
+Instruction: divu
+Author: sk3017
+Exit: 3
+Message: r (101 / 7) = 3
+
+addiu $10, $0, 101
+addiu $11, $0, 7
+divu $10, $11
+
+nop
+nop
+
+mfhi $2
+jr $0

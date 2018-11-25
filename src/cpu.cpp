@@ -27,7 +27,6 @@ cpu::cpu(std::string binary): m(binary), r() {
 }
 
 void cpu::run(){
-  //std::cerr << "CPU starts running." << '\n';
   while(true) {
     word next_instruction = m.read_inst(pc);
 
@@ -286,15 +285,19 @@ void cpu::BNE(const instruction& inst){
 void cpu::DIV(const instruction& inst){
   s_word r1 = r[inst.src_s];
   s_word r2 = r[inst.src_t];
-  LO = (s_word) r1 / r2;
-  HI = (s_word) r1 % r2;
+  if(r2 != 0){
+    LO = (s_word) r1 / r2;
+    HI = (s_word) r1 % r2;
+  }
   pc_increase(4);
  }
 void cpu::DIVU(const instruction& inst){
   word r1 = r[inst.src_s];
   word r2 = r[inst.src_t];
+  if(r2 != 0){
   LO = (word) r1 / r2;
   HI = (word) r1 % r2;
+    }
   pc_increase(4);
  }
 void cpu::J(const instruction& inst){
@@ -308,7 +311,7 @@ void cpu::JALR(const instruction& inst){
   pc = npc;
   npc = adr;
  }
- 
+
 void cpu::JAL(const instruction& inst){
   r[31] = npc + 4;
   pc = npc;
