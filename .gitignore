@@ -5,6 +5,7 @@
 *.exe.stackdump
 sim
 parser
+bin/
 
 notes.txt
 tst/
