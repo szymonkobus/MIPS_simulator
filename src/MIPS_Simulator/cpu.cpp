@@ -454,7 +454,8 @@ void cpu::OR(const instruction& inst){
  }
 void cpu::ORI(const instruction& inst){
   word r1 = r[inst.src_s];
-  word res = r1 | inst.i_imi;
+  word i = sign_extend_imi(inst);
+  word res = r1 | i;
   r[inst.src_t] = res;
   pc_increase(4);
  }

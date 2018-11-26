@@ -1,16 +1,18 @@
-TestId: ORI_1
+TestId: ORI_2
 Instruction: ori
-Author: ak9717
-Exit: 2
-Message: ABCD | 5432
+Author: sk3107
+Exit: 3
+Message: ori sign extension
 
-addi $2, $2, 0x5432
-ori $2, $2, 0xABCD
+addi $2, $2, -1
+ori $2, $2, -1
 ori $3, $3, 0xFFFF
 beq $2, $3, pass
-nop
-jr $0
+
 addi $2, $0, 0x45
+jr $0
+nop
+
 pass: addi $2, $2, 0x3
 jr $0
 nop
