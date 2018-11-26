@@ -56,7 +56,12 @@ for file_name in sorted(files):
             sim.kill()
             Status = "Fail"
             exit = 'timeout'
-        print(TestId + " , " + Instruction + " , " + Status + " , " + Author + " , " + Message + ", exp/got: " + Expected_Exit + "/" + str(exit))
+        if(Status == "Fail"):
+            print(TestId + " , " + Instruction + " , " + Status + " , " + Author + " , "
+                + Message + " ex:" + Expected_Exit + " act:" + str(exit))
+        else:
+            print(TestId + " , " + Instruction + " , " + Status + " , " + Author + " , "
+                + Message)
     file.close()
 
 p_tests =  "testbench/src_IO/"
@@ -103,5 +108,5 @@ for file_name in sorted(files_IO):
             except TimeoutExpired:
                 sim.kill()
                 Status = "Fail"
-        print(TestId + " , " + Instruction + " , " + Status + " , " + Author + " , " + Message)
+            print(TestId + " , " + Instruction + " , " + Status + " , " + Author + " , " + Message)
     file.close()
