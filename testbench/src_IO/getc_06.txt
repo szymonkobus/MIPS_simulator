@@ -1,0 +1,11 @@
+TestId: GETC_06
+Instruction: GETC
+Author: ak9717
+Exit: 55
+Message: lw iso8859-1 char
+IO: wÅ
+
+lui $3, 0x3000
+lw $2, 0x0($3)
+nop
+jr $0

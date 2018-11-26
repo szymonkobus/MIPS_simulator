@@ -1,6 +1,0 @@
-TestId: FIB
-Instruction: stack
-Author: ak9717
-Exit: 144
-Message: fibonacci(12) recursive formula
-<SPACE>

@@ -1,9 +1,0 @@
-TestId: ADDI_2
-Instruction: addi
-Author: sk3017
-Exit: 251
-Message: 5 + (-10)
-
-addi $1, $0, 5
-addi $2, $1, -10
-jr $0

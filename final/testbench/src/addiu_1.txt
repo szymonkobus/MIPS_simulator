@@ -1,9 +1,0 @@
-TestId: ADDIU_1
-Instruction: addiu
-Author: sk3017
-Exit: 10
-Message: 5 + 5
-
-addiu $1, $0, 0x5
-addiu $2, $1, 0x5
-jr $0

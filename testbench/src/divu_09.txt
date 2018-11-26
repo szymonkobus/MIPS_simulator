@@ -1,0 +1,12 @@
+TestId: DIVU_9
+Instruction: divu
+Author: sk3017
+Exit: 14
+Message: no error when division by 0
+
+addiu $10, $0, 101
+
+divu $10, $0
+
+jr $0
+addiu $2, $0, 14

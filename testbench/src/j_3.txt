@@ -1,0 +1,12 @@
+TestId: J_3
+Instruction: j
+Author: sk3017
+Exit: 10
+Message: delayed branch
+
+j 12
+addiu $2, $0, 3
+jr $0
+
+addiu $2, $2, 7
+jr $0

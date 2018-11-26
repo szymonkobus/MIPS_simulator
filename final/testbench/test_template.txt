@@ -1,6 +1,0 @@
-TestId:
-Instruction:
-Author:
-Exit:
-Message:
-<SPACE>

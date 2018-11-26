@@ -1,0 +1,32 @@
+TestId: SB_2
+Instruction: sb
+Author: sk3017
+Exit: 5
+Message: storing 4 bytes into word w. negative offset
+
+lui $20, 0x2000
+addiu $20, $20, 4
+
+addiu $5, $0, 0x01
+addiu $6, $0, 0x02
+addiu $7, $0, 0x03
+addiu $8, $0, 0x04
+
+sb $5, 0xFFFC($20)
+sb $6, 0xFFFD($20)
+sb $7, 0xFFFE($20)
+sb $8, 0xFFFF($20)
+
+addiu $20, $20, -4
+lw $10, 0x0($20)
+
+lui $20, 0x0102
+addiu $20, $20, 0x0304
+
+beq $10, $20, pass
+addiu $2, $0, 3
+jr $0
+
+nop
+pass: addiu $2, $0, 5
+jr $0

@@ -1,0 +1,10 @@
+TestId: SLTI_4
+Instruction: slti
+Author: sk3017
+Exit: 11
+Message: no exceptions
+
+lui $3 0x8000
+slti $5, $3, 0x7000
+addi $2, $0, 11
+jr $0

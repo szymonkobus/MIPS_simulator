@@ -1,9 +1,0 @@
-TestId: ANDI_1
-Instruction: andi
-Author: sk3017
-Exit: 8
-Message: 1010 & 1000
-
-addi $10, $0, 0xA
-andi $2, $10, 0x8
-jr $0

@@ -1,6 +1,0 @@
-addi $3, $3, 0xFFFF
-addi $4, $4, 0x7FFF
-
-jr $0
-addi $2, $2, 0x45
-

@@ -1,7 +1,0 @@
-TestId: JR_1
-Instruction: jr
-Author: sk3017
-Exit: 0
-Message: jr $0
-
-jr $0
