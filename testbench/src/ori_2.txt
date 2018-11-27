@@ -1,0 +1,18 @@
+TestId: ORI_2
+Instruction: ori
+Author: sk3107
+Exit: 3
+Message: ori 0 extension
+
+ori $11, $0, -1
+lui $12, 0x0001
+addiu $12, $12, -1
+beq $11, $12, pass
+
+addi $2, $0, 0x45
+jr $0
+nop
+
+pass: addi $2, $0, 0x3
+jr $0
+nop
