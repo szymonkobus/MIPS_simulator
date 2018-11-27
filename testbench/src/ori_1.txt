@@ -1,4 +1,4 @@
-TestId: ORI_2
+TestId: ORI_1
 Instruction: ori
 Author: sk3017
 Exit: 13
