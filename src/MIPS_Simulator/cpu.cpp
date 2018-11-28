@@ -588,8 +588,7 @@ void cpu::XOR(const instruction& inst){
  }
 void cpu::XORI(const instruction& inst){
   word r1 = r[inst.src_s];
-  word i = sign_extend_imi(inst);
-  word res = r1 ^ i;
+  word res = r1 ^ inst.i_imi;
   r[inst.src_t] = res;
   pc_increase(4);
  }

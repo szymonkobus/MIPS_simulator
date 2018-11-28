@@ -28,6 +28,8 @@ p_parser = "bin/mips_parser"
 p_tests = "testbench/src/"
 p_tests_binary = "testbench/bin/"
 
+timeout_sec = 5
+
 simulator = "bin/mips_simulator"
 if(len(sys.argv) > 1):
     simulator = sys.argv[1]
@@ -49,7 +51,7 @@ for file_name in sorted(files):
     if(file_exists(p_tests_binary + TestId + ".bin")):
         sim = sps.Popen([simulator, p_tests_binary + TestId + ".bin"], stderr=sps.PIPE, stdout = sps.PIPE)
         try:
-            out, err = sim.communicate(timeout=3)
+            out, err = sim.communicate(timeout=timeout_sec)
             exit = sim.returncode
             Status = "Pass" if (int(Expected_Exit) == exit) else "Fail"
         except sps.TimeoutExpired:
@@ -86,7 +88,7 @@ for file_name in sorted(files_IO):
         sim = sps.Popen([simulator, p_tests_binary + TestId + ".bin"], stdin = sps.PIPE, stderr = sps.PIPE, stdout = sps.PIPE)
         if IO_char == 'EOF':
             try:
-                out, err = sim.communicate(timeout=3)
+                out, err = sim.communicate(timeout=timeout_sec)
                 exit = sim.returncode
                 Status = "Pass" if (int(Expected_Exit) == exit) else "Fail"
             except sps.TimeoutExpired:
@@ -94,7 +96,7 @@ for file_name in sorted(files_IO):
                 Status = "Fail"
         elif IO_func == 'w': #testbench writes to simulator / tests GETCHAR
             try:
-                out, err = sim.communicate(IO_char.encode('iso8859-1'), timeout=3)
+                out, err = sim.communicate(IO_char.encode('iso8859-1'), timeout=timeout_sec)
                 exit = sim.returncode
                 Status = "Pass" if (ord(IO_char) == exit or int(Expected_Exit) == exit) else "Fail"
             except sps.TimeoutExpired:
@@ -102,7 +104,7 @@ for file_name in sorted(files_IO):
                 Status = "Fail"
         elif IO_func == 'r': #testbench reads output from simulator / tests PUTCHAR
             try:
-                out, err = sim.communicate(timeout=3)
+                out, err = sim.communicate(timeout=timeout_sec)
                 if len(out) > 0:
                     IO_char_out = (out.decode('iso8859-1'))[0]
                 else:

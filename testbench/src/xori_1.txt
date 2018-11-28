@@ -1,12 +1,12 @@
-TestId: XOR_1
-Instruction: xor
+TestId: XORI_1
+Instruction: xori
 Author: sk3017
 Exit: 23
 Message: 0b1100 xor 0b0101
 
 addiu $4, $0, 0xC
 
-xori $6, $5, 0x5
+xori $6, $4, 0x5
 
 addiu $7, $0, 0x9
 

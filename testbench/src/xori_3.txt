@@ -1,0 +1,22 @@
+TestId: XORI_3
+Instruction: xori
+Author: sk3017
+Exit: 73
+Message: 0 extension
+
+lui $4, 0x3547
+addiu $5, $4, 0x7FAD
+
+xori $10, $5, -1
+
+lui $11, 0x8052
+srl $11, $11, 16
+addu $11, $4, $11
+
+beq $10, $11, pass
+addiu $2, $0, 11
+jr $0
+nop
+
+pass: addiu $2, $0, 73
+jr $0
