@@ -2,6 +2,7 @@
 #include <fstream>
 //debug
 #include <iostream>
+#include <cstdio>
 
 using word = uint32_t;
 
@@ -60,7 +61,7 @@ void memory::write_w(word adr, word new_data){
   }else if(adr == 0x30000004){
     // TODO: test
     std::putchar(new_data & 0xFF);
-    
+
     if (std::ferror(stdout)) std::exit (-21);
   }else{
     std::cerr << "error: trying to write_word to address: " << adr << '\n';
