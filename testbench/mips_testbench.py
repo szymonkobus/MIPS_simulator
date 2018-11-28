@@ -49,10 +49,10 @@ for file_name in sorted(files):
     if(file_exists(p_tests_binary + TestId + ".bin")):
         sim = sps.Popen([simulator, p_tests_binary + TestId + ".bin"], stderr=sps.PIPE, stdout = sps.PIPE)
         try:
-            out, err = sim.communicate(timeout=20)
+            out, err = sim.communicate(timeout=3)
             exit = sim.returncode
             Status = "Pass" if (int(Expected_Exit) == exit) else "Fail"
-        except TimeoutExpired:
+        except sps.TimeoutExpired:
             sim.kill()
             Status = "Fail"
             exit = 'timeout'
@@ -85,27 +85,31 @@ for file_name in sorted(files_IO):
     if(file_exists(p_tests_binary + TestId + ".bin")):
         sim = sps.Popen([simulator, p_tests_binary + TestId + ".bin"], stdin = sps.PIPE, stderr = sps.PIPE, stdout = sps.PIPE)
         if IO_char == 'EOF':
-            sim.communicate()
-            exit = sim.returncode
-            Status = "Pass" if (int(Expected_Exit) == exit) else "Fail"
+            try:
+                out, err = sim.communicate(timeout=3)
+                exit = sim.returncode
+                Status = "Pass" if (int(Expected_Exit) == exit) else "Fail"
+            except sps.TimeoutExpired:
+                sim.kill()
+                Status = "Fail"
         elif IO_func == 'w': #testbench writes to simulator / tests GETCHAR
             try:
-                out, err = sim.communicate(IO_char.encode('iso8859-1'), timeout=20)
+                out, err = sim.communicate(IO_char.encode('iso8859-1'), timeout=3)
                 exit = sim.returncode
                 Status = "Pass" if (ord(IO_char) == exit or int(Expected_Exit) == exit) else "Fail"
-            except TimeoutExpired:
+            except sps.TimeoutExpired:
                 sim.kill()
                 Status = "Fail"
         elif IO_func == 'r': #testbench reads output from simulator / tests PUTCHAR
             try:
-                out, err = sim.communicate()
+                out, err = sim.communicate(timeout=3)
                 if len(out) > 0:
                     IO_char_out = (out.decode('iso8859-1'))[0]
                 else:
                     IO_char_out = '\xFE'
                 exit = sim.returncode
                 Status = "Pass" if (ord(IO_char_out) == ord(IO_char) or int(Expected_Exit) == exit) else "Fail"
-            except TimeoutExpired:
+            except sps.TimeoutExpired:
                 sim.kill()
                 Status = "Fail"
 
