@@ -649,9 +649,9 @@ void cpu::test_zero_fields_R(const instruction& inst){
     case 0x08: if(inst.src_t != 0 || inst.destn != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break;   //rt,rd
     case 0x09: if(inst.src_t != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt
     case 0x10: if(inst.src_s != 0 || inst.src_t != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs,rt
-    case 0x11: if(inst.src_t != 0 || inst.destn != 0 && inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt,rd,shamt
+    case 0x11: if(inst.src_t != 0 || inst.destn != 0 || inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt,rd,shamt
     case 0x12: if(inst.src_s != 0 || inst.src_t != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rs,rt
-    case 0x13: if(inst.src_t != 0 || inst.destn != 0 && inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt,rd,shamt
+    case 0x13: if(inst.src_t != 0 || inst.destn != 0 || inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rt,rd,shamt
     case 0x18: if(inst.destn != 0 || inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rd,shamt
     case 0x19: if(inst.destn != 0 || inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rd,shamt
     case 0x1A: if(inst.destn != 0 || inst.shamt != 0) {std::cerr << "error: invalid instruction" << '\n'; std::exit(-12);} break; //rd,shamt
