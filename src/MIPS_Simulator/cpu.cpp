@@ -20,26 +20,16 @@ cpu::cpu(std::string binary): m(binary), r() {
   npc = 0x10000004;
   LO = 0;
   HI = 0;
-
-  //std::cerr << "Initial memory:" << '\n';
-  //m.print_mem();
-  //std::cerr << '\n';
 }
 
 void cpu::run(){
   while(true) {
     word next_instruction = m.read_inst(pc);
-
-    //std::cerr<<"instruction: "<<std::hex<<next_instruction<<std::dec<<std::endl;
     instruction c_inst(next_instruction);
 
     this->execute(c_inst);
 
-    //this->reg_print(1);
-    //std::cerr<<"pc: "<<pc - 0x10000000<<std::endl;
-
     if(pc == 0){
-      //std::cerr << "finshed execution!" << std::endl;
       exit(r[2]);
     }
   }
@@ -60,7 +50,6 @@ void cpu::execute(const instruction& inst){
 }
 
 void cpu::execute_r(const instruction& inst){
-  //test_zero_fields_R(inst);
   switch (inst.funct){
     case 0x00: SLL(inst); break;  //rs
     case 0x02: SRL(inst); break;  //rs
@@ -221,7 +210,7 @@ void cpu::BGEZ(const instruction& inst){
  }
 void cpu::BGEZAL(const instruction& inst){
   s_word r1 = r[inst.src_s];
-  r[31] = npc + 4;          // wydaje mi sie ze reg31 zmienia sie niezaleznie czy condition jest prawdziwe czy nie
+  r[31] = npc + 4;
   if(r1 >= 0){
     word offset = sign_extend_imi(inst) << 2;
     pc_increase(offset);
@@ -317,6 +306,7 @@ void cpu::JAL(const instruction& inst){
   pc = npc;
   npc = (word)((pc & 0xF0000000)|(inst.j_add << 2));
  }
+
 void cpu::JR(const instruction& inst){
   word jump_address = r[inst.src_s];
   pc = npc;
@@ -595,9 +585,7 @@ void cpu::XORI(const instruction& inst){
 
 
 void cpu::test_fill(){
-  r.set(8, 0x7FFFFFFF);
-  r.set(9, 0xFFFFFFFF);
-  //r.set(10, 0x20000008);
+
  }
 
 void cpu::reg_s(){
@@ -607,7 +595,6 @@ void cpu::reg_s(){
  }
 
 void cpu::reg_print(bool s_nbr){
-  //TODO: make it pretty
   if(s_nbr){
     for(int i = 0; i < 4; i++){
       for(int j = 0; j < 8; j++){
