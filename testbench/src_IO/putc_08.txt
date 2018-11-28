@@ -1,5 +1,5 @@
 TestId: PUTC_08
-Instruction: PUTC
+Instruction: sh
 Author: ak9717
 Exit: 77
 Message: sh 0x30000006

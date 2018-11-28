@@ -1,5 +1,5 @@
 TestId: PUTC_02
-Instruction: PUTC
+Instruction: sw
 Author: ak9717
 Exit: 201
 Message: sw iso8859-1 char

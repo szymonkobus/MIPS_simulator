@@ -1,5 +1,5 @@
 TestId: GETC_08
-Instruction: GETC
+Instruction: lw
 Author: ak9717
 Exit: 107
 Message: lw EOF

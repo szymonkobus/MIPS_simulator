@@ -1,5 +1,5 @@
 TestId: PUTC_05
-Instruction: PUTC
+Instruction: sb
 Author: ak9717
 Exit: 111
 Message: sb 0x30000006

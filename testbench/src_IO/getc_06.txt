@@ -1,5 +1,5 @@
 TestId: GETC_06
-Instruction: GETC
+Instruction: lw
 Author: ak9717
 Exit: 55
 Message: lw iso8859-1 char

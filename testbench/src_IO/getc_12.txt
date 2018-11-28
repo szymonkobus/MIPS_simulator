@@ -1,5 +1,5 @@
 TestId: GETC_12
-Instruction: GETC
+Instruction: lwl
 Author: ak9717
 Exit: 107
 Message: lwl offset: 0x2
