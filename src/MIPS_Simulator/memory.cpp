@@ -21,6 +21,9 @@ memory::memory(std::string binary){
   char buffer[4] = {0,0,0,0};
   int i = 0;
   //infile.peek();
+  if(infile.peek() == EOF){
+    std::exit(-21);
+  }
   if(infile.is_open()){
     while(!infile.eof()){
         infile.read(buffer, 4);
@@ -39,7 +42,7 @@ memory::memory(std::string binary){
     }
   }else{
     std::cerr << "error: couldn't open binary" << '\n';
-    std::exit(-11);
+    std::exit(-21);
   }
   n_inst = i + 4;
   //std::cerr << "Number of instructions: " << i << '\n';
