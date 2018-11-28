@@ -60,6 +60,8 @@ void memory::write_w(word adr, word new_data){
   }else if(adr == 0x30000004){
     // TODO: test
     std::putchar(new_data & 0xFF);
+    
+    if (std::ferror(stdout)) std::exit (-21);
   }else{
     std::cerr << "error: trying to write_word to address: " << adr << '\n';
     std::exit(-11);
@@ -85,6 +87,8 @@ void memory::write_h(word adr, word new_data){
     // TODO: test
     if(adr % 4 == 2) std::putchar(new_data & 0xFF);
     else std::putchar(0);
+
+    if (std::ferror(stdout)) std::exit (-21);
   }else{
     std::cerr << "error: trying to write_half to address: " << adr << '\n';
     std::exit(-11);
@@ -113,6 +117,8 @@ void memory::write_b(word adr, word new_data){
     // TODO: test
     if(adr % 4 == 3) std::putchar(new_data & 0xFF);
     else std::putchar(0);
+
+    if (std::ferror(stdout)) std::exit (-21);
   }else{
     std::cerr << "error: trying to write_byte to address: " << adr << '\n';
     std::exit(-11);
@@ -131,6 +137,8 @@ word memory::read_w(word adr){
   }
   else if(adr == 0x30000000){
     word in_w = std::getchar();
+    if (std::ferror(stdin)) std::exit(-21);
+
     std::cerr << "read_w, in char: " << in_w << '\n';
     return (in_w == EOF) ? -1 : in_w & 0x000000FF;
   }
@@ -151,6 +159,8 @@ word memory::read_h(word adr){
   }
   else if((adr >> 2) == (0x30000000 >> 2) && adr % 2 == 0){
     word in_w = std::getchar();
+    if (std::ferror(stdin)) std::exit(-21);
+
     if(adr % 4 == 2){
       std::cerr << "read_h, in char: " << in_w << '\n';
       return (in_w == EOF) ? 0xFFFF : in_w & 0x00FF;
@@ -181,6 +191,8 @@ word memory::read_b(word adr){
   }
   else if((adr >> 2) == (0x30000000 >> 2)){  //shoudln't be used: think about the outcome
     word in_w = std::getchar();
+    if (std::ferror(stdin)) std::exit(-21);
+
     if(adr % 4 == 3){
       std::cerr << "read_b, in char: " << in_w << '\n';
       return (in_w == EOF) ? 0xFF : in_w & 0xFF;
