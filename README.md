@@ -1,4 +1,4 @@
-# MIPS Simulator
+# MIPS Simulator  
 
 ## Authors
 * [Szymon Kobus](https://github.com/szymonkobus)
