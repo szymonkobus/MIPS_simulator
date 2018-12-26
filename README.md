@@ -1,4 +1,4 @@
-# arch2-2018-cw-respectingPolice
+# MIPS Simulator
 
 ## Authors
 * [Szymon Kobus](https://github.com/szymonkobus)
